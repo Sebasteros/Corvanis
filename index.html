@@ -208,17 +208,33 @@ dd{margin:0;text-align:right}
 .nt-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
 @media (max-width:640px){.nt-wrap{grid-template-columns:1fr}.nt-list{border-right:0;border-bottom:1px solid var(--line);padding:0 0 10px}}
 
-/* newswire: a lead story, source labels, and a column of headlines */
-.nw{border:1px solid var(--line);background:var(--panel);padding:18px}
-.nw-mast{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);border-bottom:1px solid var(--holo-dim);padding-bottom:8px;margin-bottom:14px}
-.nw-lead{border-left:3px solid var(--holo);padding:4px 0 4px 14px;margin-bottom:6px}
-.nw-lead h2{font-family:var(--f-display);font-weight:500;font-size:22px;line-height:1.25;letter-spacing:.02em;color:var(--text);margin:6px 0 0}
-.nw-src{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--cyan);margin:0}
-.nw-list{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 22px}
-.nw-list li{border-top:1px solid var(--line);padding-top:10px}
-.nw-list p{margin:4px 0 0;font-size:16px;line-height:1.4;color:var(--text)}
+/* newswire: a wire desk with a ticker, a lead story and a grid of headlines */
+.nw{border:1px solid var(--line);background:var(--panel)}
+.nw-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--holo-dim);font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--muted)}
+.nw-live{color:var(--holo);display:inline-flex;align-items:center;gap:7px}
+.nw-live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--holo);box-shadow:0 0 8px var(--holo);animation:nwblink 1.6s ease-in-out infinite}
+@keyframes nwblink{50%{opacity:.25}}
+.nw-tick{overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--line);padding:8px 0;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--cyan);background:rgba(111,233,255,.04)}
+.nw-tick .run{display:inline-block;padding-left:100%;animation:nwscroll 60s linear infinite}
+@keyframes nwscroll{to{transform:translateX(-100%)}}
+.nw-lead{padding:22px 20px 20px;border-bottom:1px solid var(--line)}
+.nw-tag{display:inline-block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;padding:3px 8px}
+.nw-lead .nw-tag{background:var(--holo);color:#020a07}
+.nw-lead h2{font-family:var(--f-display);font-weight:500;font-size:clamp(20px,3vw,28px);line-height:1.25;letter-spacing:.02em;color:var(--text);margin:14px 0 0}
+.nw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.nw-card{padding:16px 20px 18px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.nw-card:hover{background:rgba(61,255,162,.05)}
+.nw-meta{display:flex;justify-content:space-between;align-items:center}
+.nw-card .nw-tag{color:var(--cyan);border:1px solid var(--cyan)}
+.nw-no{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.12em}
+.nw-card h3{font-family:var(--f-body);font-weight:500;font-size:17px;line-height:1.4;color:var(--text);margin:12px 0 0}
+@media (prefers-reduced-motion: reduce){.nw-tick .run,.nw-live::before{animation:none}.nw-tick .run{padding-left:0}}
 .news li{border-left:0;padding:9px 0;border-bottom:1px solid var(--line)}
 .news li:last-child{border-bottom:0}
+body.dm .bar,body.dm .appbar,body.dm .crumbs,body.dm .tickrow,body.dm .index,body.dm .foot,body.dm #app-view,body.dm .boot,body.dm .join,body.dm .main > aside{display:none !important}
+body.dm{background:#020a07}
+.hid-ov{fill:url(#hatch);stroke:#666;stroke-dasharray:5 5;pointer-events:none}
+.loc--hid{opacity:.35}
 </style>
 </head>
 <body>
@@ -377,11 +393,14 @@ const SHIFT_W = {Vantara:1.6,Helix:1.3,Ardrenn:1.2,Solvaris:1,Vexmar:.9,Milia:.6
 const DEFS = '<defs><pattern id="static" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="rgba(61,255,162,.02)"/><rect x="0" y="0" width="2" height="1" fill="rgba(61,255,162,.22)"/><rect x="3" y="3" width="1" height="1" fill="rgba(61,255,162,.3)"/><rect x="4" y="1" width="1" height="1" fill="rgba(61,255,162,.14)"/><rect x="1" y="4" width="2" height="1" fill="rgba(61,255,162,.16)"/></pattern><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="rgba(2,10,7,.55)"/><rect width="1.2" height="8" fill="rgba(255,184,77,.28)"/></pattern></defs>';
 
 let HIDDEN = {};
+const DM = new URLSearchParams(location.search).has('dm');
+if (DM) document.body.classList.add('dm');
 let view = 'world', items = [], selected = null;
 
 /* ---------- views ---------- */
 function renderWorld(){
-  const ORD = ORDER.filter(n => !(HIDDEN.world||[]).includes(n));
+  const hidW = HIDDEN.world || [];
+  const ORD = DM ? ORDER : ORDER.filter(n => !hidW.includes(n));
   svg.setAttribute('viewBox', WORLD_VB.join(' '));
   $('stage-title').textContent = 'CORVANIS · PLANETARY INDEX';
   let h = DEFS + '<g class="glow">';
@@ -390,6 +409,7 @@ function renderWorld(){
   for (const n of ORD){
     const s = STATES[n], open = NATIONS[n].open;
     h += `<path class="st${open?' st--open pulse':''}" d="${s.d}" data-id="${n}" tabindex="0" role="button" aria-label="${n}"/>`;
+    if (DM && hidW.includes(n)) h += `<path class="hid-ov" d="${s.d}"/>`;
   }
   h += '</g>';
   for (const n of ORD){
@@ -421,6 +441,7 @@ function renderVantara(){
   $('stage-title').textContent = 'VANTARA · VERTICAL SECTION';
   const R = rng(7741), cx = W/2, m = narrow?16:40;
   const hidV = HIDDEN.vantara || [];
+  const showAll = DM;
   const y = { apex: H*.085, sTop: H*.2, sDeck: H*.42, gDeck: H*.66, zDeck: H*.93 };
   const bands = [
     { id:'spires', top:y.sTop, deck:y.sDeck, bw:[16,30], gap:[26,54], bh:[.55,.98] },
@@ -430,10 +451,10 @@ function renderVantara(){
   let h = DEFS;
   // apex
   const aSt = LEVELS.apex;
-  if (!hidV.includes('apex')) h += `<g class="band${aSt==='locked'?' locked':''}" data-id="apex" tabindex="0" role="button" aria-label="Apex, orbital station"><rect class="hit" x="${m}" y="${H*.015}" width="${W-2*m}" height="${y.sTop-H*.03}"/><g class="bld glow"><ellipse class="ln ln--b" cx="${cx}" cy="${y.apex}" rx="${narrow?70:96}" ry="13"/><ellipse class="ln" cx="${cx}" cy="${y.apex}" rx="${narrow?44:60}" ry="7"/><rect class="ln ln--b" x="${cx-12}" y="${y.apex-18}" width="24" height="36" fill="#020a07"/></g></g>`;
+  if (showAll || !hidV.includes('apex')) h += `<g class="band${aSt==='locked'?' locked':''}" data-id="apex" tabindex="0" role="button" aria-label="Apex, orbital station"><rect class="hit" x="${m}" y="${H*.015}" width="${W-2*m}" height="${y.sTop-H*.03}"/><g class="bld glow"><ellipse class="ln ln--b" cx="${cx}" cy="${y.apex}" rx="${narrow?70:96}" ry="13"/><ellipse class="ln" cx="${cx}" cy="${y.apex}" rx="${narrow?44:60}" ry="7"/><rect class="ln ln--b" x="${cx-12}" y="${y.apex-18}" width="24" height="36" fill="#020a07"/></g></g>`;
   // tether
   h += `<g pointer-events="none"><line x1="${cx}" y1="${y.apex+18}" x2="${cx}" y2="${y.zDeck}" stroke="#6fe9ff" stroke-width="2" opacity=".85"/><line x1="${cx}" y1="${y.apex+18}" x2="${cx}" y2="${y.zDeck}" stroke="#6fe9ff" stroke-width="8" opacity=".12"/><rect class="lift" style="--travel:-${(y.sDeck-y.apex-40).toFixed(0)}px" x="${cx-5}" y="${y.sDeck-22}" width="10" height="16" fill="#6fe9ff"/></g>`;
-  for (const b of bands.filter(b => !hidV.includes(b.id))){
+  for (const b of bands.filter(b => showAll || !hidV.includes(b.id))){
     const st = LEVELS[b.id], info = LEVEL_INFO[b.id], bandH = b.deck-b.top;
     let g = '';
     let x = m+4;
@@ -449,13 +470,13 @@ function renderVantara(){
       x += w + b.gap[0]+R()*(b.gap[1]-b.gap[0]);
     }
     if (b.id==='subz'){ for (let k=0;k<(narrow?7:12);k++){ const x1 = m+R()*(W-2*m-120), yy = b.top+bandH*(.3+R()*.5); g += `<path class="ln ln--f" d="M${x1.toFixed(0)},${yy.toFixed(0)} q${(40+R()*40).toFixed(0)},${(8+R()*14).toFixed(0)} ${(90+R()*60).toFixed(0)},${(-6+R()*12).toFixed(0)}"/>`; } }
-    let over = '';
+    let over = (DM && hidV.includes(b.id)) ? `<rect x="${m}" y="${b.top+4}" width="${W-2*m}" height="${bandH-8}" fill="url(#hatch)" pointer-events="none"/><text class="tiny" x="${cx}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle" style="paint-order:stroke;stroke:#020a07;stroke-width:6px">HIDDEN FROM PLAYERS · CLICK TO SHOW</text>` : '';
     if (st==='locked') over = `<rect x="${m}" y="${b.top+4}" width="${W-2*m}" height="${bandH-8}" fill="url(#hatch)" pointer-events="none"/><text class="tiny amber" x="${cx}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle" style="paint-order:stroke;stroke:#020a07;stroke-width:6px">ACCESS DENIED · ${LOCK[b.id].tag}</text>`;
     if (st==='partial') over = `<rect x="${cx+30}" y="${b.top+4}" width="${W-m-cx-30}" height="${bandH-8}" fill="#020a07" opacity=".8" pointer-events="none"/><rect x="${cx+30}" y="${b.top+4}" width="${W-m-cx-30}" height="${bandH-8}" fill="url(#static)" pointer-events="none"/><text class="tiny" x="${cx+30+(W-m-cx-30)/2}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle">NO DATA</text>`;
     const col = st==='open'?'cyan':st==='locked'?'amber':'holo';
     h += `<g class="band${st==='locked'?' locked':''}" data-id="${b.id}" tabindex="0" role="button" aria-label="${esc(info.name)}"><rect class="hit" x="${m}" y="${b.top+2}" width="${W-2*m}" height="${bandH-2}"/><g class="bld glow">${g}</g>${over}<line class="ln ln--b" x1="${m}" y1="${b.deck}" x2="${W-m}" y2="${b.deck}"/><text class="lbl ${col}" style="text-anchor:start" x="${m+8}" y="${b.top+26}" font-size="${narrow?17:20}">${info.code} · ${esc(info.name.toUpperCase())}</text></g>`;
   }
-  if (!hidV.includes('apex')) h += `<text class="lbl ${LEVELS.apex==='locked'?'amber':'cyan'}" style="text-anchor:start" x="${m+8}" y="${y.apex+6}" font-size="${narrow?17:20}" pointer-events="none">ORBIT · APEX</text>`;
+  if (showAll || !hidV.includes('apex')) h += `<text class="lbl ${LEVELS.apex==='locked'?'amber':'cyan'}" style="text-anchor:start" x="${m+8}" y="${y.apex+6}" font-size="${narrow?17:20}" pointer-events="none">ORBIT · APEX</text>`;
   h += `<text class="tiny cyan" x="${cx+12}" y="${y.sTop-8}" font-size="12" pointer-events="none">THE TETHER</text>`;
   h += `<text class="tiny cyan" x="${cx+12}" y="${y.sDeck-28}" font-size="12" pointer-events="none">TETHER GATE</text>`;
   { const R2 = rng(41209), pts = [];
@@ -463,7 +484,7 @@ function renderVantara(){
     for (let i=0;i<(narrow?16:28);i++) pts.push([m+8+R2()*(cx-m-40), y.sDeck+30+R2()*(y.gDeck-y.sDeck-36), 2.4]);
     h += dots(pts); }
   svg.innerHTML = h;
-  items = ['apex','spires','grid','subz'].filter(id => !hidV.includes(id)).map(id => {
+  items = ['apex','spires','grid','subz'].filter(id => showAll || !hidV.includes(id)).map(id => {
     const I = LEVEL_INFO[id], st = LEVELS[id];
     return { id, name:I.name, code:I.code, tag:I.tag, status:st, body:[I.body],
       sys: st==='locked'?LOCK[id].sys: st==='partial'?'Remaining sectors not indexed at this terminal.':null,
@@ -506,9 +527,9 @@ function renderSubz(){
   }
   const fs = narrow?17:15;
   const hidS = HIDDEN.subz || [];
-  for (const p of PLACES.filter(p => !hidS.includes(p.id))){
+  for (const p of PLACES.filter(p => DM || !hidS.includes(p.id))){
     const px = m+p.fx*(W-2*m), py = m+18+p.fy*(H-2*m-18);
-    const end = p.fx > .72, k = p.kind?` loc--${p.kind}`:'';
+    const end = p.fx > .72, k = (p.kind?` loc--${p.kind}`:'') + (DM && hidS.includes(p.id) ? ' loc--hid' : '');
     h += `<g class="loc${k}" data-id="${p.id}" tabindex="0" role="button" aria-label="${esc(p.name)}"><circle cx="${px}" cy="${py}" r="26" fill="transparent" stroke="none"/><circle class="ring" cx="${px}" cy="${py}" r="9"/><rect class="dot" x="${px-6}" y="${py-6}" width="12" height="12" transform="rotate(45 ${px} ${py})"/><text x="${end?px-16:px+16}" y="${py+5}" font-size="${fs}" text-anchor="${end?'end':'start'}">${esc(p.name.toUpperCase())}</text>${p.kind==='here'?`<text class="tiny cyan" x="${px+16}" y="${py+21}" font-size="11">YOU ARE HERE</text>`:''}</g>`;
   }
   { const R2 = rng(41209), pts = [];
@@ -516,7 +537,7 @@ function renderSubz(){
     const g = PLACES.find(p => p.id==='gutterlight'); pts.push([m+g.fx*(W-2*m)-14, m+18+g.fy*(H-2*m-18)+13, 3]);
     h += dots(pts); }
   svg.innerHTML = h;
-  items = PLACES.filter(p => !hidS.includes(p.id)).map(p => ({ id:p.id, name:p.name, code:'L0', tag:p.tag, status:'open', body:[p.body] }));
+  items = PLACES.filter(p => DM || !hidS.includes(p.id)).map(p => ({ id:p.id, name:p.name, code:'L0', tag:p.tag, status:'open', body:[p.body] }));
   finish('terminal');
 }
 
@@ -578,6 +599,7 @@ function zoomTo(id, done){
 svg.addEventListener('click', e => {
   const t = e.target.closest('[data-id]'); if (!t) return;
   const id = t.dataset.id;
+  if (DM) { if (id !== 'terminal' && id !== 'Neutral') parent.postMessage({ type: 'corvanis-toggle', map: view, id }, location.origin); return; }
   if (selected===id){ const it = items.find(i=>i.id===id); if (it && it.go) return it.go.fn(); }
   select(id);
 });
@@ -776,7 +798,7 @@ joinForm.onsubmit = async e => {
     start(id, holder);
   } catch (err) { showJoin(true, 'Could not connect: ' + (err.code || err.message)); }
 };
-showJoin(true);
+if (!DM) showJoin(true);
 
 /* ---------- terminal apps: Neural-Tag, Wallet, Messages, Jobs, Contacts, News ---------- */
 let ME_ID = null, ME_NAME = '', ACC = null, MSGS = [], WORLD = {}, APP = 'map', msgOff = null;
@@ -897,12 +919,19 @@ function contactsApp(a) {
 function newsApp() {
   const items = WORLD.news || [];
   if (!items.length) return '<section class="ap-card"><p>Nothing on the wire.</p></section>';
-  const parse = s => { const m = /^([^:]{2,20}):\s*(.*)$/.exec(s); return m ? { src: m[1], text: m[2] } : { src: 'WIRE', text: s }; };
-  const [lead, ...rest] = items.map(parse);
+  const parse = t => {
+    const m = /^([^:]{2,20}):\s*(.*)$/.exec(t);
+    const body = m ? m[2] : t;
+    return { src: m ? m[1].toUpperCase() : 'WIRE', text: body.charAt(0).toUpperCase() + body.slice(1) };
+  };
+  const parsed = items.map(parse);
+  const [lead, ...rest] = parsed;
+  const ticker = parsed.map(p => `${H(p.src)} ◆ ${H(p.text)}`).join('&nbsp;&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;&nbsp;');
   return `<section class="nw">
-    <header class="nw-mast"><span>HELIX MEDIA</span><span>THE WIRE · VANTARA</span></header>
-    <article class="nw-lead"><p class="nw-src">${H(lead.src)}</p><h2>${H(lead.text)}</h2></article>
-    <ol class="nw-list">${rest.map(p => `<li><span class="nw-src">${H(p.src)}</span><p>${H(p.text)}</p></li>`).join('')}</ol>
+    <header class="nw-bar"><span class="nw-live">LIVE</span><span>THE WIRE · VANTARA</span><span>CYCLE ${H(CYCLE)}</span></header>
+    <div class="nw-tick"><div class="run">${ticker}</div></div>
+    <article class="nw-lead"><span class="nw-tag">${H(lead.src)}</span><h2>${H(lead.text)}</h2></article>
+    <div class="nw-grid">${rest.map((p, i) => `<article class="nw-card"><div class="nw-meta"><span class="nw-tag">${H(p.src)}</span><span class="nw-no">${String(i + 2).padStart(2, '0')}</span></div><h3>${H(p.text)}</h3></article>`).join('')}</div>
   </section>`;
 }
 function notesApp() {
