@@ -284,7 +284,7 @@ const explain = e => e && e.code === 'permission-denied'
   ? 'This login is not allowed to change that. Check the email in the database rules.'
   : (e && e.code === 'auth/invalid-credential') ? 'Wrong email or password.'
   : 'Something went wrong: ' + (e && (e.code || e.message) || 'unknown error');
-const say = (el, t) => { $(el).textContent = t; };
+const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n.textContent = t; };
 
 /* ---------- live data ---------- */
 let accounts = {}, players = {}, secrets = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
@@ -326,8 +326,8 @@ function renderTab() {
     body.innerHTML = `
       <p class="mono">CONTACTS AND NOTES (WHAT THEIR PHONE SHOWS)</p>
       ${(a.contacts || []).map(c => `<div class="row"><span>${esc(c.name)}${c.role ? ' · ' + esc(c.role) : ''}</span><span class="pre">${esc(c.note || '')}</span></div>`).join('') || '<p class="hint">No contacts yet.</p>'}
-      <p class="mono" style="margin-top:16px">NOTEBOOK</p>
-      <p class="pre">${esc(a.notebook || 'Empty.')}</p>`;
+      <p class="mono" style="margin-top:16px">NOTES</p>
+      ${(a.notes || []).map(n => `<div class="row"><span>${esc(n.title || 'Untitled')}</span><span class="pre">${esc(n.body || '')}</span></div>`).join('') || '<p class="hint">No notes yet.</p>'}`;
   } else if (tab === 'messages') {
     body.innerHTML = `
       <form id="msg-form" class="grid" style="grid-template-columns:1fr">
@@ -344,7 +344,7 @@ function renderTab() {
       <p class="mono">DM ONLY · NEVER SHOWN TO THE PLAYER</p>
       <label>Secret agenda<textarea id="sec-agenda">${esc(s.agenda || '')}</textarea></label>
       <label style="margin-top:10px">Hidden facts (implants, Registrar flags, who they report to)<textarea id="sec-hidden">${esc(s.hidden || '')}</textarea></label>
-      <div class="row" style="margin-top:12px"><button class="btn" type="submit">SAVE SECRETS</button><span class="msg" id="sec-msg"></span></div>
+      <div class="row" style="margin-top:12px"><button class="btn" type="submit">SAVE SECRETS</button><button class="danger" type="button" data-delsec>DELETE SECRETS</button><span class="msg" id="sec-msg"></span></div>
     </form>`;
   }
 }
@@ -356,7 +356,7 @@ function renderSecrets() {
   const ids = Object.keys(accounts).sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
   $('secret-list').innerHTML = ids.map(id => {
     const s = secrets[id] || {};
-    return `<div class="row"><span>${esc(nameOf(id))}</span><span class="pre">${esc(s.agenda || 'No secret agenda yet.')}</span><button class="quiet" type="button" data-opensec="${esc(id)}">OPEN</button></div>`;
+    return `<div class="row"><span>${esc(nameOf(id))}</span><span class="pre">${esc(s.agenda || 'No secret agenda yet.')}</span><button class="quiet" type="button" data-opensec="${esc(id)}">OPEN</button><button class="quiet" type="button" data-delsec-id="${esc(id)}">DELETE</button></div>`;
   }).join('') || '<p class="hint">No players yet.</p>';
 }
 
@@ -377,6 +377,12 @@ async function saveSecrets() {
     await setDoc(doc(db, 'secrets', sel), { agenda: $('sec-agenda').value.trim(), hidden: $('sec-hidden').value.trim() }, { merge: true });
     say('sec-msg', 'Saved ' + stamp() + '.');
   } catch (e) { say('sec-msg', explain(e)); }
+}
+async function deleteSecrets(id = sel) {
+  if (!id) return;
+  if (!window.confirm(`Delete the secret agenda and hidden facts of ${nameOf(id)}? This cannot be undone.`)) return;
+  try { await deleteDoc(doc(db, 'secrets', id)); say('sec-msg', 'Secrets deleted ' + stamp() + '.'); }
+  catch (e) { say('sec-msg', explain(e)); }
 }
 async function sendTo(id, from, text) {
   return addDoc(collection(db, 'accounts', id, 'messages'), { from, text, read: false, createdAt: serverTimestamp() });
@@ -472,6 +478,7 @@ $('plist').addEventListener('click', e => { const b = e.target.closest('[data-se
 document.querySelector('[data-sec="players"]').addEventListener('click', e => {
   const t = e.target.closest('[data-tab]'); if (t) { tab = t.dataset.tab; return renderTab(); }
   if (e.target.closest('[data-del]')) return deleteAccount();
+  if (e.target.closest('[data-delsec]')) return deleteSecrets();
   const dm = e.target.closest('[data-delmsg]'); if (dm) return deleteDoc(doc(db, 'accounts', sel, 'messages', dm.dataset.delmsg));
 });
 $('tab-body').addEventListener('submit', e => {
@@ -481,6 +488,7 @@ $('tab-body').addEventListener('submit', e => {
   if (e.target.id === 'msg-form') return sendMessage();
 });
 $('secret-list').addEventListener('click', e => {
+  const d = e.target.closest('[data-delsec-id]'); if (d) return deleteSecrets(d.dataset.delsecId);
   const b = e.target.closest('[data-opensec]'); if (!b) return;
   tab = 'secrets';
   document.querySelector('[data-nav="players"]').click();

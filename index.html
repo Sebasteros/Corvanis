@@ -196,6 +196,29 @@ dd{margin:0;text-align:right}
 @keyframes flick{0%,92%{opacity:1}93%{opacity:.25}94%{opacity:1}97%{opacity:.4}98%{opacity:1}}
 .ap-flicker{animation:flick 7s steps(1) infinite}
 @media (prefers-reduced-motion:reduce){.ap-flicker{animation:none}}
+/* notes app: a list on the left, the note on the right, saving as you type */
+.nt-wrap{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;min-height:420px}
+.nt-list{display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--line);padding-right:14px}
+.nt-list .ap-btn{margin:0 0 10px;align-self:flex-start}
+.nt-item{text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 4px;color:var(--muted);font:16px var(--f-body);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nt-item:hover{color:var(--text)}
+.nt-item.on{color:var(--holo)}
+.nt-title{width:100%;background:none;border:0;border-bottom:1px solid var(--line);color:var(--holo);font:700 22px var(--f-display);padding:6px 0;margin-bottom:12px;outline:none}
+.nt-body{width:100%;min-height:340px;background:none;border:0;color:var(--text);font:17px/1.6 var(--f-body);resize:vertical;outline:none;padding:0}
+.nt-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+@media (max-width:640px){.nt-wrap{grid-template-columns:1fr}.nt-list{border-right:0;border-bottom:1px solid var(--line);padding:0 0 10px}}
+
+/* newswire: a lead story, source labels, and a column of headlines */
+.nw{border:1px solid var(--line);background:var(--panel);padding:18px}
+.nw-mast{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);border-bottom:1px solid var(--holo-dim);padding-bottom:8px;margin-bottom:14px}
+.nw-lead{border-left:3px solid var(--holo);padding:4px 0 4px 14px;margin-bottom:6px}
+.nw-lead h2{font-family:var(--f-display);font-weight:500;font-size:22px;line-height:1.25;letter-spacing:.02em;color:var(--text);margin:6px 0 0}
+.nw-src{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--cyan);margin:0}
+.nw-list{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 22px}
+.nw-list li{border-top:1px solid var(--line);padding-top:10px}
+.nw-list p{margin:4px 0 0;font-size:16px;line-height:1.4;color:var(--text)}
+.news li{border-left:0;padding:9px 0;border-bottom:1px solid var(--line)}
+.news li:last-child{border-bottom:0}
 </style>
 </head>
 <body>
@@ -213,6 +236,7 @@ dd{margin:0;text-align:right}
     <button type="button" class="app-tab" data-app="messages" aria-current="false">MESSAGES<span class="app-badge" id="msg-badge" hidden>0</span></button>
     <button type="button" class="app-tab" data-app="jobs" aria-current="false">JOBS</button>
     <button type="button" class="app-tab" data-app="contacts" aria-current="false">CONTACTS</button>
+    <button type="button" class="app-tab" data-app="notes" aria-current="false">NOTES</button>
     <button type="button" class="app-tab" data-app="news" aria-current="false">NEWS</button>
   </nav>
 
@@ -752,7 +776,7 @@ async function hashPin(salt, pin) {
 }
 function watchAccount(id) {
   if (accountOff) accountOff();
-  accountOff = onSnapshot(doc(db, 'accounts', id), snap => { ACC = snap.exists() ? snap.data() : null; window.corvanisAccount(ACC, id); renderApp(); },
+  accountOff = onSnapshot(doc(db, 'accounts', id), snap => { ACC = snap.exists() ? snap.data() : null; window.corvanisAccount(ACC, id); if (!noteEditing()) NOTES = (ACC && ACC.notes) || []; renderApp(); },
     err => console.warn('Account unavailable:', err.code));
 }
 async function beat(id, name) {
@@ -796,6 +820,7 @@ showJoin(true);
 
 /* ---------- terminal apps: Neural-Tag, Wallet, Messages, Jobs, Contacts, News ---------- */
 let ME_ID = null, ME_NAME = '', ACC = null, MSGS = [], WORLD = {}, APP = 'map', msgOff = null;
+let NOTES = [], NOTE_SEL = null, noteTimer = null;
 const H = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const NUM = n => Number(n || 0).toLocaleString('en-US');
 const ROW = (k, v) => `<div class="ap-row"><span>${H(k)}</span><span>${H(v)}</span></div>`;
@@ -815,9 +840,9 @@ function note(t) {
   n.textContent = t; n.hidden = false;
   clearTimeout(note.timer); note.timer = setTimeout(() => { n.hidden = true; }, 2600);
 }
-async function saveMine(patch) {
+async function saveMine(patch, quiet = false) {
   if (!ME_ID) return;
-  try { await setDoc(doc(db, 'accounts', ME_ID), patch, { merge: true }); note('Saved.'); }
+  try { await setDoc(doc(db, 'accounts', ME_ID), patch, { merge: true }); if (!quiet) note('Saved.'); }
   catch (err) { note('Could not save: ' + (err.code || err.message)); }
 }
 async function markRead(id) {
@@ -834,9 +859,12 @@ function setApp(k) {
   renderApp();
   window.scrollTo(0, 0);
 }
-function renderApp() {
+/* while someone is typing in a note, don't redraw the page under them */
+function noteEditing() { return APP === 'notes' && appView.contains(document.activeElement); }
+function renderApp(force = false) {
   if (APP === 'map') return;
-  document.getElementById('app-view').innerHTML = appHTML();
+  if (!force && noteEditing()) return;
+  appView.innerHTML = appHTML();
 }
 function appHTML() {
   if (!ME_ID) return '<section class="ap-card"><p class="ap-mono">Enter your character name first.</p></section>';
@@ -847,6 +875,7 @@ function appHTML() {
     case 'messages': return messagesApp();
     case 'jobs': return jobsApp();
     case 'contacts': return contactsApp(a);
+    case 'notes': return notesApp();
     case 'news': return newsApp();
   }
   return '';
@@ -903,14 +932,41 @@ function contactsApp(a) {
     <section class="ap-card"><p class="ap-mono">ADD CONTACT</p>
       <form data-app-form="contact-add"><input class="ap-field" name="name" placeholder="Name" required><input class="ap-field" name="role" placeholder="Who are they to you?"><textarea class="ap-field" name="note" rows="2" placeholder="Private note"></textarea><button class="ap-btn" type="submit">ADD CONTACT</button></form>
     </section>
-    <section class="ap-card"><p class="ap-mono">NOTEBOOK</p>
-      <form data-app-form="notebook"><textarea class="ap-field" name="notebook" rows="6" placeholder="Anything you want to remember">${H(a.notebook || '')}</textarea><button class="ap-btn" type="submit">SAVE NOTEBOOK</button></form>
-    </section>
   </div>`;
 }
 function newsApp() {
-  const news = WORLD.news || [];
-  return `<div class="ap-grid">${news.map(n => `<section class="ap-card"><p>${H(n)}</p></section>`).join('') || '<section class="ap-card"><p>Nothing on the wire.</p></section>'}</div>`;
+  const items = WORLD.news || [];
+  if (!items.length) return '<section class="ap-card"><p>Nothing on the wire.</p></section>';
+  const parse = s => { const m = /^([^:]{2,20}):\s*(.*)$/.exec(s); return m ? { src: m[1], text: m[2] } : { src: 'WIRE', text: s }; };
+  const [lead, ...rest] = items.map(parse);
+  return `<section class="nw">
+    <header class="nw-mast"><span>HELIX MEDIA</span><span>THE WIRE · VANTARA</span></header>
+    <article class="nw-lead"><p class="nw-src">${H(lead.src)}</p><h2>${H(lead.text)}</h2></article>
+    <ol class="nw-list">${rest.map(p => `<li><span class="nw-src">${H(p.src)}</span><p>${H(p.text)}</p></li>`).join('')}</ol>
+  </section>`;
+}
+function notesApp() {
+  if (!NOTES.find(n => n.id === NOTE_SEL)) NOTE_SEL = NOTES[0] ? NOTES[0].id : null;
+  const cur = NOTES.find(n => n.id === NOTE_SEL);
+  return `<div class="nt-wrap">
+    <aside class="nt-list">
+      <button class="ap-btn" type="button" data-note-new>+ NEW NOTE</button>
+      ${NOTES.map(n => `<button type="button" class="nt-item${n.id === NOTE_SEL ? ' on' : ''}" data-note="${H(n.id)}">${H(n.title || 'Untitled')}</button>`).join('') || '<p class="ap-mono">No notes yet.</p>'}
+    </aside>
+    <section class="nt-editor">${cur ? `
+      <input class="nt-title" id="nt-title" value="${H(cur.title || '')}" placeholder="Title" autocomplete="off">
+      <textarea class="nt-body" id="nt-body" placeholder="Start writing…">${H(cur.body || '')}</textarea>
+      <div class="nt-foot"><span class="ap-mono" id="nt-status">Saved</span><button class="ap-btn quiet" type="button" data-note-del>DELETE NOTE</button></div>`
+      : '<p class="ap-mono">Pick a note or start a new one.</p>'}</section>
+  </div>`;
+}
+function queueNoteSave() {
+  const s = document.getElementById('nt-status'); if (s) s.textContent = 'Saving…';
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(async () => {
+    await saveMine({ notes: NOTES }, true);
+    const t = document.getElementById('nt-status'); if (t) t.textContent = 'Saved';
+  }, 700);
 }
 document.getElementById('appbar').addEventListener('click', e => { const b = e.target.closest('[data-app]'); if (b) setApp(b.dataset.app); });
 const appView = document.getElementById('app-view');
@@ -937,6 +993,35 @@ appView.addEventListener('submit', e => {
     list[i] = { ...list[i], note: String(data.get('note') || '').slice(0, 400) };
     return saveMine({ contacts: list });
   }
+});
+appView.addEventListener('click', e => {
+  if (e.target.closest('[data-note-new]')) {
+    const n = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: '', body: '', updated: Date.now() };
+    NOTES = [n, ...NOTES]; NOTE_SEL = n.id;
+    renderApp(true); saveMine({ notes: NOTES }, true);
+    return;
+  }
+  const pick = e.target.closest('[data-note]');
+  if (pick) { NOTE_SEL = pick.dataset.note; return renderApp(true); }
+  if (e.target.closest('[data-note-del]')) {
+    if (!window.confirm('Delete this note?')) return;
+    NOTES = NOTES.filter(n => n.id !== NOTE_SEL);
+    NOTE_SEL = NOTES[0] ? NOTES[0].id : null;
+    renderApp(true); saveMine({ notes: NOTES }, true);
+  }
+});
+appView.addEventListener('input', e => {
+  if (e.target.id !== 'nt-title' && e.target.id !== 'nt-body') return;
+  const n = NOTES.find(x => x.id === NOTE_SEL); if (!n) return;
+  if (e.target.id === 'nt-title') n.title = e.target.value.slice(0, 80);
+  else n.body = e.target.value.slice(0, 20000);
+  n.updated = Date.now();
+  const btn = appView.querySelector(`[data-note="${CSS.escape(n.id)}"]`);
+  if (btn) btn.textContent = n.title || 'Untitled';
+  queueNoteSave();
+});
+appView.addEventListener('focusout', () => {
+  setTimeout(() => { if (APP === 'notes' && !appView.contains(document.activeElement)) renderApp(true); }, 200);
 });
 </script>
 
