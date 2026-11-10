@@ -231,9 +231,9 @@ dd{margin:0;text-align:right}
 @media (prefers-reduced-motion: reduce){.nw-tick .run,.nw-live::before{animation:none}.nw-tick .run{padding-left:0}}
 .news li{border-left:0;padding:9px 0;border-bottom:1px solid var(--line)}
 .news li:last-child{border-bottom:0}
-body.dm .bar,body.dm .appbar,body.dm .crumbs,body.dm .tickrow,body.dm .index,body.dm .foot,body.dm #app-view,body.dm .boot,body.dm .join,body.dm .main > aside{display:none !important}
+body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.dm .join{display:none !important}
 body.dm{background:#020a07}
-.hid-ov{fill:url(#hatch);stroke:#666;stroke-dasharray:5 5;pointer-events:none}
+.hid-ov{fill:url(#hatch);pointer-events:none}
 .loc--hid{opacity:.35}
 </style>
 </head>
@@ -400,7 +400,7 @@ let view = 'world', items = [], selected = null;
 /* ---------- views ---------- */
 function renderWorld(){
   const hidW = HIDDEN.world || [];
-  const ORD = DM ? ORDER : ORDER.filter(n => !hidW.includes(n));
+  const ORD = ORDER;
   svg.setAttribute('viewBox', WORLD_VB.join(' '));
   $('stage-title').textContent = 'CORVANIS · PLANETARY INDEX';
   let h = DEFS + '<g class="glow">';
@@ -408,8 +408,8 @@ function renderWorld(){
   h += `<path class="st st--void" d="${v.d}" data-id="Neutral" tabindex="0" role="button" aria-label="Unincorporated territory"/>`;
   for (const n of ORD){
     const s = STATES[n], open = NATIONS[n].open;
-    h += `<path class="st${open?' st--open pulse':''}" d="${s.d}" data-id="${n}" tabindex="0" role="button" aria-label="${n}"/>`;
-    if (DM && hidW.includes(n)) h += `<path class="hid-ov" d="${s.d}"/>`;
+    h += `<path class="st${open?' st--open pulse':''}" d="${s.d}"${hidW.includes(n) && !DM ? '' : ` data-id="${n}" tabindex="0" role="button" aria-label="${n}"`}/>`;
+    if (hidW.includes(n)) h += `<path class="hid-ov" d="${s.d}"/>`;
   }
   h += '</g>';
   for (const n of ORD){
@@ -426,7 +426,7 @@ function renderWorld(){
     h += dots(pts); }
   svg.innerHTML = h;
   items = [{ id:'Neutral', name:'Unincorporated', code:'--', tag:'NO REGISTERED AUTHORITY', status:'nodata', body:['Unclaimed territory. No Registrar coverage.'], chip:false }];
-  items = ORD.map(n => {
+  items = ORD.filter(n => DM || !hidW.includes(n)).map(n => {
     const N = NATIONS[n];
     return { id:n, name:n, code:n.slice(0,3).toUpperCase(), tag:N.form.toUpperCase(), status:N.open?'open':'nodata',
       body:[N.body], sys:N.open?null:'City grid not indexed at this terminal.',
@@ -441,7 +441,6 @@ function renderVantara(){
   $('stage-title').textContent = 'VANTARA · VERTICAL SECTION';
   const R = rng(7741), cx = W/2, m = narrow?16:40;
   const hidV = HIDDEN.vantara || [];
-  const showAll = DM;
   const y = { apex: H*.085, sTop: H*.2, sDeck: H*.42, gDeck: H*.66, zDeck: H*.93 };
   const bands = [
     { id:'spires', top:y.sTop, deck:y.sDeck, bw:[16,30], gap:[26,54], bh:[.55,.98] },
@@ -451,11 +450,13 @@ function renderVantara(){
   let h = DEFS;
   // apex
   const aSt = LEVELS.apex;
-  if (showAll || !hidV.includes('apex')) h += `<g class="band${aSt==='locked'?' locked':''}" data-id="apex" tabindex="0" role="button" aria-label="Apex, orbital station"><rect class="hit" x="${m}" y="${H*.015}" width="${W-2*m}" height="${y.sTop-H*.03}"/><g class="bld glow"><ellipse class="ln ln--b" cx="${cx}" cy="${y.apex}" rx="${narrow?70:96}" ry="13"/><ellipse class="ln" cx="${cx}" cy="${y.apex}" rx="${narrow?44:60}" ry="7"/><rect class="ln ln--b" x="${cx-12}" y="${y.apex-18}" width="24" height="36" fill="#020a07"/></g></g>`;
+  h += `<g class="band${aSt==='locked'?' locked':''}"${hidV.includes('apex') && !DM ? '' : ' data-id="apex" tabindex="0" role="button" aria-label="Apex, orbital station"'}><rect class="hit" x="${m}" y="${H*.015}" width="${W-2*m}" height="${y.sTop-H*.03}"/><g class="bld glow"><ellipse class="ln ln--b" cx="${cx}" cy="${y.apex}" rx="${narrow?70:96}" ry="13"/><ellipse class="ln" cx="${cx}" cy="${y.apex}" rx="${narrow?44:60}" ry="7"/><rect class="ln ln--b" x="${cx-12}" y="${y.apex-18}" width="24" height="36" fill="#020a07"/></g></g>`;
+  if (hidV.includes('apex')) h += `<rect x="${m}" y="${H*.015}" width="${W-2*m}" height="${y.sTop-H*.03}" fill="url(#hatch)" pointer-events="none"/>`;
   // tether
   h += `<g pointer-events="none"><line x1="${cx}" y1="${y.apex+18}" x2="${cx}" y2="${y.zDeck}" stroke="#6fe9ff" stroke-width="2" opacity=".85"/><line x1="${cx}" y1="${y.apex+18}" x2="${cx}" y2="${y.zDeck}" stroke="#6fe9ff" stroke-width="8" opacity=".12"/><rect class="lift" style="--travel:-${(y.sDeck-y.apex-40).toFixed(0)}px" x="${cx-5}" y="${y.sDeck-22}" width="10" height="16" fill="#6fe9ff"/></g>`;
-  for (const b of bands.filter(b => showAll || !hidV.includes(b.id))){
+  for (const b of bands){
     const st = LEVELS[b.id], info = LEVEL_INFO[b.id], bandH = b.deck-b.top;
+    const hb = hidV.includes(b.id) && !DM;
     let g = '';
     let x = m+4;
     while (x < W-m-10){
@@ -470,13 +471,13 @@ function renderVantara(){
       x += w + b.gap[0]+R()*(b.gap[1]-b.gap[0]);
     }
     if (b.id==='subz'){ for (let k=0;k<(narrow?7:12);k++){ const x1 = m+R()*(W-2*m-120), yy = b.top+bandH*(.3+R()*.5); g += `<path class="ln ln--f" d="M${x1.toFixed(0)},${yy.toFixed(0)} q${(40+R()*40).toFixed(0)},${(8+R()*14).toFixed(0)} ${(90+R()*60).toFixed(0)},${(-6+R()*12).toFixed(0)}"/>`; } }
-    let over = (DM && hidV.includes(b.id)) ? `<rect x="${m}" y="${b.top+4}" width="${W-2*m}" height="${bandH-8}" fill="url(#hatch)" pointer-events="none"/><text class="tiny" x="${cx}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle" style="paint-order:stroke;stroke:#020a07;stroke-width:6px">HIDDEN FROM PLAYERS · CLICK TO SHOW</text>` : '';
+    let over = hidV.includes(b.id) ? `<rect x="${m}" y="${b.top+4}" width="${W-2*m}" height="${bandH-8}" fill="url(#hatch)" pointer-events="none"/>` : '';
     if (st==='locked') over = `<rect x="${m}" y="${b.top+4}" width="${W-2*m}" height="${bandH-8}" fill="url(#hatch)" pointer-events="none"/><text class="tiny amber" x="${cx}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle" style="paint-order:stroke;stroke:#020a07;stroke-width:6px">ACCESS DENIED · ${LOCK[b.id].tag}</text>`;
     if (st==='partial') over = `<rect x="${cx+30}" y="${b.top+4}" width="${W-m-cx-30}" height="${bandH-8}" fill="#020a07" opacity=".8" pointer-events="none"/><rect x="${cx+30}" y="${b.top+4}" width="${W-m-cx-30}" height="${bandH-8}" fill="url(#static)" pointer-events="none"/><text class="tiny" x="${cx+30+(W-m-cx-30)/2}" y="${b.top+bandH/2+5}" font-size="${narrow?16:15}" text-anchor="middle">NO DATA</text>`;
     const col = st==='open'?'cyan':st==='locked'?'amber':'holo';
-    h += `<g class="band${st==='locked'?' locked':''}" data-id="${b.id}" tabindex="0" role="button" aria-label="${esc(info.name)}"><rect class="hit" x="${m}" y="${b.top+2}" width="${W-2*m}" height="${bandH-2}"/><g class="bld glow">${g}</g>${over}<line class="ln ln--b" x1="${m}" y1="${b.deck}" x2="${W-m}" y2="${b.deck}"/><text class="lbl ${col}" style="text-anchor:start" x="${m+8}" y="${b.top+26}" font-size="${narrow?17:20}">${info.code} · ${esc(info.name.toUpperCase())}</text></g>`;
+    h += `<g class="band${st==='locked'?' locked':''}" ${hb ? '' : `data-id="${b.id}" tabindex="0" role="button" aria-label="${esc(info.name)}"`}><rect class="hit" x="${m}" y="${b.top+2}" width="${W-2*m}" height="${bandH-2}"/><g class="bld glow">${g}</g>${over}<line class="ln ln--b" x1="${m}" y1="${b.deck}" x2="${W-m}" y2="${b.deck}"/><text class="lbl ${col}" style="text-anchor:start" x="${m+8}" y="${b.top+26}" font-size="${narrow?17:20}">${info.code} · ${esc(info.name.toUpperCase())}</text></g>`;
   }
-  if (showAll || !hidV.includes('apex')) h += `<text class="lbl ${LEVELS.apex==='locked'?'amber':'cyan'}" style="text-anchor:start" x="${m+8}" y="${y.apex+6}" font-size="${narrow?17:20}" pointer-events="none">ORBIT · APEX</text>`;
+  h += `<text class="lbl ${LEVELS.apex==='locked'?'amber':'cyan'}" style="text-anchor:start" x="${m+8}" y="${y.apex+6}" font-size="${narrow?17:20}" pointer-events="none">ORBIT · APEX</text>`;
   h += `<text class="tiny cyan" x="${cx+12}" y="${y.sTop-8}" font-size="12" pointer-events="none">THE TETHER</text>`;
   h += `<text class="tiny cyan" x="${cx+12}" y="${y.sDeck-28}" font-size="12" pointer-events="none">TETHER GATE</text>`;
   { const R2 = rng(41209), pts = [];
@@ -484,7 +485,7 @@ function renderVantara(){
     for (let i=0;i<(narrow?16:28);i++) pts.push([m+8+R2()*(cx-m-40), y.sDeck+30+R2()*(y.gDeck-y.sDeck-36), 2.4]);
     h += dots(pts); }
   svg.innerHTML = h;
-  items = ['apex','spires','grid','subz'].filter(id => showAll || !hidV.includes(id)).map(id => {
+  items = ['apex','spires','grid','subz'].filter(id => DM || !hidV.includes(id)).map(id => {
     const I = LEVEL_INFO[id], st = LEVELS[id];
     return { id, name:I.name, code:I.code, tag:I.tag, status:st, body:[I.body],
       sys: st==='locked'?LOCK[id].sys: st==='partial'?'Remaining sectors not indexed at this terminal.':null,
@@ -599,7 +600,6 @@ function zoomTo(id, done){
 svg.addEventListener('click', e => {
   const t = e.target.closest('[data-id]'); if (!t) return;
   const id = t.dataset.id;
-  if (DM) { if (id !== 'terminal' && id !== 'Neutral') parent.postMessage({ type: 'corvanis-toggle', map: view, id }, location.origin); return; }
   if (selected===id){ const it = items.find(i=>i.id===id); if (it && it.go) return it.go.fn(); }
   select(id);
 });

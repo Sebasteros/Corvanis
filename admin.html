@@ -163,14 +163,15 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <section data-sec="maps" hidden>
       <div class="top"><h2>MAPS</h2></div>
       <div class="card">
-        <p class="mono">THIS IS THE PLAYER MAP. CLICK A SECTION TO HIDE IT. HIDDEN SECTIONS ARE HATCHED. CLICK AGAIN TO SHOW IT. SAVES INSTANTLY.</p>
+        <p class="mono">HIDDEN SECTIONS SHOW HATCHED ON THE PLAYER MAP AND CAN'T BE CLICKED. USE HIDE / SHOW. SAVES INSTANTLY.</p>
         <div class="row map-tabs">
           <button class="quiet" type="button" data-map="world" aria-pressed="true">WORLD</button>
           <button class="quiet" type="button" data-map="vantara" aria-pressed="false">VANTARA</button>
           <button class="quiet" type="button" data-map="subz" aria-pressed="false">SUBZ</button>
           <span class="msg" id="map-msg"></span>
         </div>
-        <iframe id="map-frame" title="Player map, DM view" src="index.html?dm=1#world" style="width:100%;height:720px;border:1px solid var(--line);background:#020a07;margin-top:12px"></iframe>
+        <div id="map-ctl" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:12px"></div>
+        <iframe id="map-frame" title="Player map, DM view" src="index.html?dm=1#world" style="width:100%;height:78vh;min-height:520px;border:1px solid var(--line);background:#020a07;margin-top:12px"></iframe>
       </div>
     </section>
     <section data-sec="jobs" hidden>
@@ -208,6 +209,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
   </main>
 </div>
 
+<script src="map-data.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, addDoc, collection, query, orderBy, onSnapshot, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -385,27 +387,36 @@ function renderSecrets() {
   }).join('') || '<p class="hint">No players yet.</p>';
 }
 
-/* ---------- maps: the player's own map, in a frame; clicks come back here to be saved ---------- */
+/* ---------- maps: the player's own map in a frame, with a HIDE / SHOW button per section ---------- */
+function mapItems() {
+  if (MAP === 'world') return ORDER.map(n => ({ id: n, name: n }));
+  if (MAP === 'vantara') return [
+    { id: 'apex', name: 'Apex · Orbit' }, { id: 'spires', name: 'L2 · The Spires' },
+    { id: 'grid', name: 'L1 · The Grid' }, { id: 'subz', name: 'L0 · SubZ' }];
+  return PLACES.filter(p => p.id !== 'terminal').map(p => ({ id: p.id, name: p.name }));
+}
 function renderMap() {
   document.querySelectorAll('[data-map]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.map === MAP)));
   const want = `index.html?dm=1#${MAP}`, f = $('map-frame');
   if (f.getAttribute('src') !== want) f.setAttribute('src', want);
+  const hid = HIDDEN[MAP] || [];
+  $('map-ctl').innerHTML = mapItems().map(it => {
+    const off = hid.includes(it.id);
+    return `<div class="row" style="justify-content:space-between;border:1px solid var(--line);padding:8px 10px"><span>${esc(it.name)}</span><span class="mono" style="color:${off ? '#777' : '#3dffa2'}">${off ? 'HIDDEN' : 'VISIBLE'}</span><button class="${off ? 'btn' : 'quiet'}" type="button" data-hide="${esc(it.id)}">${off ? 'SHOW' : 'HIDE'}</button></div>`;
+  }).join('');
 }
-async function toggleMap(map, id) {
-  if (!map || !id) return;
-  const list = (HIDDEN[map] || []).slice();
+async function toggleMap(id) {
+  const list = (HIDDEN[MAP] || []).slice();
   const i = list.indexOf(id);
   if (i >= 0) list.splice(i, 1); else list.push(id);
-  HIDDEN = { ...HIDDEN, [map]: list };
+  HIDDEN = { ...HIDDEN, [MAP]: list };
+  renderMap();
   try { await setDoc(stateRef, { hidden: HIDDEN }, { merge: true }); say('map-msg', 'Saved ' + stamp() + '. Players see it now.'); }
   catch (e) { say('map-msg', explain(e)); }
 }
-window.addEventListener('message', e => {
-  if (e.origin !== location.origin || !e.data || e.data.type !== 'corvanis-toggle') return;
-  toggleMap(String(e.data.map), String(e.data.id));
-});
 document.querySelector('[data-sec="maps"]').addEventListener('click', e => {
-  const t = e.target.closest('[data-map]'); if (t) { MAP = t.dataset.map; renderMap(); }
+  const t = e.target.closest('[data-map]'); if (t) { MAP = t.dataset.map; return renderMap(); }
+  const h = e.target.closest('[data-hide]'); if (h) toggleMap(h.dataset.hide);
 });
 
 /* ---------- actions ---------- */
