@@ -77,6 +77,34 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .amap-item.off text{fill:#777}
 .amap-item:hover path,.amap-item:hover rect{fill:rgba(61,255,162,.22)}
 .map-tabs button[aria-pressed="true"]{border-color:#3dffa2;color:#3dffa2}
+/* newswire: a wire desk with a ticker, a lead story and a grid of headlines */
+.nw{border:1px solid var(--line);background:var(--glass)}
+.nw-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--holo-dim);font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--muted)}
+.nw-live{color:var(--holo);display:inline-flex;align-items:center;gap:7px}
+.nw-live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--holo);box-shadow:0 0 8px var(--holo);animation:nwblink 1.6s ease-in-out infinite}
+@keyframes nwblink{50%{opacity:.25}}
+.nw-tick{overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--line);padding:8px 0;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--cyan);background:rgba(111,233,255,.04)}
+.nw-tick .run{display:inline-block;padding-left:100%;animation:nwscroll 60s linear infinite}
+@keyframes nwscroll{to{transform:translateX(-100%)}}
+.nw-lead{padding:22px 20px 20px;border-bottom:1px solid var(--line)}
+.nw-tag{display:inline-block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;padding:3px 8px}
+.nw-lead .nw-tag{background:var(--holo);color:#020a07}
+.nw-lead h2{font-family:var(--f-display);font-weight:500;font-size:clamp(20px,3vw,28px);line-height:1.25;letter-spacing:.02em;color:var(--text);margin:14px 0 0}
+.nw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.nw-card{padding:16px 20px 18px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.nw-card:hover{background:rgba(61,255,162,.05)}
+.nw-meta{display:flex;justify-content:space-between;align-items:center}
+.nw-card .nw-tag{color:var(--cyan);border:1px solid var(--cyan)}
+.nw-no{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.12em}
+.nw-card h3{font-family:var(--f-body);font-weight:500;font-size:17px;line-height:1.4;color:var(--text);margin:12px 0 0}
+@media (prefers-reduced-motion: reduce){.nw-tick .run,.nw-live::before{animation:none}.nw-tick .run{padding-left:0}}
+.mapframe{width:100%;height:calc(100vh - 200px);min-height:560px;border:1px solid var(--line);background:#020a07;display:block;margin-top:12px;border-radius:12px}
+.worldbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.worldbar label{flex-direction:row;align-items:center;gap:8px}
+.worldbar input{width:110px}
+.newsedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}
+.newsedit textarea{min-height:420px;font-size:16px;line-height:1.5}
+@media (max-width:900px){.newsedit{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -94,9 +122,9 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <div class="brand"><h1>CORVANIS</h1><small>DM CONSOLE</small></div>
     <button class="nav" type="button" data-nav="players" aria-current="true">PLAYERS</button>
     <button class="nav" type="button" data-nav="world" aria-current="false">WORLD</button>
+    <button class="nav" type="button" data-nav="news" aria-current="false">NEWS</button>
     <button class="nav" type="button" data-nav="jobs" aria-current="false">JOB BOARD</button>
     <button class="nav" type="button" data-nav="messages" aria-current="false">BROADCAST</button>
-    <button class="nav" type="button" data-nav="maps" aria-current="false">MAPS</button>
     <button class="nav" type="button" data-nav="secrets" aria-current="false">SECRETS</button>
     <div class="foot">
       <button class="quiet" type="button" id="backup">DOWNLOAD BACKUP</button>
@@ -129,47 +157,27 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <!-- WORLD -->
     <section data-sec="world" hidden>
       <div class="top"><h2>WORLD</h2></div>
-      <div class="card">
-        <p class="mono">SESSION</p>
-        <div class="grid">
-          <label>Cycle <input id="cycle" type="number" min="1" step="1"></label>
-        </div>
-        <div class="row" style="margin-top:12px">
-          <button type="button" id="advance">ADVANCE CYCLE AND ADD INTEREST TO EVERY ACCOUNT</button>
-          <button type="button" class="danger" id="glitch">FIRE BIG GLITCH FOR EVERYONE</button>
-        </div>
-        <p class="hint">Advancing adds one cycle of interest to every account, moves each next visit forward, and saves. The big glitch flickers every open phone and map.</p>
-      </div>
-      <div class="card">
-        <p class="mono">CITY LEVELS</p>
-        <div class="grid">
-          <label>Apex <select id="lv-apex"></select></label>
-          <label>The Spires <select id="lv-spires"></select></label>
-          <label>The Grid <select id="lv-grid"></select></label>
-          <label>SubZ <select id="lv-subz"></select></label>
-        </div>
-      </div>
-      <div class="card">
-        <p class="mono">NEWSWIRE (ONE HEADLINE PER LINE)</p>
-        <textarea id="news"></textarea>
-      </div>
-      <div class="bar">
-        <button type="button" id="save-world">SAVE WORLD</button>
+      <div class="card worldbar">
+        <label>CYCLE <input id="cycle" type="number" min="1" step="1"></label>
+        <button class="quiet" type="button" id="cycle-set">SET CYCLE</button>
+        <button class="btn" type="button" id="cycle-next">ADVANCE CYCLE AND ADD INTEREST</button>
+        <button class="danger" type="button" id="glitch">FIRE BIG GLITCH</button>
         <span class="msg" id="world-msg"></span>
       </div>
+      <iframe id="map-frame" class="mapframe" title="World map" src="index.html?dm=1"></iframe>
     </section>
-
-    <!-- JOBS -->
-    <section data-sec="maps" hidden>
-      <div class="top"><h2>MAPS</h2></div>
-      <div class="card">
-        <p class="mono">OPENS THE PLAYER MAP ITSELF. WHILE YOU'RE SIGNED IN TO THIS CONSOLE IN THIS BROWSER, A DM CONTROLS BAR APPEARS ABOVE THE MAP WITH HIDE / SHOW BUTTONS.</p>
-        <div class="row map-tabs">
-          <button class="quiet" type="button" data-map="world" aria-pressed="true">WORLD</button>
-          <button class="quiet" type="button" data-map="vantara" aria-pressed="false">VANTARA</button>
-          <button class="quiet" type="button" data-map="subz" aria-pressed="false">SUBZ</button>
+    <section data-sec="news" hidden>
+      <div class="top"><h2>NEWSWIRE</h2></div>
+      <div class="newsedit">
+        <div class="card">
+          <p class="mono">ONE HEADLINE PER LINE. START A LINE WITH A SOURCE AND A COLON, LIKE "HELIX: TEXT".</p>
+          <textarea id="news" rows="20"></textarea>
+          <div class="row"><button class="btn" type="button" id="save-news">SAVE NEWSWIRE</button><span class="msg" id="news-msg"></span></div>
         </div>
-        <p style="margin-top:14px"><a class="btn" id="map-open" href="index.html?dm=1#world" target="_blank" rel="noopener">OPEN MAP WITH DM CONTROLS</a></p>
+        <div class="card">
+          <p class="mono">PREVIEW · AS PLAYERS SEE IT</p>
+          <div id="news-preview"></div>
+        </div>
       </div>
     </section>
     <section data-sec="jobs" hidden>
@@ -310,7 +318,7 @@ const explain = e => e && e.code === 'permission-denied'
 const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n.textContent = t; };
 
 /* ---------- live data ---------- */
-let HIDDEN = {}, MAP = 'world';
+let HIDDEN = {};
 let accounts = {}, players = {}, secrets = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
 const isOnline = id => !!players[id] && Date.now() - players[id].seen < ONLINE_MS;
 const nameOf = id => (accounts[id] && accounts[id].holder) || id;
@@ -384,15 +392,6 @@ function renderSecrets() {
   }).join('') || '<p class="hint">No players yet.</p>';
 }
 
-/* ---------- maps: opens the player's own map page (with the DM bar) ---------- */
-function renderMap() {
-  document.querySelectorAll('[data-map]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.map === MAP)));
-  $('map-open').href = `index.html?dm=1#${MAP}`;
-}
-document.querySelector('[data-sec="maps"]').addEventListener('click', e => {
-  const t = e.target.closest('[data-map]'); if (t) { MAP = t.dataset.map; renderMap(); }
-});
-
 /* ---------- actions ---------- */
 async function saveAccount() {
   if (!sel) return;
@@ -463,47 +462,44 @@ async function broadcast(e) {
 }
 
 /* ---------- world and jobs ---------- */
-function fillWorld(s) {
-  s = Object.assign({}, STATE_DEFAULTS, s);
-  const lv = Object.assign({}, STATE_DEFAULTS.levels, s.levels);
-  $('cycle').value = s.cycle;
-  for (const k of ['apex', 'spires', 'grid', 'subz']) {
-    $('lv-' + k).innerHTML = ['open', 'partial', 'locked'].map(v => `<option value="${v}">${v === 'locked' ? 'locked' : v}</option>`).join('');
-    $('lv-' + k).value = lv[k];
-  }
-  $('news').value = (s.news || []).join('\n');
-  fillJobs(s.jobs || []);
+function loadState(s) {
+  STATE = s; HIDDEN = s.hidden || {};
+  const d = Object.assign({}, STATE_DEFAULTS, s);
+  $('cycle').value = d.cycle;
+  $('news').value = (d.news || []).join('\n');
+  paintNews();
+  fillJobs(d.jobs || []);
 }
-function jobRow(j = {}) {
-  const d = document.createElement('div'); d.className = 'job';
-  const field = (k, ph) => { const i = document.createElement('input'); i.placeholder = ph; i.value = j[k] || ''; i.dataset.k = k; i.setAttribute('aria-label', ph); return i; };
-  const st = document.createElement('select'); st.dataset.k = 'status'; st.setAttribute('aria-label', 'Status');
-  for (const v of ['open', 'taken', 'done']) { const o = document.createElement('option'); o.value = v; o.textContent = v; st.appendChild(o); }
-  st.value = j.status || 'open';
-  const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'quiet'; rm.textContent = 'REMOVE'; rm.onclick = () => d.remove();
-  d.append(field('title', 'Title'), field('pay', 'Pay'), field('contact', 'Contact'), field('note', 'Note'), st, rm);
-  return d;
+function newsLines() { return $('news').value.split('\n').map(l => l.trim()).filter(Boolean); }
+function newsHTML(items, cycle) {
+  if (!items.length) return '<p class="mono">Nothing on the wire.</p>';
+  const parse = t => { const m = /^([^:]{2,20}):\s*(.*)$/.exec(t); const body = m ? m[2] : t; return { src: m ? m[1].toUpperCase() : 'WIRE', text: body.charAt(0).toUpperCase() + body.slice(1) }; };
+  const parsed = items.map(parse), [lead, ...rest] = parsed;
+  const ticker = parsed.map(p => `${esc(p.src)} ◆ ${esc(p.text)}`).join('&nbsp;&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;&nbsp;');
+  return `<section class="nw">
+    <header class="nw-bar"><span class="nw-live">LIVE</span><span>THE WIRE · VANTARA</span><span>CYCLE ${esc(cycle)}</span></header>
+    <div class="nw-tick"><div class="run">${ticker}</div></div>
+    <article class="nw-lead"><span class="nw-tag">${esc(lead.src)}</span><h2>${esc(lead.text)}</h2></article>
+    <div class="nw-grid">${rest.map((p, i) => `<article class="nw-card"><div class="nw-meta"><span class="nw-tag">${esc(p.src)}</span><span class="nw-no">${String(i + 2).padStart(2, '0')}</span></div><h3>${esc(p.text)}</h3></article>`).join('')}</div>
+  </section>`;
 }
-function fillJobs(list) { $('jobs').replaceChildren(...list.map(jobRow)); }
-function readWorld() {
-  return {
-    cycle: Math.max(1, Math.round(Number($('cycle').value) || 1)),
-    levels: { apex: $('lv-apex').value, spires: $('lv-spires').value, grid: $('lv-grid').value, subz: $('lv-subz').value },
-    news: $('news').value.split('\n').map(l => l.trim()).filter(Boolean)
-  };
-}
-function readJobs() {
-  return [...$('jobs').children].map(r => Object.fromEntries([...r.querySelectorAll('[data-k]')].map(i => [i.dataset.k, i.value.trim()]))).filter(j => j.title);
-}
-async function saveWorld() {
-  try { await setDoc(stateRef, readWorld(), { merge: true }); say('world-msg', 'Saved ' + stamp() + '. Players see it now.'); }
+function paintNews() { $('news-preview').innerHTML = newsHTML(newsLines(), $('cycle').value || 1); }
+$('news').addEventListener('input', paintNews);
+$('save-news').onclick = async () => {
+  try { await setDoc(stateRef, { news: newsLines() }, { merge: true }); say('news-msg', 'Saved ' + stamp() + '. Players see it now.'); }
+  catch (e) { say('news-msg', explain(e)); }
+};
+$('cycle-set').onclick = async () => {
+  const n = Math.max(1, Math.round(Number($('cycle').value) || 1));
+  try { await setDoc(stateRef, { cycle: n }, { merge: true }); $('cycle').value = n; paintNews(); say('world-msg', 'Cycle set to ' + n + '. ' + stamp()); }
   catch (e) { say('world-msg', explain(e)); }
-}
-async function saveJobs() {
-  try { await setDoc(stateRef, { jobs: readJobs() }, { merge: true }); say('jobs-msg', 'Saved ' + stamp() + '.'); }
-  catch (e) { say('jobs-msg', explain(e)); }
-}
-async function advanceCycle() {
+};
+$('glitch').onclick = async () => {
+  try { await setDoc(stateRef, { glitchAt: Date.now() }, { merge: true }); say('world-msg', 'Glitch fired. ' + stamp()); }
+  catch (e) { say('world-msg', explain(e)); }
+};
+$('cycle-next').onclick = async () => {
+  if (!window.confirm('Start the next cycle? This adds one cycle of interest to every account.')) return;
   const next = Math.max(1, Math.round(Number($('cycle').value) || 1)) + 1;
   const ids = Object.keys(accounts), batch = writeBatch(db);
   for (const id of ids) {
@@ -517,13 +513,27 @@ async function advanceCycle() {
   try {
     if (ids.length) await batch.commit();
     await setDoc(stateRef, { cycle: next }, { merge: true });
-    $('cycle').value = next;
+    $('cycle').value = next; paintNews();
     say('world-msg', `Cycle ${next} started. Interest added to ${ids.length} account(s). ${stamp()}`);
   } catch (e) { say('world-msg', explain(e)); }
+};
+function jobRow(j = {}) {
+  const d = document.createElement('div'); d.className = 'job';
+  const field = (k, ph) => { const i = document.createElement('input'); i.placeholder = ph; i.value = j[k] || ''; i.dataset.k = k; i.setAttribute('aria-label', ph); return i; };
+  const st = document.createElement('select'); st.dataset.k = 'status'; st.setAttribute('aria-label', 'Status');
+  for (const v of ['open', 'taken', 'done']) { const o = document.createElement('option'); o.value = v; o.textContent = v; st.appendChild(o); }
+  st.value = j.status || 'open';
+  const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'quiet'; rm.textContent = 'REMOVE'; rm.onclick = () => d.remove();
+  d.append(field('title', 'Title'), field('pay', 'Pay'), field('contact', 'Contact'), field('note', 'Note'), st, rm);
+  return d;
 }
-async function fireGlitch() {
-  try { await setDoc(stateRef, { glitchAt: Date.now() }, { merge: true }); say('world-msg', 'Glitch fired. ' + stamp()); }
-  catch (e) { say('world-msg', explain(e)); }
+function fillJobs(list) { $('jobs').replaceChildren(...list.map(jobRow)); }
+function readJobs() {
+  return [...$('jobs').children].map(r => Object.fromEntries([...r.querySelectorAll('[data-k]')].map(i => [i.dataset.k, i.value.trim()]))).filter(j => j.title);
+}
+async function saveJobs() {
+  try { await setDoc(stateRef, { jobs: readJobs() }, { merge: true }); say('jobs-msg', 'Saved ' + stamp() + '.'); }
+  catch (e) { say('jobs-msg', explain(e)); }
 }
 
 /* ---------- wiring ---------- */
@@ -532,7 +542,7 @@ document.querySelector('.side').addEventListener('click', e => {
   document.querySelectorAll('[data-nav]').forEach(n => n.setAttribute('aria-current', String(n === b)));
   document.querySelectorAll('[data-sec]').forEach(s => { s.hidden = s.dataset.sec !== b.dataset.nav; });
   if (b.dataset.nav === 'secrets') renderSecrets();
-  if (b.dataset.nav === 'maps') renderMap();
+  if (b.dataset.nav === 'news') paintNews();
 });
 $('plist').addEventListener('click', e => { const b = e.target.closest('[data-sel]'); if (b) selectPlayer(b.dataset.sel); });
 document.querySelector('[data-sec="players"]').addEventListener('click', e => {
@@ -554,9 +564,6 @@ $('secret-list').addEventListener('click', e => {
   document.querySelector('[data-nav="players"]').click();
   selectPlayer(b.dataset.opensec);
 });
-$('save-world').onclick = saveWorld;
-$('advance').onclick = advanceCycle;
-$('glitch').onclick = fireGlitch;
 $('addjob').onclick = () => $('jobs').appendChild(jobRow());
 $('save-jobs').onclick = saveJobs;
 $('bc-form').addEventListener('submit', broadcast);
@@ -596,9 +603,9 @@ onAuthStateChanged(auth, async user => {
   say('msg', 'Signed in as ' + user.email + '.');
   try {
     const snap = await getDoc(stateRef);
-    if (snap.exists()) { STATE = snap.data(); HIDDEN = STATE.hidden || {}; fillWorld(STATE); }
-    else { await setDoc(stateRef, STATE_DEFAULTS); fillWorld(STATE_DEFAULTS); }
-  } catch (e) { fillWorld(STATE_DEFAULTS); say('msg', explain(e)); }
+    if (snap.exists()) loadState(snap.data());
+    else { await setDoc(stateRef, STATE_DEFAULTS); loadState(STATE_DEFAULTS); }
+  } catch (e) { loadState(STATE_DEFAULTS); say('msg', explain(e)); }
 });
 </script>
 </body>

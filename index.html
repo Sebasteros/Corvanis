@@ -231,11 +231,12 @@ dd{margin:0;text-align:right}
 @media (prefers-reduced-motion: reduce){.nw-tick .run,.nw-live::before{animation:none}.nw-tick .run{padding-left:0}}
 .news li{border-left:0;padding:9px 0;border-bottom:1px solid var(--line)}
 .news li:last-child{border-bottom:0}
-body.dm .appbar,body.dm #app-view,body.dm .boot,body.dm .join{display:none !important}
-.dm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px;padding:8px 10px;border:1px solid var(--holo-dim);background:rgba(61,255,162,.05)}
-.dm-bar .dm-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);margin-right:8px}
-.dm-bar button{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;background:none;border:1px solid var(--holo);color:var(--holo);padding:6px 9px;cursor:pointer}
-.dm-bar button.off{border-color:#777;color:#aaa}
+body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.dm .join{display:none !important}
+[hidden]{display:none !important}
+.dm-menu{position:fixed;z-index:50;display:flex;flex-direction:column;min-width:230px;background:#041410;border:1px solid var(--holo);box-shadow:0 0 18px rgba(61,255,162,.25)}
+.dm-menu button{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--text);padding:9px 12px;cursor:pointer}
+.dm-menu button:hover{background:rgba(61,255,162,.12);color:var(--holo)}
+
 .hid-ov{fill:url(#hatch);pointer-events:none}
 .loc--hid{opacity:.35}
 </style>
@@ -271,7 +272,6 @@ body.dm .appbar,body.dm #app-view,body.dm .boot,body.dm .join{display:none !impo
         <div class="stage-title" id="stage-title"></div>
         <svg id="svg" viewBox="0 0 1470 709" role="group" aria-label="Holographic map"></svg>
       </div>
-      <div class="dm-bar" id="dm-bar" hidden></div>
       <div class="tickrow"><span id="ticker"></span></div>
       <div class="index" id="index" aria-label="Index of places on this map"></div>
       <section class="card">
@@ -329,6 +329,7 @@ body.dm .appbar,body.dm #app-view,body.dm .boot,body.dm .join{display:none !impo
   </footer>
 </div>
 
+<div class="dm-menu" id="dm-menu" hidden></div>
 <div class="boot" id="boot" hidden><pre id="boot-text"></pre></div>
 
 <div class="join" id="join" hidden>
@@ -582,7 +583,7 @@ function select(id){
   const g = $('file-go');
   if (it.go){ g.hidden = false; g.textContent = it.go.label; g.onclick = it.go.fn; } else { g.hidden = true; g.onclick = null; }
 }
-function render(){ ({ world:renderWorld, vantara:renderVantara, subz:renderSubz })[view](); if (window.paintDM) window.paintDM(); }
+function render(){ ({ world:renderWorld, vantara:renderVantara, subz:renderSubz })[view](); }
 function go(v){
   if (v==='subz' && LEVELS.subz!=='open') v = 'vantara';
   view = v; render();
@@ -729,7 +730,7 @@ window.corvanisAccount = (a, uid) => {
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, writeBatch, collection, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
@@ -749,32 +750,64 @@ onSnapshot(doc(db, 'state', 'main'), snap => {
   if (!first && d.glitchAt && d.glitchAt !== lastGlitch) window.corvanisGlitch();
   lastGlitch = d.glitchAt || 0; first = false;
 }, err => console.warn('Live state unavailable:', err.code));
-/* ---------- DM controls: on this same map, only when the DM is signed in on this site ---------- */
-const dmBar = document.getElementById('dm-bar');
-let DM_USER = null;
-function dmItems() {
-  if (view === 'world') return ORDER.map(n => ({ id: n, name: n }));
-  if (view === 'vantara') return [{ id: 'apex', name: 'Apex · Orbit' }, { id: 'spires', name: 'L2 · The Spires' }, { id: 'grid', name: 'L1 · The Grid' }, { id: 'subz', name: 'L0 · SubZ' }];
-  return PLACES.filter(p => p.id !== 'terminal').map(p => ({ id: p.id, name: p.name }));
+/* ---------- DM on the map: right-click (or press and hold) a location to hide it or set a city level.
+   Only on ?dm=1 when the DM is signed in on this site. Players never see this. ---------- */
+const dmMenu = document.getElementById('dm-menu');
+let DM_ON = false;
+const dmFail = err => alert('Could not save: ' + (err.code || err.message));
+function dmMenuAt(x, y, items) {
+  dmMenu._items = items;
+  dmMenu.innerHTML = items.map((it, i) => `<button type="button" data-i="${i}">${esc(it.label)}</button>`).join('');
+  dmMenu.hidden = false;
+  const w = dmMenu.offsetWidth || 240, h = dmMenu.offsetHeight || 200;
+  dmMenu.style.left = Math.max(8, Math.min(x, innerWidth - w - 8)) + 'px';
+  dmMenu.style.top = Math.max(8, Math.min(y, innerHeight - h - 8)) + 'px';
 }
-function paintDM() {
-  if (!DM || !DM_USER) { dmBar.hidden = true; return; }
-  const hid = HIDDEN[view] || [];
-  dmBar.hidden = false;
-  dmBar.innerHTML = `<span class="dm-tag">DM CONTROLS · ${esc(view.toUpperCase())}</span>` + dmItems().map(it => {
-    const off = hid.includes(it.id);
-    return `<button type="button" class="${off ? 'off' : ''}" data-dm-hide="${esc(it.id)}">${off ? 'SHOW' : 'HIDE'} · ${esc(it.name)}</button>`;
-  }).join('');
-}
-window.paintDM = paintDM;
-dmBar.addEventListener('click', async e => {
-  const b = e.target.closest('[data-dm-hide]'); if (!b) return;
-  const id = b.dataset.dmHide, list = (HIDDEN[view] || []).slice(), i = list.indexOf(id);
-  if (i >= 0) list.splice(i, 1); else list.push(id);
-  try { await setDoc(doc(db, 'state', 'main'), { hidden: { ...HIDDEN, [view]: list } }, { merge: true }); }
-  catch (err) { dmBar.querySelector('.dm-tag').textContent = 'COULD NOT SAVE · ' + (err.code || err.message); }
+dmMenu.addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const it = dmMenu._items[+b.dataset.i];
+  dmMenu.hidden = true; it.run();
 });
-if (DM) onAuthStateChanged(auth, u => { DM_USER = u && u.email ? u : null; paintDM(); });
+document.addEventListener('click', e => { if (!dmMenu.contains(e.target)) dmMenu.hidden = true; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') dmMenu.hidden = true; });
+async function dmSave(patch) {
+  try { await setDoc(doc(db, 'state', 'main'), patch, { merge: true }); }
+  catch (err) { dmFail(err); }
+}
+function hideItem(map, id, name) {
+  const off = (HIDDEN[map] || []).includes(id);
+  return { label: off ? `Show ${name} to players` : `Hide ${name} from players`, run: () => {
+    const list = (HIDDEN[map] || []).slice(), i = list.indexOf(id);
+    if (i >= 0) list.splice(i, 1); else list.push(id);
+    dmSave({ hidden: { ...HIDDEN, [map]: list } });
+  } };
+}
+function dmContext(target, x, y) {
+  const t = target.closest('[data-id]'), id = t && t.dataset.id;
+  if (!id) return;
+  const items = [];
+  if (view === 'world' && ORDER.includes(id)) items.push(hideItem('world', id, id));
+  else if (view === 'vantara' && LEVEL_INFO[id]) {
+    items.push(hideItem('vantara', id, LEVEL_INFO[id].name));
+    for (const v of ['open', 'partial', 'locked']) items.push({ label: `Set ${LEVEL_INFO[id].name} to ${v}`, run: () => dmSave({ levels: { ...BASE_LEVELS, [id]: v } }) });
+  }
+  else if (view === 'subz' && PLACES.some(p => p.id === id && p.id !== 'terminal')) items.push(hideItem('subz', id, PLACES.find(p => p.id === id).name));
+  if (items.length) dmMenuAt(x, y, items);
+}
+document.addEventListener('contextmenu', e => {
+  if (!DM_ON) return;
+  e.preventDefault();
+  dmContext(e.target, e.clientX, e.clientY);
+});
+let dmPress = null;
+document.addEventListener('touchstart', e => {
+  if (!DM_ON || e.touches.length !== 1) return;
+  const t = e.touches[0];
+  clearTimeout(dmPress);
+  dmPress = setTimeout(() => dmContext(e.target, t.clientX, t.clientY), 550);
+}, { passive: true });
+['touchend', 'touchmove', 'touchcancel'].forEach(ev => document.addEventListener(ev, () => clearTimeout(dmPress), { passive: true }));
+if (DM) onAuthStateChanged(auth, u => { DM_ON = !!(u && u.email); });
 
 /* ---------- this player's terminal: name and PIN open the account, from any browser or device ---------- */
 const joinBox = document.getElementById('join'), joinForm = document.getElementById('join-form');
