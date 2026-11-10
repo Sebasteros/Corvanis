@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Corvanis DM Console</title>
+<style>
+:root{color-scheme:dark;--bg:#020a07;--panel:#051510;--line:#0f3d2b;--holo:#3dffa2;--amber:#ffb84d;--red:#ff3b3b;--text:#c6f3dc;--muted:#6fae90}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,'Segoe UI',sans-serif;padding:20px 16px 60px}
+main{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font:700 18px/1.2 ui-monospace,Consolas,monospace;letter-spacing:.2em;color:var(--holo);margin:0}
+h2{font:400 12px/1.2 ui-monospace,Consolas,monospace;letter-spacing:.18em;color:var(--muted);margin:0 0 12px}
+section,form{border:1px solid var(--line);background:var(--panel);padding:16px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+input,select,textarea{font:inherit;color:var(--text);background:#03100b;border:1px solid var(--line);padding:8px 10px;width:100%;min-width:0}
+input[readonly]{color:var(--muted)}
+textarea{min-height:130px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--holo);outline-offset:1px}
+button{font:600 13px/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;color:var(--holo);background:rgba(61,255,162,.08);border:1px solid var(--holo);padding:11px 14px;cursor:pointer}
+button:hover{background:var(--holo);color:var(--bg)}
+button.danger{color:var(--red);border-color:var(--red);background:rgba(255,59,59,.08)}
+button.danger:hover{background:var(--red);color:var(--bg)}
+button.quiet{color:var(--muted);border-color:var(--line);background:none}
+.acc{display:block;width:100%;text-align:left;margin:0 0 6px;padding:10px 12px;color:var(--text);background:#03100b;border:1px solid var(--line);font:15px/1.3 system-ui,'Segoe UI',sans-serif;letter-spacing:0}
+.acc:hover{background:rgba(61,255,162,.08);color:var(--text);border-color:var(--holo)}
+.acc[aria-pressed="true"]{border-color:var(--holo);box-shadow:inset 3px 0 0 var(--holo)}
+.acc small{display:block;font:12px/1.4 ui-monospace,Consolas,monospace;color:var(--muted);letter-spacing:.06em;margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.job{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+.msg{font:13px/1.4 ui-monospace,Consolas,monospace;color:var(--amber);margin:0;min-height:18px}
+.bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:12px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>CORVANIS · DM CONSOLE</h1>
+  <p class="msg" id="msg">Connecting…</p>
+
+  <form id="login" hidden>
+    <h2>SIGN IN</h2>
+    <div class="grid">
+      <label>Email <input id="email" type="email" autocomplete="username" required></label>
+      <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button type="submit">SIGN IN</button></div>
+  </form>
+
+  <div id="panel" hidden>
+    <section>
+      <h2>THE BIG GLITCH</h2>
+      <div class="row"><button type="button" class="danger" id="glitch">FIRE BIG GLITCH FOR EVERYONE</button></div>
+      <p class="hint">Every player with the map open sees red dots and "ON SHIFT" for about a second and a half.</p>
+    </section>
+
+    <section>
+      <h2>CYCLE (SESSION NUMBER)</h2>
+      <div class="row">
+        <label style="width:120px">Cycle <input id="cycle" type="number" min="1" step="1"></label>
+        <button type="button" id="advance">ADVANCE CYCLE AND ADD INTEREST</button>
+      </div>
+      <p class="hint">Advancing adds one cycle of interest to every account below, moves each next visit forward, and saves.</p>
+    </section>
+
+    <section>
+      <h2>ACCOUNTS (CLICK ONE TO EDIT)</h2>
+      <div id="accounts"></div>
+      <p class="hint" id="acc-empty" hidden>No accounts yet. Click + NEW ACCOUNT to add the first one.</p>
+      <div class="row" style="margin-top:12px"><button type="button" class="quiet" id="newacc">+ NEW ACCOUNT</button></div>
+    </section>
+
+    <section id="editor" hidden>
+      <h2>EDIT ACCOUNT</h2>
+      <div class="grid">
+        <label>Account code <input id="acc-id" type="text" placeholder="e.g. 7741-K"></label>
+        <label>Holder name <input id="acc-holder" type="text"></label>
+        <label>Crew funds <input id="acc-wallet" type="number" step="1"></label>
+        <label>Debt principal <input id="acc-principal" type="number" step="1"></label>
+        <label>Interest and fees <input id="acc-fees" type="number" step="1"></label>
+        <label>Interest % per cycle <input id="acc-rate" type="number" step="0.5"></label>
+        <label>Minimum due <input id="acc-minDue" type="number" step="1"></label>
+        <label>Next visit <input id="acc-due" type="text"></label>
+      </div>
+      <label style="margin-top:12px">Activity (one entry per line, newest first)
+        <textarea id="acc-log"></textarea>
+      </label>
+      <div class="row" style="margin-top:12px">
+        <button type="button" id="acc-save">SAVE ACCOUNT</button>
+        <button type="button" class="danger" id="acc-del">DELETE ACCOUNT</button>
+        <button type="button" class="quiet" id="acc-close">CLOSE</button>
+        <span class="msg" id="acc-msg"></span>
+      </div>
+      <p class="hint">The player's own link shows the change within a second or two.</p>
+    </section>
+
+    <section>
+      <h2>CITY LEVELS</h2>
+      <div class="grid">
+        <label>Apex <select id="lv-apex"></select></label>
+        <label>The Spires <select id="lv-spires"></select></label>
+        <label>The Grid <select id="lv-grid"></select></label>
+        <label>SubZ <select id="lv-subz"></select></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>JOB BOARD</h2>
+      <div id="jobs"></div>
+      <div class="row" style="margin-top:12px"><button type="button" class="quiet" id="addjob">+ ADD JOB</button></div>
+    </section>
+
+    <section>
+      <h2>NEWSWIRE (ONE HEADLINE PER LINE)</h2>
+      <textarea id="news"></textarea>
+    </section>
+
+    <div class="bar">
+      <button type="button" id="save">SAVE CITY, JOBS AND NEWS</button>
+      <button type="button" class="quiet" id="signout">SIGN OUT</button>
+      <span class="msg" id="saved"></span>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
+  authDomain: "corvallis-4a3b8.firebaseapp.com",
+  projectId: "corvallis-4a3b8",
+  storageBucket: "corvallis-4a3b8.firebasestorage.app",
+  messagingSenderId: "870010057991",
+  appId: "1:870010057991:web:6bc20208438285cdc9c1a2"
+};
+
+/* shared world state (document state/main) */
+const STATE_DEFAULTS = {
+  cycle: 1,
+  levels: { apex: 'locked', spires: 'locked', grid: 'partial', subz: 'open' },
+  jobs: [
+    { title: 'Records recovery, Kyrex', pay: '1,200 cr', contact: 'Tavi · Nine Bowls', note: 'Discretion required. Crew of 3 to 5.', status: 'open' },
+    { title: 'Courier run, Lift 7 to East Gate', pay: '150 cr', contact: 'Lift 7 freight desk', note: 'Sealed parcel. No questions.', status: 'open' },
+    { title: 'Generator repair', pay: 'Bar tab', contact: 'The Gutterlight', note: 'Bring your own tools.', status: 'open' }
+  ],
+  news: [
+    'Helix: demand for Flux “exceeds all forecasts.” New clinics to open across the Grid.',
+    'Ardrenn factory council calls for a review of the Flux labs. Helix: “baseless.”',
+    'Tether lift schedule reduced for maintenance. Apex residents unaffected.',
+    'Solvaris reminds citizens: unregistered chrome is a civil offence.',
+    'Vexmar travel advisory extended another cycle.',
+    'Weather, SubZ: rain. Again.'
+  ],
+  glitchAt: 0
+};
+/* one record per player account (collection accounts, document id = account code) */
+const ACCOUNT_DEFAULTS = { holder: '', wallet: 0, principal: 0, fees: 0, rate: 2, minDue: 0, due: 'Cycle 02', log: [] };
+
+const $ = id => document.getElementById(id);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app), auth = getAuth(app);
+const stateRef = doc(db, 'state', 'main');
+const accountsCol = collection(db, 'accounts');
+const fmt = n => Number(n || 0).toLocaleString('en-US');
+const pad = n => String(n).padStart(2, '0');
+const stamp = () => new Date().toLocaleTimeString();
+const say = (t, where = 'msg') => { $(where).textContent = t; };
+const explain = e => e && e.code === 'permission-denied'
+  ? 'This login is not allowed to change the map. Check the email in the database rules.'
+  : (e && e.code === 'auth/invalid-credential') ? 'Wrong email or password.'
+  : 'Something went wrong: ' + (e && (e.code || e.message) || 'unknown error');
+const num = id => Number($(id).value) || 0;
+const lines = id => $(id).value.split('\n').map(l => l.trim()).filter(Boolean);
+
+let accounts = {};   // id -> data, kept live from the database
+let editing = null;  // null = editor closed, '' = new account, otherwise the account code
+
+for (const id of ['apex', 'spires', 'grid', 'subz'])
+  $('lv-' + id).innerHTML = ['open', 'partial', 'locked'].map(v => `<option value="${v}">${v === 'locked' ? 'locked (access denied)' : v}</option>`).join('');
+
+function jobRow(j = {}) {
+  const d = document.createElement('div'); d.className = 'job';
+  const field = (k, ph) => { const i = document.createElement('input'); i.placeholder = ph; i.value = j[k] || ''; i.dataset.k = k; i.setAttribute('aria-label', ph); return i; };
+  const st = document.createElement('select'); st.dataset.k = 'status'; st.setAttribute('aria-label', 'Status');
+  for (const v of ['open', 'taken', 'done']) { const o = document.createElement('option'); o.value = v; o.textContent = v; st.appendChild(o); }
+  st.value = j.status || 'open';
+  const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'quiet'; rm.textContent = 'REMOVE'; rm.onclick = () => d.remove();
+  d.append(field('title', 'Title'), field('pay', 'Pay'), field('contact', 'Contact'), field('note', 'Note'), st, rm);
+  return d;
+}
+
+function fillState(s) {
+  s = Object.assign({}, STATE_DEFAULTS, s);
+  const lv = Object.assign({}, STATE_DEFAULTS.levels, s.levels);
+  $('cycle').value = s.cycle;
+  for (const k of ['apex', 'spires', 'grid', 'subz']) $('lv-' + k).value = lv[k];
+  $('jobs').replaceChildren(...(s.jobs || []).map(jobRow));
+  $('news').value = (s.news || []).join('\n');
+}
+function readShared() {
+  return {
+    cycle: Math.max(1, Math.round(num('cycle'))),
+    levels: { apex: $('lv-apex').value, spires: $('lv-spires').value, grid: $('lv-grid').value, subz: $('lv-subz').value },
+    jobs: [...$('jobs').children].map(r => Object.fromEntries([...r.querySelectorAll('[data-k]')].map(i => [i.dataset.k, i.value.trim()]))).filter(j => j.title),
+    news: lines('news')
+  };
+}
+async function saveShared(note = 'Saved. Players see it now.') {
+  try { await setDoc(stateRef, readShared(), { merge: true }); say(note + ' ' + stamp(), 'saved'); }
+  catch (e) { say(explain(e), 'saved'); }
+}
+
+/* ---------- accounts ---------- */
+function renderAccounts() {
+  const ids = Object.keys(accounts).sort((a, b) => (accounts[a].holder || a).localeCompare(accounts[b].holder || b));
+  $('accounts').replaceChildren(...ids.map(id => {
+    const a = accounts[id], b = document.createElement('button');
+    b.type = 'button'; b.className = 'acc'; b.setAttribute('aria-pressed', String(editing === id));
+    b.textContent = `${a.holder || 'Unnamed holder'} · ${id}`;
+    const s = document.createElement('small');
+    s.textContent = `Crew ${fmt(a.wallet)} cr · Owes ${fmt((a.principal || 0) + (a.fees || 0))} cr · Next ${a.due || '-'}`;
+    b.appendChild(s);
+    b.onclick = () => openEditor(id);
+    return b;
+  }));
+  $('acc-empty').hidden = ids.length > 0;
+}
+function openEditor(id) {
+  editing = id; // '' for a new account
+  const a = Object.assign({}, ACCOUNT_DEFAULTS, id ? accounts[id] : {});
+  $('acc-id').value = id; $('acc-id').readOnly = !!id;
+  $('acc-holder').value = a.holder || '';
+  $('acc-wallet').value = a.wallet ?? 0;
+  $('acc-principal').value = a.principal ?? 0;
+  $('acc-fees').value = a.fees ?? 0;
+  $('acc-rate').value = a.rate ?? 2;
+  $('acc-minDue').value = a.minDue ?? 0;
+  $('acc-due').value = a.due || '';
+  $('acc-log').value = (a.log || []).join('\n');
+  $('acc-del').hidden = !id;
+  say(id ? '' : 'New account. Pick a code, like 7741-K, then save.', 'acc-msg');
+  $('editor').hidden = false;
+  renderAccounts();
+  $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function closeEditor() { editing = null; $('editor').hidden = true; renderAccounts(); }
+async function saveAccount() {
+  const id = $('acc-id').value.trim().replace(/[\/\s]+/g, '-');
+  if (!id) return say('Give the account a code first, like 7741-K.', 'acc-msg');
+  if (!editing && accounts[id]) return say('That code is already used. Pick another one.', 'acc-msg');
+  const data = {
+    holder: $('acc-holder').value.trim(), wallet: num('acc-wallet'), principal: num('acc-principal'),
+    fees: num('acc-fees'), rate: num('acc-rate'), minDue: num('acc-minDue'),
+    due: $('acc-due').value.trim(), log: lines('acc-log')
+  };
+  try {
+    await setDoc(doc(db, 'accounts', id), data);
+    editing = id; $('acc-id').value = id; $('acc-id').readOnly = true; $('acc-del').hidden = false;
+    say('Saved ' + stamp() + '. The player sees it now.', 'acc-msg');
+  } catch (e) { say(explain(e), 'acc-msg'); }
+}
+async function deleteAccount() {
+  if (!editing) return;
+  if (!window.confirm(`Delete account ${editing}? Its balance and activity are removed for good.`)) return;
+  try { await deleteDoc(doc(db, 'accounts', editing)); closeEditor(); say('Account deleted.', 'saved'); }
+  catch (e) { say(explain(e), 'acc-msg'); }
+}
+
+/* ---------- buttons ---------- */
+$('save').onclick = () => saveShared();
+$('addjob').onclick = () => $('jobs').appendChild(jobRow());
+$('newacc').onclick = () => openEditor('');
+$('acc-save').onclick = saveAccount;
+$('acc-del').onclick = deleteAccount;
+$('acc-close').onclick = closeEditor;
+$('glitch').onclick = async () => {
+  try { await setDoc(stateRef, { glitchAt: Date.now() }, { merge: true }); say('Glitch fired. ' + stamp(), 'saved'); }
+  catch (e) { say(explain(e), 'saved'); }
+};
+$('advance').onclick = async () => {
+  const next = Math.max(1, Math.round(num('cycle'))) + 1;
+  const ids = Object.keys(accounts), batch = writeBatch(db);
+  for (const id of ids) {
+    const a = accounts[id], added = Math.round(((a.principal || 0) + (a.fees || 0)) * (a.rate || 0) / 100);
+    batch.set(doc(db, 'accounts', id), {
+      fees: (a.fees || 0) + added,
+      due: 'Cycle ' + pad(next + 1),
+      log: [`Cycle ${pad(next)} · Interest added: ${fmt(added)} cr`, ...(a.log || [])]
+    }, { merge: true });
+  }
+  try {
+    if (ids.length) await batch.commit();
+    await setDoc(stateRef, { cycle: next }, { merge: true });
+    $('cycle').value = next;
+    say(`Cycle ${next} started. Interest added to ${ids.length} account(s). ${stamp()}`, 'saved');
+  } catch (e) { say(explain(e), 'saved'); }
+};
+$('login').onsubmit = async e => {
+  e.preventDefault(); say('Signing in…');
+  try { await signInWithEmailAndPassword(auth, $('email').value.trim(), $('password').value); }
+  catch (err) { say(explain(err)); }
+};
+$('signout').onclick = () => signOut(auth);
+
+/* ---------- start ---------- */
+onSnapshot(accountsCol, snap => {
+  accounts = {};
+  snap.forEach(d => { accounts[d.id] = d.data(); });
+  renderAccounts();
+}, err => say(explain(err)));
+
+onAuthStateChanged(auth, async user => {
+  $('login').hidden = !!user; $('panel').hidden = !user;
+  if (!user) return say('Sign in with your admin email and password.');
+  say('Signed in as ' + user.email + '. Loading…');
+  try {
+    const snap = await getDoc(stateRef);
+    if (snap.exists()) fillState(snap.data());
+    else { await setDoc(stateRef, STATE_DEFAULTS); fillState(STATE_DEFAULTS); }
+    say('Signed in as ' + user.email + '.');
+  } catch (e) { fillState(STATE_DEFAULTS); say(explain(e)); }
+});
+</script>
+</body>
+</html>
