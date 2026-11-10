@@ -165,6 +165,37 @@ dd{margin:0;text-align:right}
 .join button{font-family:var(--f-display);font-size:13px;letter-spacing:.16em;color:var(--holo);background:rgba(61,255,162,.08);border:1px solid var(--holo);padding:12px;cursor:pointer}
 .join button:hover{background:var(--holo);color:var(--bg)}
 .join .join-msg{color:var(--amber)}
+/* terminal apps: tabs under the header; the map stays the default */
+.appbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.app-tab{position:relative;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;padding:8px 12px;border:1px solid var(--line);color:var(--muted);background:none;cursor:pointer}
+.app-tab:hover{color:var(--holo);border-color:var(--holo-dim)}
+.app-tab[aria-current="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
+.app-badge{display:inline-block;margin-left:8px;padding:0 6px;border-radius:9px;background:var(--mag);color:var(--bg);font-size:11px}
+#app-view{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.ap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.ap-card{border:1px solid var(--line);background:var(--panel);padding:16px}
+.ap-card h3{font-family:var(--f-display);font-weight:500;color:var(--holo);margin:0 0 6px;font-size:17px;letter-spacing:.06em}
+.ap-tag{border:1px solid var(--holo);background:linear-gradient(160deg,rgba(61,255,162,.12),rgba(5,21,16,.92));padding:18px}
+.ap-portrait{width:96px;height:96px;border:1px solid var(--holo);display:grid;place-items:center;overflow:hidden;font-family:var(--f-display);font-size:34px;color:var(--holo);margin-bottom:10px}
+.ap-portrait img{width:100%;height:100%;object-fit:cover}
+.ap-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line)}
+.ap-row>span:first-child{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);flex:0 0 auto;padding-top:3px}
+.ap-row>span:last-child{text-align:right}
+.ap-mono{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);margin:0 0 6px}
+.ap-big{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--holo);margin:2px 0 6px}
+.ap-amber{color:var(--amber)}
+.ap-dim{color:var(--muted)}
+.ap-log{font-family:var(--f-mono);font-size:12px;color:var(--muted);border-left:2px solid var(--line);padding-left:8px;margin:6px 0}
+.ap-msg{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:12px;margin-bottom:8px;cursor:pointer;font:inherit}
+.ap-msg.unread{border-color:var(--holo);box-shadow:inset 3px 0 0 var(--holo)}
+.ap-field{width:100%;font:15px var(--f-body);color:var(--text);background:#03100b;border:1px solid var(--line);padding:9px 10px;margin:4px 0}
+.ap-btn{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;color:var(--holo);background:rgba(61,255,162,.08);border:1px solid var(--holo);padding:9px 12px;cursor:pointer;margin-top:4px}
+.ap-btn:hover{background:var(--holo);color:var(--bg)}
+.ap-btn.quiet{color:var(--muted);border-color:var(--line);background:none}
+.ap-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:25;border:1px solid var(--amber);background:#1a1206;color:var(--amber);font-family:var(--f-mono);font-size:12px;padding:10px 14px;letter-spacing:.06em}
+@keyframes flick{0%,92%{opacity:1}93%{opacity:.25}94%{opacity:1}97%{opacity:.4}98%{opacity:1}}
+.ap-flicker{animation:flick 7s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.ap-flicker{animation:none}}
 </style>
 </head>
 <body>
@@ -174,6 +205,16 @@ dd{margin:0;text-align:right}
     <h1 class="brand">REGISTRAR PUBLIC TERMINAL<small>A HELIX CIVIC SERVICE · NODE 0-114 · VANTARA</small></h1>
     <div class="metawrap"><div class="meta">NEURAL-TAG: <b id="civic-id">NOT PRESENTED</b> · ACCESS: <b>GUEST</b> · CLEARANCE: <b>SUBLEVEL ZERO</b> · CYCLE <b id="cycle">01</b></div><button type="button" class="acct-btn" id="acct-btn" aria-expanded="false" aria-controls="acct">ACCOUNT 7741-K ▾</button></div>
   </header>
+
+  <nav class="appbar" id="appbar" aria-label="Terminal apps">
+    <button type="button" class="app-tab" data-app="map" aria-current="true">MAP</button>
+    <button type="button" class="app-tab" data-app="tag" aria-current="false">NEURAL-TAG</button>
+    <button type="button" class="app-tab" data-app="wallet" aria-current="false">WALLET</button>
+    <button type="button" class="app-tab" data-app="messages" aria-current="false">MESSAGES<span class="app-badge" id="msg-badge" hidden>0</span></button>
+    <button type="button" class="app-tab" data-app="jobs" aria-current="false">JOBS</button>
+    <button type="button" class="app-tab" data-app="contacts" aria-current="false">CONTACTS</button>
+    <button type="button" class="app-tab" data-app="news" aria-current="false">NEWS</button>
+  </nav>
 
   <nav class="crumbs" aria-label="Map level">
     <button type="button" id="cr-world" data-go="world">CORVANIS</button><span>▸</span>
@@ -236,6 +277,8 @@ dd{margin:0;text-align:right}
       </section>
     </aside>
   </div>
+
+  <section id="app-view" hidden></section>
 
   <footer class="foot">
     <span>YOUR CHROME IS YOUR IDENTITY. KEEP IT REGISTERED.</span>
@@ -692,6 +735,7 @@ let first = true, lastGlitch = 0;
 onSnapshot(doc(db, 'state', 'main'), snap => {
   const d = snap.data(); if (!d) return;
   window.corvanisApply(d);
+  WORLD = d; renderApp();
   if (!first && d.glitchAt && d.glitchAt !== lastGlitch) window.corvanisGlitch();
   lastGlitch = d.glitchAt || 0; first = false;
 }, err => console.warn('Live state unavailable:', err.code));
@@ -708,7 +752,7 @@ async function hashPin(salt, pin) {
 }
 function watchAccount(id) {
   if (accountOff) accountOff();
-  accountOff = onSnapshot(doc(db, 'accounts', id), snap => window.corvanisAccount(snap.exists() ? snap.data() : null, id),
+  accountOff = onSnapshot(doc(db, 'accounts', id), snap => { ACC = snap.exists() ? snap.data() : null; window.corvanisAccount(ACC, id); renderApp(); },
     err => console.warn('Account unavailable:', err.code));
 }
 async function beat(id, name) {
@@ -719,6 +763,7 @@ function start(id, name) {
   showJoin(false);
   if (started) return;
   started = true;
+  ME_ID = id; ME_NAME = name; listenMessages(id);
   watchAccount(id);
   beat(id, name);
   setInterval(() => beat(id, name), 60000);
@@ -748,6 +793,151 @@ joinForm.onsubmit = async e => {
   } catch (err) { showJoin(true, 'Could not connect: ' + (err.code || err.message)); }
 };
 showJoin(true);
+
+/* ---------- terminal apps: Neural-Tag, Wallet, Messages, Jobs, Contacts, News ---------- */
+let ME_ID = null, ME_NAME = '', ACC = null, MSGS = [], WORLD = {}, APP = 'map', msgOff = null;
+const H = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const NUM = n => Number(n || 0).toLocaleString('en-US');
+const ROW = (k, v) => `<div class="ap-row"><span>${H(k)}</span><span>${H(v)}</span></div>`;
+function listenMessages(id) {
+  if (msgOff) msgOff();
+  msgOff = onSnapshot(query(collection(db, 'accounts', id, 'messages'), orderBy('createdAt', 'desc')),
+    snap => { MSGS = snap.docs.map(d => ({ id: d.id, ...d.data() })); updateBadge(); renderApp(); },
+    err => console.warn('Messages:', err.code));
+}
+function updateBadge() {
+  const n = MSGS.filter(m => !m.read).length, b = document.getElementById('msg-badge');
+  b.textContent = n; b.hidden = !n;
+}
+function note(t) {
+  let n = document.getElementById('ap-toast');
+  if (!n) { n = document.createElement('div'); n.id = 'ap-toast'; n.className = 'ap-toast'; document.body.appendChild(n); }
+  n.textContent = t; n.hidden = false;
+  clearTimeout(note.timer); note.timer = setTimeout(() => { n.hidden = true; }, 2600);
+}
+async function saveMine(patch) {
+  if (!ME_ID) return;
+  try { await setDoc(doc(db, 'accounts', ME_ID), patch, { merge: true }); note('Saved.'); }
+  catch (err) { note('Could not save: ' + (err.code || err.message)); }
+}
+async function markRead(id) {
+  try { await setDoc(doc(db, 'accounts', ME_ID, 'messages', id), { read: true }, { merge: true }); }
+  catch (err) { note('Could not open message: ' + (err.code || err.message)); }
+}
+function setApp(k) {
+  APP = k;
+  document.querySelectorAll('.app-tab').forEach(b => b.setAttribute('aria-current', String(b.dataset.app === k)));
+  const onMap = k === 'map';
+  document.querySelector('.main').hidden = !onMap;
+  document.querySelector('.crumbs').hidden = !onMap;
+  document.getElementById('app-view').hidden = onMap;
+  renderApp();
+  window.scrollTo(0, 0);
+}
+function renderApp() {
+  if (APP === 'map') return;
+  document.getElementById('app-view').innerHTML = appHTML();
+}
+function appHTML() {
+  if (!ME_ID) return '<section class="ap-card"><p class="ap-mono">Enter your character name first.</p></section>';
+  const a = ACC || {};
+  switch (APP) {
+    case 'tag': return tagApp(a);
+    case 'wallet': return walletApp(a);
+    case 'messages': return messagesApp();
+    case 'jobs': return jobsApp();
+    case 'contacts': return contactsApp(a);
+    case 'news': return newsApp();
+  }
+  return '';
+}
+function tagApp(a) {
+  const passes = a.passes || [], name = a.holder || ME_NAME;
+  return `<div class="ap-grid">
+    <section class="ap-tag">
+      <div class="ap-portrait">${a.portrait ? `<img src="${H(a.portrait)}" alt="">` : H(name.slice(0, 1).toUpperCase())}</div>
+      <h3>${H(name)}</h3>
+      <p class="ap-mono">NEURAL-TAG · ${H(ME_ID.toUpperCase().slice(0, 16))}</p>
+      ${ROW('Tier', a.tier || 'Sublevel Zero')}
+      ${ROW('Residence', a.residence || 'Unregistered')}
+      ${ROW('Work permit', passes.includes('grid') ? 'Grid · shift pass' : 'None on file')}
+      ${ROW('Registrar standing', a.standing || 'Clean')}
+      ${ROW('Chrome ID', a.chrome ? 'Issued' : 'Not issued')}
+      ${ROW('Implants on record', (a.implants || []).join(', ') || 'None on record')}
+      <p class="ap-mono ap-flicker" style="margin-top:12px">Implant integrity: nominal</p>
+    </section>
+    <section class="ap-card"><p class="ap-mono">PORTRAIT LINK</p>
+      <form data-app-form="portrait"><input class="ap-field" name="portrait" placeholder="Paste a picture link" value="${H(a.portrait || '')}"><button class="ap-btn" type="submit">SAVE PORTRAIT</button></form>
+    </section>
+  </div>`;
+}
+function walletApp(a) {
+  const owed = (a.principal || 0) + (a.fees || 0);
+  return `<div class="ap-grid">
+    <section class="ap-card"><p class="ap-mono">CREDITS</p><p class="ap-big">${NUM(a.wallet)} cr</p></section>
+    <section class="ap-card"><p class="ap-mono">OWED</p><p class="ap-big ap-amber">${NUM(owed)} cr</p>
+      ${ROW('Principal', NUM(a.principal) + ' cr')}
+      ${ROW('Interest and fees', NUM(a.fees) + ' cr')}
+      ${ROW('Added each cycle', '+' + NUM(Math.round(owed * (a.rate || 0) / 100)) + ' cr (' + (a.rate || 0) + '%)')}
+      ${ROW('Minimum due', NUM(a.minDue) + ' cr')}
+      ${ROW('Next visit', a.due || '-')}
+    </section>
+    <section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">ACTIVITY</p>${(a.log || []).map(l => `<p class="ap-log">${H(l)}</p>`).join('') || '<p>Nothing yet.</p>'}</section>
+  </div>`;
+}
+function messagesApp() {
+  if (!MSGS.length) return '<section class="ap-card"><p>No messages yet.</p></section>';
+  return MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
+}
+function jobsApp() {
+  const jobs = WORLD.jobs || [];
+  if (!jobs.length) return '<section class="ap-card"><p>No jobs posted.</p></section>';
+  return `<div class="ap-grid">${jobs.map(j => `<section class="ap-card"><p class="ap-mono">${H((j.status || 'open').toUpperCase())}</p><h3>${H(j.title)}</h3><p>Pay ${H(j.pay)} · ${H(j.contact)}</p><p class="ap-dim">${H(j.note)}</p></section>`).join('')}</div>`;
+}
+function contactsApp(a) {
+  const list = a.contacts || [];
+  const cards = list.map((c, i) => `<section class="ap-card"><h3>${H(c.name)}</h3><p class="ap-mono">${H(c.role || '')}</p>
+    <form data-app-form="contact-note" data-idx="${i}"><textarea class="ap-field" name="note" rows="2" placeholder="Your private note">${H(c.note || '')}</textarea>
+    <button class="ap-btn" type="submit">SAVE NOTE</button> <button class="ap-btn quiet" type="button" data-remove="${i}">REMOVE</button></form></section>`).join('');
+  return `<div class="ap-grid">${cards}
+    <section class="ap-card"><p class="ap-mono">ADD CONTACT</p>
+      <form data-app-form="contact-add"><input class="ap-field" name="name" placeholder="Name" required><input class="ap-field" name="role" placeholder="Who are they to you?"><textarea class="ap-field" name="note" rows="2" placeholder="Private note"></textarea><button class="ap-btn" type="submit">ADD CONTACT</button></form>
+    </section>
+    <section class="ap-card"><p class="ap-mono">NOTEBOOK</p>
+      <form data-app-form="notebook"><textarea class="ap-field" name="notebook" rows="6" placeholder="Anything you want to remember">${H(a.notebook || '')}</textarea><button class="ap-btn" type="submit">SAVE NOTEBOOK</button></form>
+    </section>
+  </div>`;
+}
+function newsApp() {
+  const news = WORLD.news || [];
+  return `<div class="ap-grid">${news.map(n => `<section class="ap-card"><p>${H(n)}</p></section>`).join('') || '<section class="ap-card"><p>Nothing on the wire.</p></section>'}</div>`;
+}
+document.getElementById('appbar').addEventListener('click', e => { const b = e.target.closest('[data-app]'); if (b) setApp(b.dataset.app); });
+const appView = document.getElementById('app-view');
+appView.addEventListener('click', e => {
+  const m = e.target.closest('[data-msg]'); if (m) return markRead(m.dataset.msg);
+  const r = e.target.closest('[data-remove]');
+  if (r) { const list = [...((ACC && ACC.contacts) || [])]; list.splice(Number(r.dataset.remove), 1); saveMine({ contacts: list }); }
+});
+appView.addEventListener('submit', e => {
+  const f = e.target.closest('form[data-app-form]'); if (!f) return;
+  e.preventDefault();
+  const kind = f.dataset.appForm, data = new FormData(f);
+  if (kind === 'portrait') return saveMine({ portrait: String(data.get('portrait') || '').trim().slice(0, 400) });
+  if (kind === 'notebook') return saveMine({ notebook: String(data.get('notebook') || '').slice(0, 4000) });
+  const list = [...((ACC && ACC.contacts) || [])];
+  if (kind === 'contact-add') {
+    list.push({ name: String(data.get('name') || '').trim().slice(0, 40), role: String(data.get('role') || '').trim().slice(0, 40), note: String(data.get('note') || '').slice(0, 400) });
+    f.reset();
+    return saveMine({ contacts: list });
+  }
+  if (kind === 'contact-note') {
+    const i = Number(f.dataset.idx);
+    if (!list[i]) return;
+    list[i] = { ...list[i], note: String(data.get('note') || '').slice(0, 400) };
+    return saveMine({ contacts: list });
+  }
+});
 </script>
 
 </body>
