@@ -239,6 +239,18 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
 
 .hid-ov{fill:url(#hatch);pointer-events:none}
 .loc--hid{opacity:.35}
+.chat-log{display:flex;flex-direction:column;gap:6px;max-height:440px;overflow:auto;padding:6px 2px 10px}
+.bub-time{align-self:center;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--muted);margin:10px 0 4px}
+.bub-row{display:flex;justify-content:flex-start}
+.bub-row.me{justify-content:flex-end}
+.bub{max-width:72%;padding:9px 14px;border-radius:18px;background:#1c2b25;color:#e8f5ef;font-family:var(--f-body);font-size:16px;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}
+.bub-row.me .bub{background:var(--holo);color:#06210f;border-bottom-right-radius:6px}
+.bub-row:not(.me) .bub{border-bottom-left-radius:6px}
+.chat-form{display:grid;gap:8px;margin-top:10px}
+.chat-pick{display:flex;gap:10px;align-items:stretch}
+.chat-pick input{width:auto;align-self:center;margin:0 4px}
+.chat-pick .ap-msg{flex:1}
+.chat-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 </style>
 </head>
 <body>
@@ -1007,24 +1019,48 @@ async function sendChat(text) {
     renderApp(true);
   } catch (err) { note('Could not send: ' + (err.code || err.message)); }
 }
+let CHAT_PICK = new Set();
+function clearedAt(c) { return (c && c.cleared && c.cleared[ME_ID]) || 0; }
+function msgMs(m) { return (m.createdAt && m.createdAt.toMillis) ? m.createdAt.toMillis() : Date.now(); }
+function bubbleTime(ms) {
+  return new Date(ms).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
 function chatApp() {
   const peer = CHAT_OPEN, nm = H(nameOfPeer(peer));
+  const c = CHATS.find(x => x.id === chatIdWith(peer)), cut = clearedAt(c);
+  const shown = CHAT_MSGS.filter(m => msgMs(m) > cut);
+  let last = 0, bubbles = '';
+  for (const m of shown) {
+    const t = msgMs(m);
+    if (!last || t - last > 15 * 60 * 1000) bubbles += `<div class="bub-time">${H(bubbleTime(t))}</div>`;
+    last = t;
+    bubbles += `<div class="bub-row${m.from === ME_ID ? ' me' : ''}"><div class="bub">${H(m.text)}</div></div>`;
+  }
   return `<section class="ap-card"><div class="ap-row"><button class="ap-btn quiet" type="button" data-chat-back>BACK</button><span class="ap-mono">${nm}</span></div>
-    <div class="chat-log">${CHAT_MSGS.map(m => `<div class="chat-m${m.from === ME_ID ? ' me' : ''}"><span class="ap-mono">${m.from === ME_ID ? 'YOU' : H(nameOfPeer(m.from))}</span><p>${H(m.text)}</p></div>`).join('') || '<p class="ap-dim">No messages yet. Say hello.</p>'}</div>
-    <form data-app-form="chat-send"><textarea class="ap-field" name="text" rows="2" maxlength="2000" placeholder="Message ${nm}"></textarea><button class="ap-btn" type="submit">SEND</button></form></section>`;
+    <div class="chat-log">${bubbles || '<p class="ap-dim">No messages yet. Say hello.</p>'}</div>
+    <form data-app-form="chat-send" class="chat-form"><textarea class="ap-field" name="text" rows="2" maxlength="2000" placeholder="Message ${nm}"></textarea><button class="ap-btn" type="submit">SEND</button></form></section>`;
+}
+async function deleteChatsForMe(peers) {
+  const now = Date.now();
+  try {
+    for (const peer of peers) await setDoc(doc(db, 'chats', chatIdWith(peer)), { cleared: { [ME_ID]: now } }, { merge: true });
+    CHAT_PICK.clear(); renderApp(true);
+  } catch (err) { note('Could not delete: ' + (err.code || err.message)); }
 }
 function messagesApp() {
   if (CHAT_OPEN) return chatApp();
   const others = PEERS.filter(p => p.id !== ME_ID);
-  const chats = CHATS.slice().sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
+  const chats = CHATS.filter(c => !c.cleared || !c.cleared[ME_ID] || (c.last && c.last.at > c.cleared[ME_ID]))
+    .sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
   const starts = others.map(p => `<button class="ap-btn quiet" type="button" data-chat-with="${H(p.id)}">${H(p.name)}</button>`).join(' ') || '<p class="ap-dim">No other players yet.</p>';
   const threads = chats.map(c => {
     const peer = c.members.find(x => x !== ME_ID), isNew = c.last && c.last.from !== ME_ID && (!c.seen || (c.seen[ME_ID] || 0) < c.last.at);
     const preview = c.last ? (c.last.from === ME_ID ? 'You: ' : '') + c.last.text : 'No messages yet';
-    return `<button class="ap-msg ${isNew ? 'unread' : ''}" type="button" data-chat-open="${H(peer)}"><span class="ap-mono">${H(nameOfPeer(peer))}${isNew ? ' · NEW' : ''}</span><p>${H(preview)}</p></button>`;
+    return `<div class="chat-pick"><input type="checkbox" data-chat-pick="${H(peer)}" aria-label="Select this chat"${CHAT_PICK.has(peer) ? ' checked' : ''}><button class="ap-msg ${isNew ? 'unread' : ''}" type="button" data-chat-open="${H(peer)}"><span class="ap-mono">${H(nameOfPeer(peer))}${isNew ? ' · NEW' : ''}</span><p>${H(preview)}</p></button></div>`;
   }).join('');
+  const bar = CHAT_PICK.size ? `<div class="chat-bar"><button class="ap-btn" type="button" data-chat-delete>DELETE ${CHAT_PICK.size} SELECTED FOR ME</button> <button class="ap-btn quiet" type="button" data-chat-clear>CLEAR</button></div>` : '';
   const inbox = MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
-  return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}</section>${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
+  return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}</section>${bar}${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
 }
 function jobsApp() {
   const jobs = WORLD.jobs || [];
@@ -1143,6 +1179,16 @@ appView.addEventListener('click', e => {
   const w = e.target.closest('[data-chat-with]'); if (w) return openChat(w.dataset.chatWith);
   const o = e.target.closest('[data-chat-open]'); if (o) return openChat(o.dataset.chatOpen);
   if (e.target.closest('[data-chat-back]')) return closeChat();
+  if (e.target.closest('[data-chat-clear]')) { CHAT_PICK.clear(); return renderApp(true); }
+  if (e.target.closest('[data-chat-delete]')) {
+    const n = CHAT_PICK.size;
+    if (window.confirm(`Delete ${n} conversation(s) from your phone? The other player still keeps them.`)) return deleteChatsForMe([...CHAT_PICK]);
+  }
+});
+appView.addEventListener('change', e => {
+  const box = e.target.closest('[data-chat-pick]'); if (!box) return;
+  if (box.checked) CHAT_PICK.add(box.dataset.chatPick); else CHAT_PICK.delete(box.dataset.chatPick);
+  renderApp(true);
 });
 </script>
 
