@@ -68,6 +68,15 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
   .side .foot{margin-top:0;flex-direction:row;width:100%}
   .split{grid-template-columns:1fr}
 }
+.amap{width:100%;height:auto;max-height:72vh;background:#020a07;border:1px solid var(--line);display:block}
+.amap-item{cursor:pointer}
+.amap-item path,.amap-item rect,.amap-item circle{fill:rgba(61,255,162,.10);stroke:#3dffa2;stroke-width:1.3}
+.amap-item .hit{fill:transparent;stroke:none}
+.amap-item text{fill:#3dffa2;font-family:monospace;font-size:14px;pointer-events:none}
+.amap-item.off path,.amap-item.off rect,.amap-item.off circle{fill:rgba(255,255,255,.02);stroke:#666;stroke-dasharray:5 5}
+.amap-item.off text{fill:#777}
+.amap-item:hover path,.amap-item:hover rect{fill:rgba(61,255,162,.22)}
+.map-tabs button[aria-pressed="true"]{border-color:#3dffa2;color:#3dffa2}
 </style>
 </head>
 <body>
@@ -87,6 +96,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <button class="nav" type="button" data-nav="world" aria-current="false">WORLD</button>
     <button class="nav" type="button" data-nav="jobs" aria-current="false">JOB BOARD</button>
     <button class="nav" type="button" data-nav="messages" aria-current="false">BROADCAST</button>
+    <button class="nav" type="button" data-nav="maps" aria-current="false">MAPS</button>
     <button class="nav" type="button" data-nav="secrets" aria-current="false">SECRETS</button>
     <div class="foot">
       <button class="quiet" type="button" id="backup">DOWNLOAD BACKUP</button>
@@ -150,6 +160,19 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     </section>
 
     <!-- JOBS -->
+    <section data-sec="maps" hidden>
+      <div class="top"><h2>MAPS</h2></div>
+      <div class="card">
+        <p class="mono">CLICK A SECTION TO HIDE IT FROM THE PLAYER'S MAP. CLICK AGAIN TO SHOW IT. DASHED = HIDDEN. SAVES INSTANTLY.</p>
+        <div class="row map-tabs">
+          <button class="quiet" type="button" data-map="world" aria-pressed="true">WORLD</button>
+          <button class="quiet" type="button" data-map="vantara" aria-pressed="false">VANTARA</button>
+          <button class="quiet" type="button" data-map="subz" aria-pressed="false">SUBZ</button>
+          <span class="msg" id="map-msg"></span>
+        </div>
+        <div id="map-stage" style="margin-top:12px"></div>
+      </div>
+    </section>
     <section data-sec="jobs" hidden>
       <div class="top"><h2>JOB BOARD</h2></div>
       <div class="card">
@@ -185,6 +208,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
   </main>
 </div>
 
+<script src="map-data.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, addDoc, collection, query, orderBy, onSnapshot, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -288,6 +312,7 @@ const explain = e => e && e.code === 'permission-denied'
 const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n.textContent = t; };
 
 /* ---------- live data ---------- */
+let HIDDEN = {}, MAP = 'world';
 let accounts = {}, players = {}, secrets = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
 const isOnline = id => !!players[id] && Date.now() - players[id].seen < ONLINE_MS;
 const nameOf = id => (accounts[id] && accounts[id].holder) || id;
@@ -360,6 +385,57 @@ function renderSecrets() {
     return `<div class="row"><span>${esc(nameOf(id))}</span><span class="pre">${esc(s.agenda || 'No secret agenda yet.')}</span><button class="quiet" type="button" data-opensec="${esc(id)}">OPEN</button><button class="quiet" type="button" data-delsec-id="${esc(id)}">DELETE</button></div>`;
   }).join('') || '<p class="hint">No players yet.</p>';
 }
+
+/* ---------- maps: the same shapes as the player terminal; hidden sections are dashed ---------- */
+const AMAP = {
+  world: { vb: '105 38 1265 638', items: () => ORDER.map(n => ({ id: n, name: n })) },
+  vantara: { vb: '0 0 1000 700', items: () => [{ id: 'apex', name: 'ORBIT · APEX' }, { id: 'spires', name: 'L2 · THE SPIRES' }, { id: 'grid', name: 'L1 · THE GRID' }, { id: 'subz', name: 'L0 · SUBZ' }] },
+  subz: { vb: '0 0 1000 700', items: () => PLACES.filter(p => p.id !== 'terminal').map(p => ({ id: p.id, name: p.name })) }
+};
+function mapSVG() {
+  const hid = HIDDEN[MAP] || [];
+  const wrap = (id, inner) => `<g class="amap-item${hid.includes(id) ? ' off' : ''}" data-toggle="${esc(id)}">${inner}${hid.includes(id) ? '' : ''}</g>`;
+  let out = '';
+  if (MAP === 'world') {
+    for (const n of ORDER) {
+      const s = STATES[n];
+      const fs = Math.max(12, Math.min(22, s.r * 0.4));
+      const label = `<text x="${s.cx}" y="${s.cy + fs * 0.35}" font-size="${fs.toFixed(1)}" text-anchor="middle">${esc(n.toUpperCase())}${hid.includes(n) ? ' · HIDDEN' : ''}</text>`;
+      out += wrap(n, `<path d="${s.d}"/>${label}`);
+    }
+  } else if (MAP === 'vantara') {
+    const bands = { apex: [20, 120, 'ORBIT · APEX'], spires: [140, 294, 'L2 · THE SPIRES'], grid: [294, 462, 'L1 · THE GRID'], subz: [462, 650, 'L0 · SUBZ'] };
+    for (const id of Object.keys(bands)) {
+      const [t, b, name] = bands[id];
+      const hidden = hid.includes(id);
+      out += wrap(id, `<rect class="hit" x="40" y="${t}" width="920" height="${b - t}"/><rect x="40" y="${t}" width="920" height="${b - t}"/><text x="56" y="${t + 28}" font-size="20">${esc(name)}${hidden ? ' · HIDDEN' : ''}</text>`);
+    }
+    out += '<line x1="500" y1="20" x2="500" y2="650" stroke="#6fe9ff" stroke-width="2" opacity=".6" pointer-events="none"/>';
+  } else {
+    for (const p of PLACES.filter(p => p.id !== 'terminal')) {
+      const px = 26 + p.fx * 948, py = 44 + p.fy * 648;
+      out += wrap(p.id, `<circle class="hit" cx="${px}" cy="${py}" r="26"/><circle cx="${px}" cy="${py}" r="9"/><text x="${px + 16}" y="${py + 5}" font-size="15">${esc(p.name.toUpperCase())}${hid.includes(p.id) ? ' · HIDDEN' : ''}</text>`);
+    }
+  }
+  return `<svg class="amap" viewBox="${AMAP[MAP].vb}" role="img">${out}</svg>`;
+}
+function renderMap() {
+  document.querySelectorAll('[data-map]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.map === MAP)));
+  $('map-stage').innerHTML = mapSVG();
+}
+async function toggleMap(id) {
+  const list = (HIDDEN[MAP] || []).slice();
+  const i = list.indexOf(id);
+  if (i >= 0) list.splice(i, 1); else list.push(id);
+  HIDDEN = { ...HIDDEN, [MAP]: list };
+  renderMap();
+  try { await setDoc(stateRef, { hidden: HIDDEN }, { merge: true }); say('map-msg', 'Saved ' + stamp() + '. Players see it now.'); }
+  catch (e) { say('map-msg', explain(e)); }
+}
+document.querySelector('[data-sec="maps"]').addEventListener('click', e => {
+  const t = e.target.closest('[data-map]'); if (t) { MAP = t.dataset.map; return renderMap(); }
+  const g = e.target.closest('[data-toggle]'); if (g) return toggleMap(g.dataset.toggle);
+});
 
 /* ---------- actions ---------- */
 async function saveAccount() {
@@ -500,6 +576,7 @@ document.querySelector('.side').addEventListener('click', e => {
   document.querySelectorAll('[data-nav]').forEach(n => n.setAttribute('aria-current', String(n === b)));
   document.querySelectorAll('[data-sec]').forEach(s => { s.hidden = s.dataset.sec !== b.dataset.nav; });
   if (b.dataset.nav === 'secrets') renderSecrets();
+  if (b.dataset.nav === 'maps') renderMap();
 });
 $('plist').addEventListener('click', e => { const b = e.target.closest('[data-sel]'); if (b) selectPlayer(b.dataset.sel); });
 document.querySelector('[data-sec="players"]').addEventListener('click', e => {
@@ -563,7 +640,7 @@ onAuthStateChanged(auth, async user => {
   say('msg', 'Signed in as ' + user.email + '.');
   try {
     const snap = await getDoc(stateRef);
-    if (snap.exists()) { STATE = snap.data(); fillWorld(STATE); }
+    if (snap.exists()) { STATE = snap.data(); HIDDEN = STATE.hidden || {}; fillWorld(STATE); }
     else { await setDoc(stateRef, STATE_DEFAULTS); fillWorld(STATE_DEFAULTS); }
   } catch (e) { fillWorld(STATE_DEFAULTS); say('msg', explain(e)); }
 });
