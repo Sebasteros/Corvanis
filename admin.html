@@ -105,6 +105,11 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .newsedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}
 .newsedit textarea{min-height:420px;font-size:16px;line-height:1.5}
 @media (max-width:900px){.newsedit{grid-template-columns:1fr}}
+.chatwrap{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;align-items:start}
+.chat-row{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:left;margin-bottom:8px;gap:4px}
+.chat-m{padding:8px 0;border-top:1px solid var(--line)}
+.chat-m p{margin:4px 0 0}
+@media (max-width:900px){.chatwrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -123,6 +128,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <button class="nav" type="button" data-nav="players" aria-current="true">PLAYERS</button>
     <button class="nav" type="button" data-nav="world" aria-current="false">WORLD</button>
     <button class="nav" type="button" data-nav="news" aria-current="false">NEWS</button>
+    <button class="nav" type="button" data-nav="chats" aria-current="false">CHATS</button>
     <button class="nav" type="button" data-nav="jobs" aria-current="false">JOB BOARD</button>
     <button class="nav" type="button" data-nav="messages" aria-current="false">BROADCAST</button>
     <button class="nav" type="button" data-nav="secrets" aria-current="false">SECRETS</button>
@@ -178,6 +184,14 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
           <p class="mono">PREVIEW · AS PLAYERS SEE IT</p>
           <div id="news-preview"></div>
         </div>
+      </div>
+    </section>
+    <section data-sec="chats" hidden>
+      <div class="top"><h2>PLAYER CHATS</h2></div>
+      <p class="mono">READ ONLY. CONVERSATIONS BETWEEN REGISTERED PLAYERS.</p>
+      <div class="chatwrap">
+        <div class="card chat-list" id="chat-list"></div>
+        <div class="card" id="chat-thread"><p class="hint">Pick a conversation.</p></div>
       </div>
     </section>
     <section data-sec="jobs" hidden>
@@ -319,6 +333,27 @@ const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n
 
 /* ---------- live data ---------- */
 let HIDDEN = {};
+let CHATS = [], CHAT_SEL = null, chatMsgsOff = null;
+const tsText = t => (t && t.toMillis) ? new Date(t.toMillis()).toLocaleString() : '';
+function paintChats() {
+  const list = CHATS.slice().sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
+  $('chat-list').innerHTML = list.map(c => {
+    const [x, y] = c.members || [];
+    return `<button class="chat-row${c.id === CHAT_SEL ? ' on' : ''}" type="button" data-chat="${esc(c.id)}"><span>${esc(nameOf(x))} ↔ ${esc(nameOf(y))}</span><span class="mono">${esc(c.last ? c.last.text : '')}</span></button>`;
+  }).join('') || '<p class="hint">No player conversations yet.</p>';
+}
+function openChat(id) {
+  CHAT_SEL = id; paintChats();
+  if (chatMsgsOff) chatMsgsOff();
+  chatMsgsOff = onSnapshot(query(collection(db, 'chats', id, 'msgs'), orderBy('createdAt', 'asc')), snap => {
+    $('chat-thread').innerHTML = snap.docs.map(d => { const m = d.data(); return `<div class="chat-m"><span class="mono">${esc(nameOf(m.from))} · ${esc(tsText(m.createdAt))}</span><p>${esc(m.text)}</p></div>`; }).join('') || '<p class="hint">No messages in this conversation.</p>';
+  }, err => console.warn('Chat:', err.code));
+}
+$('chat-list').addEventListener('click', e => { const b = e.target.closest('[data-chat]'); if (b) openChat(b.dataset.chat); });
+onSnapshot(collection(db, 'chats'), snap => {
+  CHATS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  paintChats();
+}, err => console.warn('Chats:', err.code));
 let accounts = {}, players = {}, secrets = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
 const isOnline = id => !!players[id] && Date.now() - players[id].seen < ONLINE_MS;
 const nameOf = id => (accounts[id] && accounts[id].holder) || id;

@@ -730,7 +730,7 @@ window.corvanisAccount = (a, uid) => {
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, getDocs, setDoc, writeBatch, collection, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, addDoc, writeBatch, collection, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
@@ -833,7 +833,7 @@ function start(id, name) {
   showJoin(false);
   if (started) return;
   started = true;
-  ME_ID = id; ME_NAME = name; listenMessages(id);
+  ME_ID = id; ME_NAME = name; listenMessages(id); listenChats(id); listenPeers();
   watchAccount(id);
   beat(id, name);
   setInterval(() => beat(id, name), 60000);
@@ -906,7 +906,11 @@ function setApp(k) {
   window.scrollTo(0, 0);
 }
 /* while someone is typing in a note, don't redraw the page under them */
-function noteEditing() { return APP === 'notes' && appView.contains(document.activeElement); }
+function noteEditing() {
+  if (APP === 'notes') return appView.contains(document.activeElement);
+  if (APP === 'messages') return !!(document.activeElement && document.activeElement.closest('form[data-app-form="chat-send"]'));
+  return false;
+}
 function renderApp(force = false) {
   if (APP === 'map') return;
   if (!force && noteEditing()) return;
@@ -960,9 +964,67 @@ function walletApp(a) {
     <section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">ACTIVITY</p>${(a.log || []).map(l => `<p class="ap-log">${H(l)}</p>`).join('') || '<p>Nothing yet.</p>'}</section>
   </div>`;
 }
+let PEERS = [], CHATS = [], CHAT_OPEN = null, CHAT_MSGS = [], chatsOff = null, peersOff = null, chatMsgOff = null;
+function nameOfPeer(id) { const p = PEERS.find(x => x.id === id); return p ? p.name : id; }
+function listenPeers() {
+  if (peersOff) peersOff();
+  peersOff = onSnapshot(collection(db, 'accounts'), snap => {
+    PEERS = snap.docs.map(d => ({ id: d.id, name: d.data().holder || d.id }));
+    renderApp();
+  }, err => console.warn('Players:', err.code));
+}
+function listenChats(id) {
+  if (chatsOff) chatsOff();
+  chatsOff = onSnapshot(query(collection(db, 'chats'), where('members', 'array-contains', id)), snap => {
+    CHATS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderApp();
+  }, err => console.warn('Chats:', err.code));
+}
+function chatIdWith(peer) { return [ME_ID, peer].sort().join('__'); }
+function openChat(peer) {
+  CHAT_OPEN = peer; CHAT_MSGS = [];
+  if (chatMsgOff) chatMsgOff();
+  const id = chatIdWith(peer);
+  chatMsgOff = onSnapshot(query(collection(db, 'chats', id, 'msgs'), orderBy('createdAt', 'asc')), snap => {
+    CHAT_MSGS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderApp(true);
+  }, err => note('Chat: ' + (err.code || err.message)));
+  const c = CHATS.find(x => x.id === id);
+  if (c && c.last && c.last.from !== ME_ID) setDoc(doc(db, 'chats', id), { seen: { [ME_ID]: Date.now() } }, { merge: true }).catch(() => {});
+  renderApp(true);
+}
+function closeChat() {
+  CHAT_OPEN = null; CHAT_MSGS = [];
+  if (chatMsgOff) chatMsgOff();
+  renderApp(true);
+}
+async function sendChat(text) {
+  if (!CHAT_OPEN || !text) return;
+  const peer = CHAT_OPEN, id = chatIdWith(peer), now = Date.now(), members = [ME_ID, peer].sort();
+  try {
+    await setDoc(doc(db, 'chats', id), { members, last: { from: ME_ID, text: text.slice(0, 2000), at: now }, seen: { [ME_ID]: now } }, { merge: true });
+    await addDoc(collection(db, 'chats', id, 'msgs'), { from: ME_ID, text: text.slice(0, 2000), createdAt: serverTimestamp() });
+    renderApp(true);
+  } catch (err) { note('Could not send: ' + (err.code || err.message)); }
+}
+function chatApp() {
+  const peer = CHAT_OPEN, nm = H(nameOfPeer(peer));
+  return `<section class="ap-card"><div class="ap-row"><button class="ap-btn quiet" type="button" data-chat-back>BACK</button><span class="ap-mono">${nm}</span></div>
+    <div class="chat-log">${CHAT_MSGS.map(m => `<div class="chat-m${m.from === ME_ID ? ' me' : ''}"><span class="ap-mono">${m.from === ME_ID ? 'YOU' : H(nameOfPeer(m.from))}</span><p>${H(m.text)}</p></div>`).join('') || '<p class="ap-dim">No messages yet. Say hello.</p>'}</div>
+    <form data-app-form="chat-send"><textarea class="ap-field" name="text" rows="2" maxlength="2000" placeholder="Message ${nm}"></textarea><button class="ap-btn" type="submit">SEND</button></form></section>`;
+}
 function messagesApp() {
-  if (!MSGS.length) return '<section class="ap-card"><p>No messages yet.</p></section>';
-  return MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
+  if (CHAT_OPEN) return chatApp();
+  const others = PEERS.filter(p => p.id !== ME_ID);
+  const chats = CHATS.slice().sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
+  const starts = others.map(p => `<button class="ap-btn quiet" type="button" data-chat-with="${H(p.id)}">${H(p.name)}</button>`).join(' ') || '<p class="ap-dim">No other players yet.</p>';
+  const threads = chats.map(c => {
+    const peer = c.members.find(x => x !== ME_ID), isNew = c.last && c.last.from !== ME_ID && (!c.seen || (c.seen[ME_ID] || 0) < c.last.at);
+    const preview = c.last ? (c.last.from === ME_ID ? 'You: ' : '') + c.last.text : 'No messages yet';
+    return `<button class="ap-msg ${isNew ? 'unread' : ''}" type="button" data-chat-open="${H(peer)}"><span class="ap-mono">${H(nameOfPeer(peer))}${isNew ? ' · NEW' : ''}</span><p>${H(preview)}</p></button>`;
+  }).join('');
+  const inbox = MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
+  return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}</section>${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
 }
 function jobsApp() {
   const jobs = WORLD.jobs || [];
@@ -1034,6 +1096,7 @@ appView.addEventListener('submit', e => {
   const kind = f.dataset.appForm, data = new FormData(f);
   if (kind === 'portrait') return saveMine({ portrait: String(data.get('portrait') || '').trim().slice(0, 400) });
   if (kind === 'notebook') return saveMine({ notebook: String(data.get('notebook') || '').slice(0, 4000) });
+  if (kind === 'chat-send') return sendChat(String(data.get('text') || '').trim());
   const list = [...((ACC && ACC.contacts) || [])];
   if (kind === 'contact-add') {
     list.push({ name: String(data.get('name') || '').trim().slice(0, 40), role: String(data.get('role') || '').trim().slice(0, 40), note: String(data.get('note') || '').slice(0, 400) });
@@ -1075,6 +1138,11 @@ appView.addEventListener('input', e => {
 });
 appView.addEventListener('focusout', () => {
   setTimeout(() => { if (APP === 'notes' && !appView.contains(document.activeElement)) renderApp(true); }, 200);
+});
+appView.addEventListener('click', e => {
+  const w = e.target.closest('[data-chat-with]'); if (w) return openChat(w.dataset.chatWith);
+  const o = e.target.closest('[data-chat-open]'); if (o) return openChat(o.dataset.chatOpen);
+  if (e.target.closest('[data-chat-back]')) return closeChat();
 });
 </script>
 
