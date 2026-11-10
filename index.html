@@ -885,11 +885,25 @@ const ROW = (k, v) => `<div class="ap-row"><span>${H(k)}</span><span>${H(v)}</sp
 function listenMessages(id) {
   if (msgOff) msgOff();
   msgOff = onSnapshot(query(collection(db, 'accounts', id, 'messages'), orderBy('createdAt', 'desc')),
-    snap => { MSGS = snap.docs.map(d => ({ id: d.id, ...d.data() })); updateBadge(); renderApp(); },
+    snap => {
+      MSGS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const unread = MSGS.filter(m => !m.read);
+      if (DM_BASE !== null && unread.length > DM_BASE && unread[0]) {
+        note(`New message from ${unread[0].from || 'Unknown sender'}`);
+        browserAlert('New message', unread[0].text);
+      }
+      DM_BASE = unread.length;
+      updateBadge(); renderApp();
+    },
     err => console.warn('Messages:', err.code));
 }
+function isUnreadChat(c) {
+  if (!c.last || c.last.from === ME_ID) return false;
+  if (c.cleared && c.cleared[ME_ID] && c.last.at <= c.cleared[ME_ID]) return false;
+  return !c.seen || (c.seen[ME_ID] || 0) < c.last.at;
+}
 function updateBadge() {
-  const n = MSGS.filter(m => !m.read).length, b = document.getElementById('msg-badge');
+  const n = MSGS.filter(m => !m.read).length + CHATS.filter(isUnreadChat).length, b = document.getElementById('msg-badge');
   b.textContent = n; b.hidden = !n;
 }
 function note(t) {
@@ -977,6 +991,17 @@ function walletApp(a) {
   </div>`;
 }
 let PEERS = [], CHATS = [], CHAT_OPEN = null, CHAT_MSGS = [], chatsOff = null, peersOff = null, chatMsgOff = null;
+let CHAT_BASE = null, DM_BASE = null;
+function browserAlert(title, body) {
+  // a system notification only when the terminal is in a background tab and the player has allowed it
+  if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
+  try { new Notification(title, { body: String(body || '').slice(0, 120), tag: 'corvanis' }); } catch (e) { /* not available here */ }
+}
+function alertChat(c) {
+  const who = nameOfPeer(c.members.find(x => x !== ME_ID));
+  note(`New message from ${who}: ${c.last.text}`);
+  browserAlert(`New message from ${who}`, c.last.text);
+}
 function nameOfPeer(id) { const p = PEERS.find(x => x.id === id); return p ? p.name : id; }
 function listenPeers() {
   if (peersOff) peersOff();
@@ -988,7 +1013,11 @@ function listenPeers() {
 function listenChats(id) {
   if (chatsOff) chatsOff();
   chatsOff = onSnapshot(query(collection(db, 'chats'), where('members', 'array-contains', id)), snap => {
+    const prev = CHAT_BASE;
     CHATS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (prev !== null) CHATS.filter(c => c.last && c.last.at > prev && c.last.from !== ME_ID && isUnreadChat(c) && c.members.find(x => x !== ME_ID) !== CHAT_OPEN).forEach(alertChat);
+    CHAT_BASE = Math.max(prev || 0, ...CHATS.map(c => (c.last && c.last.at) || 0));
+    updateBadge();
     renderApp();
   }, err => console.warn('Chats:', err.code));
 }
@@ -1050,6 +1079,7 @@ async function deleteChatsForMe(peers) {
 function messagesApp() {
   if (CHAT_OPEN) return chatApp();
   const others = PEERS.filter(p => p.id !== ME_ID);
+  const alertsBtn = ('Notification' in window && Notification.permission === 'default') ? '<p><button class="ap-btn quiet" type="button" data-alerts>TURN ON BROWSER ALERTS</button></p>' : '';
   const chats = CHATS.filter(c => !c.cleared || !c.cleared[ME_ID] || (c.last && c.last.at > c.cleared[ME_ID]))
     .sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
   const starts = others.map(p => `<button class="ap-btn quiet" type="button" data-chat-with="${H(p.id)}">${H(p.name)}</button>`).join(' ') || '<p class="ap-dim">No other players yet.</p>';
@@ -1060,7 +1090,7 @@ function messagesApp() {
   }).join('');
   const bar = CHAT_PICK.size ? `<div class="chat-bar"><button class="ap-btn" type="button" data-chat-delete>DELETE ${CHAT_PICK.size} SELECTED FOR ME</button> <button class="ap-btn quiet" type="button" data-chat-clear>CLEAR</button></div>` : '';
   const inbox = MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
-  return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}</section>${bar}${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
+  return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}${alertsBtn}</section>${bar}${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
 }
 function jobsApp() {
   const jobs = WORLD.jobs || [];
@@ -1180,6 +1210,7 @@ appView.addEventListener('click', e => {
   const o = e.target.closest('[data-chat-open]'); if (o) return openChat(o.dataset.chatOpen);
   if (e.target.closest('[data-chat-back]')) return closeChat();
   if (e.target.closest('[data-chat-clear]')) { CHAT_PICK.clear(); return renderApp(true); }
+  if (e.target.closest('[data-alerts]')) { if ('Notification' in window) Notification.requestPermission().then(() => renderApp(true)); return; }
   if (e.target.closest('[data-chat-delete]')) {
     const n = CHAT_PICK.size;
     if (window.confirm(`Delete ${n} conversation(s) from your phone? The other player still keeps them.`)) return deleteChatsForMe([...CHAT_PICK]);
