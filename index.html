@@ -231,8 +231,11 @@ dd{margin:0;text-align:right}
 @media (prefers-reduced-motion: reduce){.nw-tick .run,.nw-live::before{animation:none}.nw-tick .run{padding-left:0}}
 .news li{border-left:0;padding:9px 0;border-bottom:1px solid var(--line)}
 .news li:last-child{border-bottom:0}
-body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.dm .join{display:none !important}
-body.dm{background:#020a07}
+body.dm .appbar,body.dm #app-view,body.dm .boot,body.dm .join{display:none !important}
+.dm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px;padding:8px 10px;border:1px solid var(--holo-dim);background:rgba(61,255,162,.05)}
+.dm-bar .dm-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);margin-right:8px}
+.dm-bar button{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;background:none;border:1px solid var(--holo);color:var(--holo);padding:6px 9px;cursor:pointer}
+.dm-bar button.off{border-color:#777;color:#aaa}
 .hid-ov{fill:url(#hatch);pointer-events:none}
 .loc--hid{opacity:.35}
 </style>
@@ -268,6 +271,7 @@ body.dm{background:#020a07}
         <div class="stage-title" id="stage-title"></div>
         <svg id="svg" viewBox="0 0 1470 709" role="group" aria-label="Holographic map"></svg>
       </div>
+      <div class="dm-bar" id="dm-bar" hidden></div>
       <div class="tickrow"><span id="ticker"></span></div>
       <div class="index" id="index" aria-label="Index of places on this map"></div>
       <section class="card">
@@ -578,7 +582,7 @@ function select(id){
   const g = $('file-go');
   if (it.go){ g.hidden = false; g.textContent = it.go.label; g.onclick = it.go.fn; } else { g.hidden = true; g.onclick = null; }
 }
-function render(){ ({ world:renderWorld, vantara:renderVantara, subz:renderSubz })[view](); }
+function render(){ ({ world:renderWorld, vantara:renderVantara, subz:renderSubz })[view](); if (window.paintDM) window.paintDM(); }
 function go(v){
   if (v==='subz' && LEVELS.subz!=='open') v = 'vantara';
   view = v; render();
@@ -726,7 +730,7 @@ window.corvanisAccount = (a, uid) => {
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
   authDomain: "corvallis-4a3b8.firebaseapp.com",
@@ -745,6 +749,33 @@ onSnapshot(doc(db, 'state', 'main'), snap => {
   if (!first && d.glitchAt && d.glitchAt !== lastGlitch) window.corvanisGlitch();
   lastGlitch = d.glitchAt || 0; first = false;
 }, err => console.warn('Live state unavailable:', err.code));
+/* ---------- DM controls: on this same map, only when the DM is signed in on this site ---------- */
+const dmBar = document.getElementById('dm-bar');
+let DM_USER = null;
+function dmItems() {
+  if (view === 'world') return ORDER.map(n => ({ id: n, name: n }));
+  if (view === 'vantara') return [{ id: 'apex', name: 'Apex · Orbit' }, { id: 'spires', name: 'L2 · The Spires' }, { id: 'grid', name: 'L1 · The Grid' }, { id: 'subz', name: 'L0 · SubZ' }];
+  return PLACES.filter(p => p.id !== 'terminal').map(p => ({ id: p.id, name: p.name }));
+}
+function paintDM() {
+  if (!DM || !DM_USER) { dmBar.hidden = true; return; }
+  const hid = HIDDEN[view] || [];
+  dmBar.hidden = false;
+  dmBar.innerHTML = `<span class="dm-tag">DM CONTROLS · ${esc(view.toUpperCase())}</span>` + dmItems().map(it => {
+    const off = hid.includes(it.id);
+    return `<button type="button" class="${off ? 'off' : ''}" data-dm-hide="${esc(it.id)}">${off ? 'SHOW' : 'HIDE'} · ${esc(it.name)}</button>`;
+  }).join('');
+}
+window.paintDM = paintDM;
+dmBar.addEventListener('click', async e => {
+  const b = e.target.closest('[data-dm-hide]'); if (!b) return;
+  const id = b.dataset.dmHide, list = (HIDDEN[view] || []).slice(), i = list.indexOf(id);
+  if (i >= 0) list.splice(i, 1); else list.push(id);
+  try { await setDoc(doc(db, 'state', 'main'), { hidden: { ...HIDDEN, [view]: list } }, { merge: true }); }
+  catch (err) { dmBar.querySelector('.dm-tag').textContent = 'COULD NOT SAVE · ' + (err.code || err.message); }
+});
+if (DM) onAuthStateChanged(auth, u => { DM_USER = u && u.email ? u : null; paintDM(); });
+
 /* ---------- this player's terminal: name and PIN open the account, from any browser or device ---------- */
 const joinBox = document.getElementById('join'), joinForm = document.getElementById('join-form');
 const joinName = document.getElementById('join-name'), joinPin = document.getElementById('join-pin'), joinMsg = document.getElementById('join-msg');
