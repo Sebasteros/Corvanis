@@ -89,6 +89,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     <button class="nav" type="button" data-nav="messages" aria-current="false">BROADCAST</button>
     <button class="nav" type="button" data-nav="secrets" aria-current="false">SECRETS</button>
     <div class="foot">
+      <button class="quiet" type="button" id="backup">DOWNLOAD BACKUP</button>
       <button class="quiet" type="button" id="signout">SIGN OUT</button>
     </div>
   </aside>
@@ -186,7 +187,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, deleteDoc, addDoc, collection, query, orderBy, onSnapshot, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, addDoc, collection, query, orderBy, onSnapshot, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
@@ -384,6 +385,32 @@ async function deleteSecrets(id = sel) {
   try { await deleteDoc(doc(db, 'secrets', id)); say('sec-msg', 'Secrets deleted ' + stamp() + '.'); }
   catch (e) { say('sec-msg', explain(e)); }
 }
+/* a plain-data copy of everything: accounts (with their messages), secrets and the world state */
+const plain = v => {
+  if (v && typeof v.toMillis === 'function') return new Date(v.toMillis()).toISOString();
+  if (Array.isArray(v)) return v.map(plain);
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, plain(x)]));
+  return v;
+};
+async function downloadBackup() {
+  try {
+    say('msg', 'Preparing backup…');
+    const out = { exported: new Date().toISOString(), state: null, accounts: {}, secrets: {} };
+    const st = await getDoc(stateRef); out.state = st.exists() ? plain(st.data()) : null;
+    const accs = await getDocs(accountsCol);
+    for (const d of accs.docs) {
+      const ms = await getDocs(collection(db, 'accounts', d.id, 'messages'));
+      out.accounts[d.id] = { ...plain(d.data()), messages: ms.docs.map(m => ({ id: m.id, ...plain(m.data()) })) };
+    }
+    const sec = await getDocs(secretsCol);
+    sec.forEach(d => { out.secrets[d.id] = plain(d.data()); });
+    const stamp2 = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+    const url = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' }));
+    const a = document.createElement('a'); a.href = url; a.download = `corvanis-backup-${stamp2}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    say('msg', `Backup downloaded (${Object.keys(out.accounts).length} accounts, ${Object.keys(out.secrets).length} secret files).`);
+  } catch (e) { say('msg', explain(e)); }
+}
 async function sendTo(id, from, text) {
   return addDoc(collection(db, 'accounts', id, 'messages'), { from, text, read: false, createdAt: serverTimestamp() });
 }
@@ -506,6 +533,7 @@ $('login').onsubmit = async e => {
   catch (err) { say('msg', explain(err)); }
 };
 $('signout').onclick = () => signOut(auth);
+$('backup').onclick = downloadBackup;
 
 /* ---------- live lists ---------- */
 onSnapshot(accountsCol, snap => {
