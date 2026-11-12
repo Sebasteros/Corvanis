@@ -172,6 +172,21 @@ dd{margin:0;text-align:right}
 .app-tab[aria-current="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
 .app-badge{display:inline-block;margin-left:8px;padding:0 6px;border-radius:9px;background:var(--mag);color:var(--bg);font-size:11px}
 #app-view{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+/* player photos */
+.face{width:44px;height:44px;border:1px solid var(--holo-dim);border-radius:8px;display:inline-grid;place-items:center;overflow:hidden;font-family:var(--f-display);font-size:18px;color:var(--holo);background:#03100b;flex:0 0 auto;vertical-align:middle}
+.face img{width:100%;height:100%;object-fit:cover;display:block}
+.face-lg{width:76px;height:76px;font-size:28px}
+.face-sm{width:26px;height:26px;font-size:12px;border-radius:6px;margin-right:8px}
+[data-face]{cursor:zoom-in}
+.face-view{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;cursor:zoom-out}
+.face-view img{max-width:100%;max-height:calc(100% - 48px);object-fit:contain;border:1px solid var(--holo-dim)}
+.face-view p{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--muted);margin:0}
+.ct-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.ct-head h3{margin:0}
+.chat-pick .ap-msg{display:flex;gap:12px;align-items:center}
+.chat-pick .ap-msg p{margin:2px 0 0}
+.idc-form .ap-btn{display:block;text-align:center}
+.idc-form form{margin-top:6px}
 /* Registrar ID card (Neural-Tag) */
 .idc{max-width:620px;border-radius:16px;padding:20px 22px 14px;display:flex;flex-direction:column;gap:14px;color:#e8f6ee;border:1px solid color-mix(in srgb,var(--holo) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--holo) 22%,#07110d) 0%,#07110d 46%,color-mix(in srgb,var(--holo) 10%,#07110d) 100%);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
 .idc span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;color:#8fb3a1}
@@ -1481,10 +1496,66 @@ function appHTML() {
   }
   return '';
 }
+/* ---------- player photos: a link, or a photo kept in the database (portraits/{id}) ---------- */
+const FACES = new Map();
+function faceURL(id, portrait) {
+  if (!portrait) return '';
+  if (!portrait.startsWith('db:')) return portrait;
+  const c = FACES.get(id);
+  if (c && c.key === portrait) return c.url;
+  FACES.set(id, { key: portrait, url: c ? c.url : '' });
+  getDoc(doc(db, 'portraits', id)).then(s => { FACES.set(id, { key: portrait, url: s.exists() ? (s.data().data || '') : '' }); renderApp(); }).catch(() => {});
+  return c ? c.url : '';
+}
+const portraitOf = id => id === ME_ID ? ((ACC && ACC.portrait) || '') : ((PEERS.find(p => p.id === id) || {}).portrait || '');
+function face(id, name, cls = '', view = true) {
+  const url = faceURL(id, portraitOf(id));
+  return `<span class="face ${cls}"${url && view ? ` data-face="${H(id)}" role="button" tabindex="0" aria-label="View photo of ${H(name)}"` : ''}>${url ? `<img src="${H(url)}" alt="">` : H(String(name || '?').slice(0, 1).toUpperCase())}</span>`;
+}
+function showFace(id) {
+  const url = faceURL(id, portraitOf(id)); if (!url) return;
+  const v = document.createElement('div'); v.className = 'face-view'; v.setAttribute('role', 'dialog'); v.setAttribute('aria-label', 'Photo');
+  v.innerHTML = `<img src="${H(url)}" alt="Photo of ${H(id === ME_ID ? ME_NAME : nameOfPeer(id))}"><p>${H((id === ME_ID ? ME_NAME : nameOfPeer(id)).toUpperCase())} · TAP TO CLOSE</p>`;
+  const close = () => { v.remove(); document.removeEventListener('keydown', esc); }, esc = e => { if (e.key === 'Escape') close(); };
+  v.onclick = close; document.addEventListener('keydown', esc); document.body.appendChild(v);
+}
+const readDataURL = file => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => no(r.error); r.readAsDataURL(file); });
+/* only for photos too big for the database: keeps the whole picture, never crops */
+async function fitImage(file) {
+  const src = URL.createObjectURL(file), img = new Image();
+  try {
+    await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('That file is not a picture this browser can read.')); img.src = src; });
+    let side = 1600, q = 0.9, out = '';
+    for (let i = 0; i < 10; i++) {
+      const k = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.naturalWidth * k)); c.height = Math.max(1, Math.round(img.naturalHeight * k));
+      const g = c.getContext('2d'); g.fillStyle = '#0b0f14'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+      out = c.toDataURL('image/jpeg', q);
+      if (out.length <= 950000) return out;
+      if (q > 0.72) q -= 0.08; else side = Math.round(side * 0.85);
+    }
+    throw new Error('That photo is too large to store.');
+  } finally { URL.revokeObjectURL(src); }
+}
+async function uploadPortrait(file) {
+  if (!file || !ME_ID) return;
+  if (!file.type.startsWith('image/')) return note('Pick a picture file.');
+  note('Saving photo…');
+  try {
+    const asIs = file.size <= 700000, data = asIs ? await readDataURL(file) : await fitImage(file), at = Date.now();
+    await setDoc(doc(db, 'portraits', ME_ID), { data, at });
+    FACES.set(ME_ID, { key: 'db:' + at, url: data });
+    await setDoc(doc(db, 'accounts', ME_ID), { portrait: 'db:' + at }, { merge: true });
+    note(asIs ? 'Photo saved exactly as it is.' : 'Photo saved. It was over the size limit, so it was fitted without cropping.');
+  } catch (err) { note('Could not save photo: ' + (err.code || err.message)); }
+}
+document.addEventListener('click', e => { const f = e.target.closest('[data-face]'); if (f && !e.target.closest('.face-view')) showFace(f.dataset.face); });
+document.addEventListener('keydown', e => { const f = e.target.closest && e.target.closest('[data-face]'); if (f && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); showFace(f.dataset.face); } });
 function tagApp(a) {
   const passes = a.passes || [], name = a.holder || ME_NAME, standing = a.standing || 'Clean';
   const sc = standing === 'Flagged' ? 'var(--red)' : standing === 'Under Review' ? 'var(--amber)' : 'var(--holo)';
   const cell = (k, v, wide) => `<div${wide ? ' class="wide"' : ''}><span>${H(k)}</span><b>${H(v)}</b></div>`;
+  const myFace = faceURL(ME_ID, a.portrait || ''), isLink = !!a.portrait && !a.portrait.startsWith('db:');
   return `<div class="idc">
     <div class="idc-top">
       <div class="idc-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 36 11v18L20 38 4 29V11z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M13 14h14M13 20h14M13 26h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><div><b>REGISTRAR</b><span>VANTARA CIVIC ID</span></div></div>
@@ -1492,8 +1563,12 @@ function tagApp(a) {
     </div>
     <div class="idc-body">
       <div>
-        <div class="ap-portrait">${a.portrait ? `<img src="${H(a.portrait)}" alt="">` : H(name.slice(0, 1).toUpperCase())}</div>
-        <form data-app-form="portrait" class="idc-form"><input class="ap-field" name="portrait" aria-label="Portrait picture link" placeholder="Picture link" value="${H(a.portrait || '')}"><button class="ap-btn" type="submit">SAVE PORTRAIT</button></form>
+        <div class="ap-portrait"${myFace ? ` data-face="${H(ME_ID)}" role="button" tabindex="0" aria-label="View your photo"` : ''}>${myFace ? `<img src="${H(myFace)}" alt="">` : H(name.slice(0, 1).toUpperCase())}</div>
+        <div class="idc-form">
+          <label class="ap-btn">CHOOSE PHOTO<input type="file" accept="image/*" data-portrait-file hidden></label>
+          <form data-app-form="portrait"><input class="ap-field" name="portrait" aria-label="Picture link" placeholder="or paste a link" value="${H(isLink ? a.portrait : '')}"><button class="ap-btn quiet" type="submit">SAVE LINK</button></form>
+          ${a.portrait ? '<button class="ap-btn quiet" type="button" data-portrait-clear style="margin-top:6px">REMOVE PHOTO</button>' : ''}
+        </div>
       </div>
       <div>
         <span>HOLDER</span><h3>${H(name)}</h3>
@@ -1572,7 +1647,7 @@ function nameOfPeer(id) { const p = PEERS.find(x => x.id === id); return p ? p.n
 function listenPeers() {
   if (peersOff) peersOff();
   peersOff = onSnapshot(collection(db, 'accounts'), snap => {
-    PEERS = snap.docs.map(d => ({ id: d.id, name: d.data().holder || d.id }));
+    PEERS = snap.docs.map(d => ({ id: d.id, name: d.data().holder || d.id, portrait: d.data().portrait || '' }));
     renderApp();
   }, err => console.warn('Players:', err.code));
 }
@@ -1631,7 +1706,7 @@ function chatApp() {
     last = t;
     bubbles += `<div class="bub-row${m.from === ME_ID ? ' me' : ''}"><div class="bub">${H(m.text)}</div></div>`;
   }
-  return `<section class="ap-card"><div class="ap-row"><button class="ap-btn quiet" type="button" data-chat-back>BACK</button><span class="ap-mono">${nm}</span></div>
+  return `<section class="ap-card"><div class="ap-row"><button class="ap-btn quiet" type="button" data-chat-back>BACK</button><span class="ct-head" style="margin:0">${face(peer, nameOfPeer(peer))}<span class="ap-mono" style="margin:0">${nm}</span></span></div>
     <div class="chat-log">${bubbles || '<p class="ap-dim">No messages yet. Say hello.</p>'}</div>
     <form data-app-form="chat-send" class="chat-form"><textarea class="ap-field" name="text" rows="2" maxlength="2000" placeholder="Message ${nm}"></textarea><button class="ap-btn" type="submit">SEND</button></form></section>`;
 }
@@ -1648,11 +1723,11 @@ function messagesApp() {
   const alertsBtn = ('Notification' in window && Notification.permission === 'default') ? '<p><button class="ap-btn quiet" type="button" data-alerts>TURN ON BROWSER ALERTS</button></p>' : '';
   const chats = CHATS.filter(c => !c.cleared || !c.cleared[ME_ID] || (c.last && c.last.at > c.cleared[ME_ID]))
     .sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
-  const starts = others.map(p => `<button class="ap-btn quiet" type="button" data-chat-with="${H(p.id)}">${H(p.name)}</button>`).join(' ') || '<p class="ap-dim">No other players yet.</p>';
+  const starts = others.map(p => `<button class="ap-btn quiet" type="button" data-chat-with="${H(p.id)}">${face(p.id, p.name, 'face-sm', false)}${H(p.name)}</button>`).join(' ') || '<p class="ap-dim">No other players yet.</p>';
   const threads = chats.map(c => {
     const peer = c.members.find(x => x !== ME_ID), isNew = c.last && c.last.from !== ME_ID && (!c.seen || (c.seen[ME_ID] || 0) < c.last.at);
     const preview = c.last ? (c.last.from === ME_ID ? 'You: ' : '') + c.last.text : 'No messages yet';
-    return `<div class="chat-pick"><input type="checkbox" data-chat-pick="${H(peer)}" aria-label="Select this chat"${CHAT_PICK.has(peer) ? ' checked' : ''}><button class="ap-msg ${isNew ? 'unread' : ''}" type="button" data-chat-open="${H(peer)}"><span class="ap-mono">${H(nameOfPeer(peer))}${isNew ? ' · NEW' : ''}</span><p>${H(preview)}</p></button></div>`;
+    return `<div class="chat-pick"><input type="checkbox" data-chat-pick="${H(peer)}" aria-label="Select this chat"${CHAT_PICK.has(peer) ? ' checked' : ''}><button class="ap-msg ${isNew ? 'unread' : ''}" type="button" data-chat-open="${H(peer)}">${face(peer, nameOfPeer(peer), '', false)}<span><span class="ap-mono">${H(nameOfPeer(peer))}${isNew ? ' · NEW' : ''}</span><p>${H(preview)}</p></span></button></div>`;
   }).join('');
   const bar = CHAT_PICK.size ? `<div class="chat-bar"><button class="ap-btn" type="button" data-chat-delete>DELETE ${CHAT_PICK.size} SELECTED FOR ME</button> <button class="ap-btn quiet" type="button" data-chat-clear>CLEAR</button></div>` : '';
   const inbox = MSGS.map(m => `<button class="ap-msg ${m.read ? '' : 'unread'}" type="button" data-msg="${H(m.id)}"><span class="ap-mono">FROM · ${H(m.from || 'Unknown sender')}${m.read ? '' : ' · NEW'}</span><p>${H(m.text)}</p></button>`).join('');
@@ -1675,12 +1750,15 @@ function jobsApp() {
     <div class="jb-grid">${[...jobs].sort((a, b) => ord[a.st] - ord[b.st]).map(card).join('')}</div>`;
 }
 function contactsApp(a) {
-  const list = a.contacts || [];
-  const cards = list.map((c, i) => `<section class="ap-card"><h3>${H(c.name)}</h3><p class="ap-mono">${H(c.role || '')}</p>
+  const list = a.contacts || [], others = PEERS.filter(p => p.id !== ME_ID);
+  const peerOf = c => others.find(p => p.id === c.pid) || others.find(p => p.name.toLowerCase() === String(c.name || '').toLowerCase());
+  const cards = list.map((c, i) => { const p = peerOf(c); return `<section class="ap-card"><div class="ct-head">${p ? face(p.id, p.name, 'face-lg') : `<span class="face face-lg">${H(String(c.name || '?').slice(0, 1).toUpperCase())}</span>`}<div><h3>${H(c.name)}</h3><p class="ap-mono" style="margin:4px 0 0">${H(c.role || '')}${p ? (c.role ? ' · ' : '') + 'ON THE NETWORK' : ''}</p></div></div>
     <form data-app-form="contact-note" data-idx="${i}"><textarea class="ap-field" name="note" rows="2" placeholder="Your private note">${H(c.note || '')}</textarea>
-    <button class="ap-btn" type="submit">SAVE NOTE</button> <button class="ap-btn quiet" type="button" data-remove="${i}">REMOVE</button></form></section>`).join('');
+    <button class="ap-btn" type="submit">SAVE NOTE</button> <button class="ap-btn quiet" type="button" data-remove="${i}">REMOVE</button></form></section>`; }).join('');
+  const fresh = others.filter(p => !list.some(c => { const m = peerOf(c); return m && m.id === p.id; }));
   return `<div class="ap-grid">${cards}
     <section class="ap-card"><p class="ap-mono">ADD CONTACT</p>
+      ${fresh.length ? `<p class="ap-mono" style="margin-top:8px">PLAYERS ON THE NETWORK · TAP TO ADD</p><p>${fresh.map(p => `<button class="ap-btn quiet" type="button" data-contact-player="${H(p.id)}">${face(p.id, p.name, 'face-sm', false)}${H(p.name)}</button>`).join(' ')}</p><p class="ap-mono" style="margin-top:12px">OR SOMEONE ELSE</p>` : ''}
       <form data-app-form="contact-add"><input class="ap-field" name="name" placeholder="Name" required><input class="ap-field" name="role" placeholder="Who are they to you?"><textarea class="ap-field" name="note" rows="2" placeholder="Private note"></textarea><button class="ap-btn" type="submit">ADD CONTACT</button></form>
     </section>
   </div>`;
@@ -1732,9 +1810,13 @@ appView.addEventListener('click', e => {
   const m = e.target.closest('[data-msg]'); if (m) return markRead(m.dataset.msg);
   const sn = e.target.closest('[data-node]'); if (sn) { ST_SEL = sn.dataset.node; ST_ARM = null; return renderApp(true); }
   const sb = e.target.closest('[data-st-buy]'); if (sb) return buyAugment(sb.dataset.stBuy);
+  if (e.target.closest('[data-portrait-clear]')) return saveMine({ portrait: '' });
+  const cp = e.target.closest('[data-contact-player]');
+  if (cp) { const p = PEERS.find(x => x.id === cp.dataset.contactPlayer); if (p) saveMine({ contacts: [...((ACC && ACC.contacts) || []), { name: p.name, role: '', note: '', pid: p.id }] }); return; }
   const r = e.target.closest('[data-remove]');
   if (r) { const list = [...((ACC && ACC.contacts) || [])]; list.splice(Number(r.dataset.remove), 1); saveMine({ contacts: list }); }
 });
+appView.addEventListener('change', e => { if (e.target.matches('[data-portrait-file]')) uploadPortrait(e.target.files[0]); });
 appView.addEventListener('keydown', e => {
   const sn = e.target.closest && e.target.closest('[data-node]');
   if (sn && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); ST_SEL = sn.dataset.node; ST_ARM = null; renderApp(true); }
@@ -1743,7 +1825,7 @@ appView.addEventListener('submit', e => {
   const f = e.target.closest('form[data-app-form]'); if (!f) return;
   e.preventDefault();
   const kind = f.dataset.appForm, data = new FormData(f);
-  if (kind === 'portrait') return saveMine({ portrait: String(data.get('portrait') || '').trim().slice(0, 400) });
+  if (kind === 'portrait') { const link = String(data.get('portrait') || '').trim().slice(0, 400); return link ? saveMine({ portrait: link }) : note('Paste a picture link first.'); }
   if (kind === 'notebook') return saveMine({ notebook: String(data.get('notebook') || '').slice(0, 4000) });
   if (kind === 'chat-send') return sendChat(String(data.get('text') || '').trim());
   const list = [...((ACC && ACC.contacts) || [])];

@@ -783,7 +783,7 @@ const FIELDS = [
   { k: 'standing', label: 'Registrar standing', t: 'select', opts: ['Clean', 'Under Review', 'Flagged'] },
   { k: 'chrome', label: 'Chrome ID issued', t: 'check' },
   { k: 'implants', label: 'Implants on record (comma separated)', t: 'text' },
-  { k: 'portrait', label: 'Portrait link', t: 'text' },
+  { k: 'portrait', label: 'Portrait (a link, or db:… for an uploaded photo)', t: 'text' },
   { k: 'wallet', label: 'Credits', t: 'num' },
   { k: 'principal', label: 'Debt principal', t: 'num' },
   { k: 'fees', label: 'Interest and fees', t: 'num' },
@@ -1009,7 +1009,7 @@ async function saveAccount() {
 async function deleteAccount() {
   if (!sel) return;
   if (!window.confirm(`Delete the account of ${nameOf(sel)}? Their balance, phone and messages are removed for good.`)) return;
-  try { await deleteDoc(doc(db, 'accounts', sel)); sel = null; renderList(); renderTab(); }
+  try { await deleteDoc(doc(db, 'accounts', sel)); deleteDoc(doc(db, 'portraits', sel)).catch(() => {}); sel = null; renderList(); renderTab(); }
   catch (e) { say('acc-msg', explain(e)); }
 }
 async function saveSecrets() {
