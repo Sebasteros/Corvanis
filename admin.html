@@ -289,6 +289,9 @@ const FIELDS = [
   { k: 'minDue', label: 'Minimum due', t: 'num' },
   { k: 'due', label: 'Next visit', t: 'text' },
   { k: 'grid', label: 'Shift Pass · The Grid', t: 'check' },
+  { k: 'loadLimit', label: 'Load limit (equal to CON score)', t: 'num' },
+  { k: 'augments', label: 'Augment node ids owned (comma separated, see the wiki Augments page)', t: 'text' },
+  { k: 'cover', label: 'Vitalis cover', t: 'select', opts: ['Walk-in', 'Grid Cover', 'Spire Cover', 'Apex Cover'] },
   { k: 'log', label: 'Activity (one entry per line, newest first)', t: 'area' }
 ];
 function valueOf(a, f) {
@@ -298,6 +301,8 @@ function valueOf(a, f) {
   if (f.k === 'standing') return a.standing || 'Clean';
   if (f.k === 'tier') return a.tier || 'Sublevel Zero';
   if (f.k === 'chrome') return !!a.chrome;
+  if (f.k === 'augments') return (a.augments || []).join(', ');
+  if (f.k === 'cover') return a.cover || 'Walk-in';
   if (f.t === 'num') return a[f.k] ?? (f.k === 'rate' ? 2 : 0);
   return a[f.k] ?? '';
 }
@@ -318,6 +323,7 @@ function readAccount() {
     if (f.t === 'check') out[f.k] = el.checked;
     else if (f.k === 'implants') out.implants = el.value.split(',').map(s => s.trim()).filter(Boolean);
     else if (f.k === 'log') out.log = el.value.split('\n').map(s => s.trim()).filter(Boolean);
+    else if (f.k === 'augments') out.augments = el.value.split(',').map(s => s.trim()).filter(Boolean);
     else if (f.t === 'num') out[f.k] = Number(el.value) || 0;
     else out[f.k] = el.value.trim();
   }

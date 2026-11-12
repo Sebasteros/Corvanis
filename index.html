@@ -167,6 +167,11 @@ dd{margin:0;text-align:right}
 .join .join-msg{color:var(--amber)}
 /* terminal apps: tabs under the header; the map stays the default */
 .appbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ap-aug{border-top:1px solid var(--line);padding:8px 0}
+.ap-aug p{margin:2px 0}
+.ap-dim{opacity:.45}
+.ap-cyan{color:var(--holo)}
+.ap-on{border-color:var(--holo)}
 .app-tab{position:relative;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;padding:8px 12px;border:1px solid var(--line);color:var(--muted);background:none;cursor:pointer}
 .app-tab:hover{color:var(--holo);border-color:var(--holo-dim)}
 .app-tab[aria-current="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
@@ -265,6 +270,8 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
     <button type="button" class="app-tab" data-app="map" aria-current="true">MAP</button>
     <button type="button" class="app-tab" data-app="tag" aria-current="false">NEURAL-TAG</button>
     <button type="button" class="app-tab" data-app="wallet" aria-current="false">WALLET</button>
+    <button type="button" class="app-tab" data-app="augments" aria-current="false">AUGMENTS</button>
+    <button type="button" class="app-tab" data-app="vitalis" aria-current="false">VITALIS</button>
     <button type="button" class="app-tab" data-app="messages" aria-current="false">MESSAGES<span class="app-badge" id="msg-badge" hidden>0</span></button>
     <button type="button" class="app-tab" data-app="jobs" aria-current="false">JOBS</button>
     <button type="button" class="app-tab" data-app="contacts" aria-current="false">CONTACTS</button>
@@ -358,6 +365,14 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
 <script src="map-data.js"></script>
 <script>
 /* ---------- DM-EDITABLE STATE (update between sessions) ---------- */
+/* Augment skill trees (from the Corvanis wiki, data/augment_tree.json). Read-only for players. */
+const AUG_TREE = [{"id": "reflex", "name": "Reflex", "nodes": [{"id": "reflex-quick-tendon", "name": "Quick Tendon", "tier": 1, "load": 1, "credits": 300, "effect": "Your speed increases by 5 feet."}, {"id": "reflex-grip-assist", "name": "Grip Assist", "tier": 1, "load": 1, "credits": 300, "effect": "+1 to Athletics checks to grab, hold, or climb."}, {"id": "reflex-dash-coil", "name": "Dash Coil", "tier": 2, "load": 2, "credits": 900, "effect": "Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest."}, {"id": "reflex-lightning-step", "name": "Lightning Step", "tier": 2, "load": 2, "credits": 900, "effect": "Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks."}, {"id": "reflex-reflex-core", "name": "Reflex Core", "tier": 3, "load": 3, "credits": 2500, "effect": "Your speed increases by 10 feet. You cannot be surprised."}, {"id": "reflex-reaction-surge", "name": "Reaction Surge", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, take an extra reaction on your turn. Costs 2 Surge."}]}, {"id": "optic", "name": "Optic", "nodes": [{"id": "optic-night-lens", "name": "Night Lens", "tier": 1, "load": 1, "credits": 300, "effect": "You have darkvision out to 30 feet."}, {"id": "optic-target-lock", "name": "Target Lock", "tier": 1, "load": 1, "credits": 300, "effect": "+1 to ranged attacks against a creature you can see clearly."}, {"id": "optic-thermal-eye", "name": "Thermal Eye", "tier": 2, "load": 2, "credits": 900, "effect": "For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness."}, {"id": "optic-zoom-glass", "name": "Zoom Glass", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on Perception checks to spot something at range."}, {"id": "optic-overlay", "name": "Overlay", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per short rest, learn the current health and augment types of a creature you can see."}, {"id": "optic-kill-frame", "name": "Kill Frame", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, when a ranged attack of yours misses, reroll it."}]}, {"id": "dermal", "name": "Dermal", "nodes": [{"id": "dermal-sealant-layer", "name": "Sealant Layer", "tier": 1, "load": 1, "credits": 300, "effect": "+1 AC while you are not wearing armor."}, {"id": "dermal-bleed-seal", "name": "Bleed Seal", "tier": 1, "load": 1, "credits": 300, "effect": "As an action, stop your own bleeding."}, {"id": "dermal-ablative-weave", "name": "Ablative Weave", "tier": 2, "load": 2, "credits": 900, "effect": "Reaction, once per short rest: reduce the damage of one attack by 1d6."}, {"id": "dermal-poison-filter", "name": "Poison Filter", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on saving throws against poison."}, {"id": "dermal-mesh-skin", "name": "Mesh Skin", "tier": 3, "load": 3, "credits": 2500, "effect": "+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)"}, {"id": "dermal-flash-sheath", "name": "Flash Sheath", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, become resistant to one damage type for 1 minute."}]}, {"id": "frame", "name": "Frame", "nodes": [{"id": "frame-bone-lattice", "name": "Bone Lattice", "tier": 1, "load": 1, "credits": 300, "effect": "Your carrying capacity doubles. +1 to Strength checks to lift or push."}, {"id": "frame-tool-hand", "name": "Tool Hand", "tier": 1, "load": 1, "credits": 300, "effect": "An extra arm. You can hold a second object or use a tool in your free hand as part of another action."}, {"id": "frame-hydraulic-grip", "name": "Hydraulic Grip", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on grapple and shove checks."}, {"id": "frame-load-bearer", "name": "Load Bearer", "tier": 2, "load": 2, "credits": 900, "effect": "Your Load limit increases by 1."}, {"id": "frame-ram-frame", "name": "Ram Frame", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per turn, shove a creature as a bonus action."}, {"id": "frame-reinforced-spine", "name": "Reinforced Spine", "tier": 3, "load": 3, "credits": 2500, "effect": "Resistance to falling damage. You cannot be knocked prone by a single attack."}]}, {"id": "neural", "name": "Neural", "nodes": [{"id": "neural-port-jack", "name": "Port Jack", "tier": 1, "load": 1, "credits": 300, "effect": "You can jack into a deck. Required for Netrunners."}, {"id": "neural-voice-filter", "name": "Voice Filter", "tier": 1, "load": 1, "credits": 300, "effect": "+2 to Deception checks made through a device. You can change your voice."}, {"id": "neural-buffer", "name": "Buffer", "tier": 2, "load": 2, "credits": 900, "effect": "Your maximum Surge increases by 1."}, {"id": "neural-rig-link", "name": "Rig Link", "tier": 2, "load": 2, "credits": 900, "effect": "Intrusions you cast may be cast through a device within 120 feet, if you can see the device."}, {"id": "neural-deep-net", "name": "Deep Net", "tier": 3, "load": 3, "credits": 2500, "effect": "You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost."}, {"id": "neural-neural-shield", "name": "Neural Shield", "tier": 3, "load": 3, "credits": 2500, "effect": "Advantage on Intelligence and Wisdom saving throws against mental effects."}]}];
+const COVER_TIERS = [
+  { name:"Walk-in", price:"200 cr per treatment", what:"Stabilization and basic repairs. No subscription." },
+  { name:"Grid Cover", price:"50 cr per cycle", what:"Response within the scene in the Grid. Stabilization at 0 HP once per cycle. Common augment installs." },
+  { name:"Spire Cover", price:"200 cr per cycle", what:"Priority response across the Spires. Mil-spec installs at 25% off." },
+  { name:"Apex Cover", price:"800 cr per cycle", what:"Full coverage on the Tether route and in Apex. Prime installs, emergency transport, any augment repair." }
+];
 let CYCLE = 1;
 let WALLET = 1000;
 let DEBT = { principal: 40000, fees: 8000, rate: 2, minDue: 1000, due: 'Cycle 02' };
@@ -948,6 +963,8 @@ function appHTML() {
   switch (APP) {
     case 'tag': return tagApp(a);
     case 'wallet': return walletApp(a);
+    case 'augments': return augmentsApp(a);
+    case 'vitalis': return vitalisApp(a);
     case 'messages': return messagesApp();
     case 'jobs': return jobsApp();
     case 'contacts': return contactsApp(a);
@@ -975,6 +992,35 @@ function tagApp(a) {
       <form data-app-form="portrait"><input class="ap-field" name="portrait" placeholder="Paste a picture link" value="${H(a.portrait || '')}"><button class="ap-btn" type="submit">SAVE PORTRAIT</button></form>
     </section>
   </div>`;
+}
+function augOwned(a) { return new Set(Array.isArray(a.augments) ? a.augments : []); }
+function augLoadUsed(a) {
+  const owned = augOwned(a); let used = 0;
+  AUG_TREE.forEach(l => l.nodes.forEach(n => { if (owned.has(n.id)) used += n.load; }));
+  return used;
+}
+function augState(a, line, node) {
+  const owned = augOwned(a);
+  if (owned.has(node.id)) return 'owned';
+  if (node.tier === 1) return 'open';
+  const need = node.tier - 1;
+  const ok = line.nodes.some(n => n.tier === need && owned.has(n.id));
+  return ok ? 'open' : 'locked';
+}
+function augmentsApp(a) {
+  const limit = Number(a.loadLimit) || 0, used = augLoadUsed(a);
+  const over = used > limit;
+  const head = `<section class="ap-card"><p class="ap-mono">LOAD</p><p class="ap-big${over ? ' ap-amber' : ''}">${used} / ${limit}</p>${over ? '<p class="ap-mono ap-amber">Over limit. Expect Glitches. Ask your DM before the next cycle.</p>' : '<p class="ap-mono">Within limit.</p>'}<p class="ap-mono">Tiers: I = 1 Load · II = 2 Load · III = 3 Load. Tier II needs a Tier I node in the same line. Tier III needs a Tier II node in the same line.</p></section>`;
+  const lines = AUG_TREE.map(l => `<section class="ap-card"><p class="ap-mono">${H(l.name.toUpperCase())} LINE</p>${l.nodes.map(n => {
+    const st = augState(a, l, n);
+    const tag = st === 'owned' ? '<span class="ap-mono">OWNED</span>' : st === 'open' ? '<span class="ap-mono ap-cyan">AVAILABLE</span>' : '<span class="ap-mono">LOCKED</span>';
+    return `<div class="ap-aug${st === 'locked' ? ' ap-dim' : ''}"><p><strong>${H(n.name)}</strong> · Tier ${['I','II','III'][n.tier-1]} · ${n.load} Load · ${NUM(n.credits)} cr ${tag}</p><p class="ap-mono">${H(n.effect)}</p></div>`;
+  }).join('')}</section>`).join('');
+  return `<div class="ap-grid">${head}${lines}</div>`;
+}
+function vitalisApp(a) {
+  const cur = a.cover || 'Walk-in';
+  return `<div class="ap-grid"><section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">VITALIS RESCUE · YOUR COVER</p><p class="ap-big">${H(cur)}</p><p class="ap-mono">Every treatment is logged to your Registrar file.</p></section>${COVER_TIERS.map(t => `<section class="ap-card${t.name === cur ? ' ap-on' : ''}"><p class="ap-mono">${H(t.name.toUpperCase())}${t.name === cur ? ' · ACTIVE' : ''}</p><p>${H(t.what)}</p><p class="ap-mono">${H(t.price)}</p></section>`).join('')}</div>`;
 }
 function walletApp(a) {
   const owed = (a.principal || 0) + (a.fees || 0);
