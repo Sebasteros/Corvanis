@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roles | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html" class="on">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="roles">Roles</h1>
+<p>A Role is what your character does for money and survival. Corvanis has seven Roles. Each follows the shape of a 5e class, with its own names and mechanics. Features are listed for levels 1 to 5. Characters start at level 2, so they have every feature up to level 2.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Hit Die</th>
+<th>Saves</th>
+<th>Surge Ability</th>
+<th>Works like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#edgerunner">Edgerunner</a></td>
+<td>d10</td>
+<td>STR, CON</td>
+<td>CON</td>
+<td>Fighter</td>
+</tr>
+<tr>
+<td><a href="#infiltrator">Infiltrator</a></td>
+<td>d8</td>
+<td>DEX, INT</td>
+<td>DEX</td>
+<td>Rogue</td>
+</tr>
+<tr>
+<td><a href="#netrunner">Netrunner</a></td>
+<td>d6</td>
+<td>INT, WIS</td>
+<td>INT</td>
+<td>Wizard, with Intrusions</td>
+</tr>
+<tr>
+<td><a href="#fixer">Fixer</a></td>
+<td>d8</td>
+<td>DEX, CHA</td>
+<td>CHA</td>
+<td>Bard</td>
+</tr>
+<tr>
+<td><a href="#techie">Techie</a></td>
+<td>d8</td>
+<td>CON, INT</td>
+<td>INT</td>
+<td>Artificer</td>
+</tr>
+<tr>
+<td><a href="#enforcer">Enforcer</a></td>
+<td>d12</td>
+<td>STR, CON</td>
+<td>CON</td>
+<td>Barbarian</td>
+</tr>
+<tr>
+<td><a href="#medtech">Medtech</a></td>
+<td>d8</td>
+<td>WIS, CHA</td>
+<td>WIS</td>
+<td>Cleric, with no spells</td>
+</tr>
+</tbody>
+</table>
+<p>Each Role lists its starting augment (see <a href="augments.html">Augments</a>) and starting gear (see <a href="gear.html">Gear</a>).</p>
+<h2 id="edgerunner">Edgerunner</h2>
+<p><em>Trained to take the hit, and to keep going.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> All armor and shields. Simple and martial weapons.</li>
+<li><strong>Skills:</strong> Choose two from Acrobatics, Athletics, Intimidation, Perception, Survival.</li>
+<li><strong>Starting augment:</strong> Quick Tendon.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Combat Training:</strong> Choose one fighting style: Defender (+1 AC while wearing armor), Duelist (+2 damage with one-handed weapons), Marksman (+2 attack with ranged weapons), or Street Brawler (unarmed strikes deal 1d6 + STR). <strong>Adrenal Patch:</strong> As a bonus action, heal 1d10 + your level. Once per short or long rest.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Reflex Burst:</strong> Once per short rest, take one extra action on your turn. A second use in the same rest costs 1 Surge.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Gunslinger (ignore disadvantage from ranged attacks at 30 feet or less), Blade Dancer (when you hit with a melee weapon, you may move 5 feet without provoking), or Iron Frame (augments you own cost 1 less Load).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Extra Attack:</strong> Attack twice when you take the Attack action. <strong>Brace:</strong> Reaction, reduce damage taken by 1d10 + CON modifier. Once per short rest.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="infiltrator">Infiltrator</h2>
+<p><em>Never where they expect you, and never the one they remember.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> Light armor. Simple weapons, hand crossbows, and pistols.</li>
+<li><strong>Skills:</strong> Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Persuasion, Sleight of Hand, Stealth.</li>
+<li><strong>Tools:</strong> Thieves' tools or a Disguise kit.</li>
+<li><strong>Starting augment:</strong> Night Lens.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Blindside:</strong> Once per turn, deal extra damage when you have advantage on the attack, or an ally is within 5 feet of the target. Extra damage is 1d6 at level 1, 2d6 at level 3, and 3d6 at level 5. <strong>Tradecraft:</strong> Expertise in two skills of your choice.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Ghost Step:</strong> As a bonus action, Dash, Disengage, or Hide.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Silent Hand (Sleight of Hand checks to hide an object cost no action), Ghost Line (you can leave a scene by a route no one saw), or Crack Cover (a Hide action that also ends a grapple on you).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Uncanny Dodge:</strong> Reaction, halve the damage of one attack that hits you.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="netrunner">Netrunner</h2>
+<p><em>The city is a grid. You can walk it without moving.</em></p>
+<p>Netrunners work through a deck, which is a rig with a jack. They do not use magic. They run <strong>Intrusions</strong>: programs that hit, disable, hide, and protect, paid for with Surge.</p>
+<ul>
+<li><strong>Armor and weapons:</strong> Simple weapons. No armor (armor blocks the rig). Light armor is allowed only with a GM-approved exception.</li>
+<li><strong>Skills:</strong> Choose two from Arcana (for Systems), History, Insight, Investigation, Medicine, Perception.</li>
+<li><strong>Tools:</strong> Deck (your rig, see below).</li>
+<li><strong>Starting augment:</strong> Port Jack.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Rig:</strong> You have a deck. You know three Intrusions. <strong>Ghost Protocol:</strong> Reaction, when a check using a device or system fails, reroll it. Once per short rest.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>You learn one more Intrusion. <strong>Sub-Routine:</strong> Choose a specialty below.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>You learn one more Intrusion.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>You learn one more Intrusion.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sub-Routine options (level 2):</strong> Ghost Runner (Ghost Ping costs 0 Surge once per rest), Crowd Hacker (Lockout affects up to two targets), or Shield Runner (Overwatch can protect two allies).</p>
+<h3 id="intrusions">Intrusions</h3>
+<p>Intrusions cost Surge. The save DC for an Intrusion is 8 + proficiency bonus + INT modifier. The attack bonus is proficiency bonus + INT modifier.</p>
+<table>
+<thead>
+<tr>
+<th>Intrusion</th>
+<th>Surge</th>
+<th>Range</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Glitch Bolt</td>
+<td>0</td>
+<td>60 ft</td>
+<td>Ranged attack, 1d6 force damage. Free to use.</td>
+</tr>
+<tr>
+<td>Lockout</td>
+<td>2</td>
+<td>60 ft</td>
+<td>Target makes a CON save. On a failure, one augment it has is disabled until the end of its next turn.</td>
+</tr>
+<tr>
+<td>Ghost Ping</td>
+<td>1</td>
+<td>120 ft</td>
+<td>For 1 minute, you can see through any camera, drone, or screen in range.</td>
+</tr>
+<tr>
+<td>Overwatch</td>
+<td>1 (reaction)</td>
+<td>30 ft</td>
+<td>When an ally in range is attacked, that attack has disadvantage.</td>
+</tr>
+<tr>
+<td>Mirror Feed</td>
+<td>2</td>
+<td>Self</td>
+<td>For 1 minute, once, the first attack against you that would hit has disadvantage.</td>
+</tr>
+<tr>
+<td>Brick</td>
+<td>3</td>
+<td>60 ft</td>
+<td>Target makes an INT save. On a failure, it is stunned until the end of its next turn.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fixer">Fixer</h2>
+<p><em>Everyone owes somebody. You know who, and how much.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> Light armor. Simple weapons, hand crossbows, and pistols.</li>
+<li><strong>Skills:</strong> Any three.</li>
+<li><strong>Tools:</strong> One set of musical instruments or one gaming set.</li>
+<li><strong>Starting augment:</strong> Voice Filter.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Favors:</strong> You have a number of Leverage dice (d6) equal to your CHA modifier (minimum 1). Spend one to add it to an ability check, attack, or saving throw you can see. You regain all Favors on a long rest. <strong>Fast Talk:</strong> Expertise in two Persuasion and Deception checks.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Contact:</strong> Choose one contact: Registrar Clerk, Gang Lookout, Helix Technician, or Vitalis Medic. Once per cycle, the contact gives you one piece of information or one favor, decided by the GM.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Wheeler (Favors also add to Driving and Vehicle checks), Broker (you may trade one Favor to another player's roll), or Fixer's Word (a Favor applied to a deal makes it binding).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Font of Favors:</strong> You regain Favors on a short rest too.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="techie">Techie</h2>
+<p><em>A broken machine is just a puzzle with a deadline.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> Light armor. Simple weapons.</li>
+<li><strong>Skills:</strong> Choose two from Investigation, Medicine, Perception, Sleight of Hand.</li>
+<li><strong>Tools:</strong> Techkit (a tinker's kit, see below).</li>
+<li><strong>Starting augment:</strong> Tool Hand.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Jury-Rig:</strong> You know three gadget designs (see <a href="gear.html">Gear</a>). You can have a number of gadgets active equal to your INT modifier + 1. Each gadget can be used a number of times per long rest equal to your INT modifier (minimum 1).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Field Workshop:</strong> As an action, repair one augment or item, restoring 1d8 + INT modifier to its durability, or one augment's Load by 1. Once per short rest. You learn one more gadget.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Gunsmith (your weapon gadgets deal +1 damage), Drone Master (you may control one drone at a time), or Augment Smith (you may install a Mil-spec augment without a Vitalis or Helix visit).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Overclock:</strong> Once per long rest, one gadget's uses refresh when you finish a short rest.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enforcer">Enforcer</h2>
+<p><em>Some people fight with their heads. You fight with the whole body.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> Light and medium armor. Simple and martial weapons.</li>
+<li><strong>Skills:</strong> Choose two from Athletics, Intimidation, Perception, Survival.</li>
+<li><strong>Starting augment:</strong> Bone Lattice.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Frenzy Protocol:</strong> As a bonus action, enter frenzy for 1 minute. While frenzied, you deal +2 damage with melee weapons and have resistance to bludgeoning, piercing, and slashing damage. Frenzy ends early if you stop attacking or fall unconscious. You may frenzy twice per long rest. <strong>Unarmored Hardening:</strong> While not wearing armor, your AC equals 10 + DEX modifier + CON modifier.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Reckless Strike:</strong> When you attack with advantage, you may take disadvantage on the attack to deal +4 damage. Attacks against you have advantage until the start of your next turn.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Street Berserker (+1d6 damage on grappled targets), Wall Breaker (your strikes destroy objects and barriers with durability 10 or less), or Blood Frame (a Frame-line augment you own has +1 to its effect).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Extra Attack:</strong> Attack twice when you take the Attack action. <strong>Fast Movement:</strong> +10 feet speed when not wearing heavy armor.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="medtech">Medtech</h2>
+<p><em>The first person to reach you is the one who decides if you live.</em></p>
+<ul>
+<li><strong>Armor and weapons:</strong> Light armor. Simple weapons.</li>
+<li><strong>Skills:</strong> Choose two from Insight, Medicine, Perception, Persuasion.</li>
+<li><strong>Tools:</strong> Medkit (see <a href="gear.html">Gear</a>).</li>
+<li><strong>Starting augment:</strong> Sealant Layer.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Triage:</strong> You have a number of Medkit uses per long rest equal to 2 + WIS modifier. As an action, spend one use to restore 1d8 + WIS modifier hit points to a creature you touch. As a bonus action, stabilize a dying creature. <strong>Calm Presence:</strong> Allies within 30 feet who can see you have advantage on saves against fear.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Cutting Edge:</strong> You can install Common augments in a field setting without a clinic visit. You can use the Medkit to repair a Synthetic chassis as if it were a creature.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Specialty:</strong> Choose Vitalis Field Medic (you may use Vitalis Cover to heal a creature of a different Origin), Street Surgeon (the Stitchery and similar clinics treat you as trained), or Stabilizer (triage heals an extra 1d4).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ability Score Improvement.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Mass Triage:</strong> When you use Triage, you may heal up to three creatures within 10 feet of the target, each for 1d6 + WIS modifier.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Balance note:</strong> Roles at level 2 are tuned so that each one has one reliable damage or effect option, one resource to manage (Favors, Frenzy, Surge, Medkit, or gadget uses), and one out-of-combat feature. A group of four with one of each covers the standard 5e party roles.</p>
+</blockquote>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Factions | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html" class="on">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="factions">Factions</h1>
+<p>Corvanis is run by organizations that want something from you: your debt, your body, your data, or your work. Every faction below has a public face, a practical side, and a reason to lie. The GM decides what each one knows.</p>
+<h2 id="the-registrar">The Registrar</h2>
+<p>The Registrar is the public records office of Vantara. Every resident has a file. Your Civic ID is a key to that file, and so is your debt.</p>
+<ul>
+<li><strong>Public face:</strong> Keeps civil records, issues IDs and passes, and posts public notices at kiosks like Terminal 0-114.</li>
+<li><strong>Practical side:</strong> Places holds on districts and people, approves Shift Passes, and works with lenders when debts go unpaid.</li>
+<li><strong>Watch for:</strong> Holds that appear without a reason. Files that are different from what you remember. A clerk who is a little too helpful.</li>
+</ul>
+<h2 id="helix">Helix</h2>
+<p>Helix is the biotech conglomerate of the west. It makes cybernetic limbs, neural implants, and the medicine that keeps augmented bodies running.</p>
+<ul>
+<li><strong>Public face:</strong> Clinics across the Grid, Flux (a stabilizer that keeps augments working), and a steady stream of hopeful advertising.</li>
+<li><strong>Practical side:</strong> Trial programs for people with no other choice. A Helix file on you means a checkup can come at any time.</li>
+<li><strong>Watch for:</strong> Helix patients who stop answering their messages. Helix denies every complaint and calls each one baseless.</li>
+</ul>
+<h2 id="milia-trade-company">Milia Trade Company</h2>
+<p>Milia is the lender and contract holder to half the eastern cities. It buys debts, sells loans, and sends collectors when the payments stop.</p>
+<ul>
+<li><strong>Public face:</strong> Fair terms, flexible repayment, and a loyalty program for long-term clients.</li>
+<li><strong>Practical side:</strong> Collectors such as O. Hale are assigned to accounts. Milia hires repo crews, called <strong>Keyline Recovery</strong>, to take collateral.</li>
+<li><strong>Watch for:</strong> Debts that change hands without explanation. Repo crews who arrive before the notice does.</li>
+</ul>
+<h2 id="kyrex">Kyrex</h2>
+<p>Kyrex is a small trade-company state on Vantara's southern border. It is known for its chrome clinics, which install augments faster and cheaper than anyone in the city.</p>
+<ul>
+<li><strong>Public face:</strong> Clinics at 25 percent off, friendly staff, and a clean reputation.</li>
+<li><strong>Practical side:</strong> Kyrex asks no questions about where its parts come from. Some of its installers work for crews in SubZ.</li>
+<li><strong>Watch for:</strong> Parts with missing serial numbers. Installers who ask for a name, but not a file.</li>
+</ul>
+<h2 id="vitalis-rescue">Vitalis Rescue</h2>
+<p>Vitalis Rescue is the city's private emergency medicine company. It is the trauma team of Corvanis: the people who arrive first when someone is dying, and who take a fee for it.</p>
+<ul>
+<li><strong>Public face:</strong> Coverage tiers (Grid Cover, Spire Cover, Apex Cover, and Walk-in), fast response, and a motto that promises you will not be left behind.</li>
+<li><strong>Practical side:</strong> Vitalis medics stabilize the people they cover, and every treatment is logged to the client's Registrar file. The tiers are a map of the city's levels. The better your cover, the faster the help. Those with no cover wait for whoever comes next.</li>
+<li><strong>Watch for:</strong> Vitalis reports that mention clients who were never treated. Medics who ask about your work, your debt, or your neighbors. A file note that says "reviewed" when nobody reviewed it.</li>
+</ul>
+<p>Vitalis is not a villain by definition. Its medics save lives. But its records are part of the Registrar's system, and that makes Vitalis the best place for the city to learn who you are.</p>
+<h2 id="null-row-crews">Null Row crews</h2>
+<p>Null Row is run by its crews. Each crew owns a few blocks, a few favors, and a grudge against someone else.</p>
+<h3 id="ash-lantern-crew">Ash Lantern Crew</h3>
+<p>A SubZ crew that runs the night markets and the Gutterlight's back room. They are loyal to their own, and they know everyone's debt.</p>
+<ul>
+<li><strong>Leader:</strong> Mother Sela, who never raises her voice.</li>
+<li><strong>Wants:</strong> Protection money, and anyone who owes the crew to pay it in work.</li>
+</ul>
+<h3 id="copperwake">Copperwake</h3>
+<p>A crew of former Grid workers who were laid off when their lines were automated. They fix things, and they sell what they fix.</p>
+<ul>
+<li><strong>Leader:</strong> Dell Marrow, a Techie with a bad knee and a good eye.</li>
+<li><strong>Wants:</strong> Parts, a seat at the Lift 7 freight desk, and revenge on Milia.</li>
+</ul>
+<h3 id="the-quiet-bloc">The Quiet Bloc</h3>
+<p>A netrunner cell that works out of a room above Nine Bowls. They sell information and occasionally deliver it to people who did not ask.</p>
+<ul>
+<li><strong>Leader:</strong> Kestrel, a voice in the walls.</li>
+<li><strong>Wants:</strong> Clean files for their members, and to find out what the Registrar is hiding in the no-data zones.</li>
+</ul>
+<h2 id="collectors-and-repo-crews">Collectors and repo crews</h2>
+<p>Collectors are the Registrar and Milia's officers for overdue accounts. Repo crews take the collateral. Both are ordinary people with ordinary jobs, which is why they are dangerous.</p>
+<ul>
+<li><strong>Collector O. Hale:</strong> Assigned to several SubZ accounts. Polite, patient, and very well informed.</li>
+<li><strong>Keyline Recovery:</strong> Milia's preferred repo crew. Three to five members, armored, and armed with rig rifles and shock batons.</li>
+</ul>
+<h2 id="using-factions-in-play">Using factions in play</h2>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

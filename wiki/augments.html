@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Augments and Skill Trees | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html" class="on">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="augments-and-skill-trees">Augments and Skill Trees</h1>
+<p>Augments are the cybernetic parts that make Corvanis characters more than human: limbs, eyes, skin, bone, and rig ports. In place of a Humanity score, Corvanis uses <strong>Load</strong>. Every augment costs Load. Your body can only carry so much before it starts to fail.</p>
+<h2 id="load">Load</h2>
+<ul>
+<li><strong>Load limit:</strong> Equal to your Constitution score (plus any bonuses from your Origin or feats).</li>
+<li><strong>Load cost:</strong> Each augment has a Load cost, shown on its node.</li>
+<li><strong>Total Load:</strong> The sum of Load costs of all augments you own. It cannot be higher than your Load limit.</li>
+<li><strong>Over the limit:</strong> The GM may allow you to go over your limit (for example, by installing a Black Market augment). For each point over the limit, the GM rolls on the Glitch table once per long rest.</li>
+<li><strong>Lowering Load:</strong> Some augments and services can remove augments. Removing an augment refunds 1 Load per tier and costs half its price.</li>
+</ul>
+<h2 id="tiers-and-prices">Tiers and prices</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Name</th>
+<th>Load cost</th>
+<th>Credit cost</th>
+<th>Where to install</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Common</td>
+<td>1</td>
+<td>300 cr</td>
+<td>Any clinic, or a Medtech in the field</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Mil-spec</td>
+<td>2</td>
+<td>900 cr</td>
+<td>Vitalis or Helix clinic, or a Techie with the Augment Smith specialty</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Prime</td>
+<td>3</td>
+<td>2,500 cr</td>
+<td>Vitalis or Helix clinic only</td>
+</tr>
+<tr>
+<td>BM</td>
+<td>Black Market</td>
+<td>varies</td>
+<td>half the listed price</td>
+<td>The Stitchery, or any unlicensed clinic (see below)</td>
+</tr>
+</tbody>
+</table>
+<p>Installation takes one cycle at a clinic. A Medtech with Cutting Edge can install a Common augment in a scene.</p>
+<h2 id="how-the-skill-tree-works">How the skill tree works</h2>
+<p>Augments are organized into five <strong>lines</strong>. Each line has three tiers, and each tier has two nodes. Owning a node gives you its effect.</p>
+<ul>
+<li><strong>Tier I:</strong> Any node in a line can be taken.</li>
+<li><strong>Tier II:</strong> You must own one Tier I node in the same line.</li>
+<li><strong>Tier III:</strong> You must own one Tier II node in the same line.</li>
+<li><strong>Starting node:</strong> Your Role gives you one Tier I node for free (listed in your Role).</li>
+<li><strong>Growth:</strong> The GM awards skill points. One skill point installs one node you qualify for, and you still pay its Load. A good pace is one point at each level beyond level 2, plus a point for a major story beat. You can also buy a node at a clinic for its credit price instead of spending a point.</li>
+<li><strong>Cross-line:</strong> You may take a node from a second line only if you own a Tier I node there.</li>
+<li><strong>Surge costs:</strong> Some node effects cost Surge. The Surge pool is covered in <a href="surge.html">Surge</a>.</li>
+</ul>
+<h2 id="line-1-reflex-limbs-and-speed">Line 1: Reflex (limbs and speed)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Tier</th>
+<th>Load / Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick Tendon</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>Your speed increases by 5 feet.</td>
+</tr>
+<tr>
+<td>Grip Assist</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>+1 to Athletics checks to grab, hold, or climb.</td>
+</tr>
+<tr>
+<td>Dash Coil</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest.</td>
+</tr>
+<tr>
+<td>Lightning Step</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks.</td>
+</tr>
+<tr>
+<td>Reflex Core</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Your speed increases by 10 feet. You cannot be surprised.</td>
+</tr>
+<tr>
+<td>Reaction Surge</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per long rest, take an extra reaction on your turn. Costs 2 Surge.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-2-optic-eyes-and-perception">Line 2: Optic (eyes and perception)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Tier</th>
+<th>Load / Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Night Lens</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>You have darkvision out to 30 feet.</td>
+</tr>
+<tr>
+<td>Target Lock</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>+1 to ranged attacks against a creature you can see clearly.</td>
+</tr>
+<tr>
+<td>Thermal Eye</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness.</td>
+</tr>
+<tr>
+<td>Zoom Glass</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Advantage on Perception checks to spot something at range.</td>
+</tr>
+<tr>
+<td>Overlay</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per short rest, learn the current health and augment types of a creature you can see.</td>
+</tr>
+<tr>
+<td>Kill Frame</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per long rest, when a ranged attack of yours misses, reroll it.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-3-dermal-skin-and-defense">Line 3: Dermal (skin and defense)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Tier</th>
+<th>Load / Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sealant Layer</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>+1 AC while you are not wearing armor.</td>
+</tr>
+<tr>
+<td>Bleed Seal</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>As an action, stop your own bleeding.</td>
+</tr>
+<tr>
+<td>Ablative Weave</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Reaction, once per short rest: reduce the damage of one attack by 1d6.</td>
+</tr>
+<tr>
+<td>Poison Filter</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Advantage on saving throws against poison.</td>
+</tr>
+<tr>
+<td>Mesh Skin</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)</td>
+</tr>
+<tr>
+<td>Flash Sheath</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per long rest, become resistant to one damage type for 1 minute.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-4-frame-bone-and-strength">Line 4: Frame (bone and strength)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Tier</th>
+<th>Load / Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bone Lattice</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>Your carrying capacity doubles. +1 to Strength checks to lift or push.</td>
+</tr>
+<tr>
+<td>Tool Hand</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>An extra arm. You can hold a second object or use a tool in your free hand as part of another action.</td>
+</tr>
+<tr>
+<td>Hydraulic Grip</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Advantage on grapple and shove checks.</td>
+</tr>
+<tr>
+<td>Load Bearer</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Your Load limit increases by 1.</td>
+</tr>
+<tr>
+<td>Ram Frame</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per turn, shove a creature as a bonus action.</td>
+</tr>
+<tr>
+<td>Reinforced Spine</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Resistance to falling damage. You cannot be knocked prone by a single attack.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-5-neural-brain-and-rig">Line 5: Neural (brain and rig)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Tier</th>
+<th>Load / Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port Jack</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>You can jack into a deck. Required for Netrunners.</td>
+</tr>
+<tr>
+<td>Voice Filter</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>+2 to Deception checks made through a device. You can change your voice.</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Your maximum Surge increases by 1.</td>
+</tr>
+<tr>
+<td>Rig Link</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Intrusions you cast may be cast through a device within 120 feet, if you can see the device.</td>
+</tr>
+<tr>
+<td>Deep Net</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost.</td>
+</tr>
+<tr>
+<td>Neural Shield</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Advantage on Intelligence and Wisdom saving throws against mental effects.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="black-market-augments">Black Market augments</h2>
+<p>Black Market augments are cheaper and stronger, and they come with a cost. Each Black Market augment shows its Load and a <strong>Glitch Trigger</strong>: each time the trigger happens, roll on the Glitch table once.</p>
+<table>
+<thead>
+<tr>
+<th>Augment</th>
+<th>Load</th>
+<th>Price</th>
+<th>Effect</th>
+<th>Glitch Trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rush Pump</td>
+<td>2</td>
+<td>450 cr</td>
+<td>For 1 minute, speed +10 feet and Dash as a bonus action. Costs 1 Surge.</td>
+<td>Each use</td>
+</tr>
+<tr>
+<td>Blood Gate</td>
+<td>1</td>
+<td>150 cr</td>
+<td>As an action, heal 1d6 hit points, once per short rest.</td>
+<td>Each use</td>
+</tr>
+<tr>
+<td>Hush Spool</td>
+<td>2</td>
+<td>450 cr</td>
+<td>For 1 minute, you cannot be seen by cameras or drones. Costs 1 Surge.</td>
+<td>Each activation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="synthetic-chassis">Synthetic chassis</h2>
+<p>Synthetics (see <a href="origins.html">Origins</a>) may take any augment line, but each augment costs 1 less Load (to a minimum of 1). Synthetics cannot use Vitalis Cover and cannot install Black Market augments without a Medtech.</p>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

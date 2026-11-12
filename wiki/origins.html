@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Origins | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html" class="on">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="origins">Origins</h1>
+<p>An Origin is where your character was made: the city level, the lab, the clinic, or the road. Each Origin gives ability bonuses (added after you assign your base scores) and one trait.</p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th>Bonuses</th>
+<th>Trait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SubZ Native</td>
+<td>+2 CON, +1 WIS</td>
+<td>Undercity Sense</td>
+</tr>
+<tr>
+<td>Grid Worker</td>
+<td>+2 STR, +1 CON</td>
+<td>Shift Endurance</td>
+</tr>
+<tr>
+<td>Spire Heir</td>
+<td>+2 CHA, +1 INT</td>
+<td>Old Name</td>
+</tr>
+<tr>
+<td>Tether Born</td>
+<td>+2 DEX, +1 CON</td>
+<td>Zero-G Stable</td>
+</tr>
+<tr>
+<td>Helix Lab Born</td>
+<td>+2 INT, +1 CON</td>
+<td>Trial Subject</td>
+</tr>
+<tr>
+<td>Vexmar Drifter</td>
+<td>+2 WIS, +1 DEX</td>
+<td>Wasteland Trail</td>
+</tr>
+<tr>
+<td>Synthetic</td>
+<td>+2 STR, +1 INT</td>
+<td>Chassis Build</td>
+</tr>
+</tbody>
+</table>
+<h2 id="subz-native">SubZ Native</h2>
+<p>You were born on the ground level, where the city's sun is a rumor. You learned to read a room before you learned to read.</p>
+<ul>
+<li><strong>Undercity Sense:</strong> Advantage on Perception checks made to notice someone following you in a crowd or a market. You know the back routes of any SubZ district.</li>
+<li>You are used to the damp, the noise, and the crowds. You have advantage on saving throws against being deafened.</li>
+</ul>
+<h2 id="grid-worker">Grid Worker</h2>
+<p>You were raised on shift work in the factories and transit lines of the middle city.</p>
+<ul>
+<li><strong>Shift Endurance:</strong> Advantage on saving throws against exhaustion. You can work a full double shift without a penalty.</li>
+<li>You start with one tool proficiency of your choice (Tinker's kit, Medkit, or Vehicle).</li>
+</ul>
+<h2 id="spire-heir">Spire Heir</h2>
+<p>You grew up above the smog line, where the air is clean and the rules are written for you.</p>
+<ul>
+<li><strong>Old Name:</strong> Advantage on Persuasion checks with Spire residents. Your family name opens doors. It also makes you easy to find.</li>
+<li>You start with a Spires visitor's pass for one cycle.</li>
+</ul>
+<h2 id="tether-born">Tether Born</h2>
+<p>You grew up near the counterweight, where gravity is a suggestion. Your bones and reflexes are built for the lift.</p>
+<ul>
+<li><strong>Zero-G Stable:</strong> You take no damage from falls of less than 20 feet. You have advantage on checks to keep your balance on moving surfaces, such as lifts and trains.</li>
+<li>You may board the Tether with a valid Chrome ID or a sponsor's letter (see <a href="the-world.html">The World</a>).</li>
+</ul>
+<h2 id="helix-lab-born">Helix Lab Born</h2>
+<p>You were grown or treated in a Helix facility. Your body is well-documented, and that is the problem.</p>
+<ul>
+<li><strong>Trial Subject:</strong> You begin with a Load limit 2 higher than your Constitution score. You have a Helix file, and some corporate doors open for you. Some doors close because of it.</li>
+<li>You start with a Helix record. Helix can call you in for a checkup at any time.</li>
+</ul>
+<h2 id="vexmar-drifter">Vexmar Drifter</h2>
+<p>You crossed the frontier roads south of Vantara, where the advisories never end and the people are hard to count.</p>
+<ul>
+<li><strong>Wasteland Trail:</strong> You can travel twice as far in a day on foot or by road without a travel penalty. You have proficiency in Survival.</li>
+<li>You start without a Registrar file. Your Civic ID is a temporary one.</li>
+</ul>
+<h2 id="synthetic">Synthetic</h2>
+<p>You are a manufactured chassis with a mind inside it. Synthetics are common in the city's labor and security work, and they are watched more closely than anyone else.</p>
+<ul>
+<li><strong>Chassis Build:</strong> You do not breathe, eat, or sleep. You are immune to poison and disease. Your Load limit is equal to your Constitution score plus 4.</li>
+<li>You cannot use Vitalis Cover. Medtech roles can repair you using the Field Workshop rules (see <a href="roles.html">Roles</a>).</li>
+<li>You have no Registrar standing until the GM assigns you a Civic ID.</li>
+</ul>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

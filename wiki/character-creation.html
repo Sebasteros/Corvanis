@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character Creation | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html" class="on">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="character-creation">Character Creation</h1>
+<p>Corvanis characters start at <strong>level 2</strong>. Build them with the steps below, in order.</p>
+<h2 id="step-1-origin">Step 1: Origin</h2>
+<p>Choose one <a href="origins.html">Origin</a>. It gives your ability bonuses and one trait.</p>
+<h2 id="step-2-role">Step 2: Role</h2>
+<p>Choose one <a href="roles.html">Role</a>. It gives your hit die, saving throws, skills, starting gear, and class features for levels 1 and 2.</p>
+<h2 id="step-3-ability-scores">Step 3: Ability scores</h2>
+<p>Use the standard array (15, 14, 13, 12, 10, 8) or point buy (27 points, as in 5e). Assign scores, then add the bonuses from your Origin.</p>
+<h2 id="step-4-hit-points-proficiency-load-and-surge">Step 4: Hit points, Proficiency, Load, and Surge</h2>
+<ul>
+<li><strong>Proficiency bonus:</strong> +2 at level 2.</li>
+<li><strong>Hit points:</strong> Take the maximum of your hit die at level 1, plus the average of your hit die at level 2, plus your Constitution modifier for each level.</li>
+<li><strong>Load limit:</strong> Equal to your Constitution score. Augments cost Load, and your total cannot go above this limit (see <a href="augments.html">Augments</a>).</li>
+<li><strong>Surge pool:</strong> 2 plus the modifier of your Role's Surge ability, with a minimum of 1 (see <a href="surge.html">Surge</a>).</li>
+</ul>
+<h2 id="step-5-background">Step 5: Background</h2>
+<p>Choose one background below. Each gives two skill proficiencies, a tool or language, and a feature that describes who you know.</p>
+<table>
+<thead>
+<tr>
+<th>Background</th>
+<th>Skills</th>
+<th>Feature: Who You Know</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gutter Rat</td>
+<td>Stealth, Survival</td>
+<td>Null Row Lookouts. You can always find a bed and a warning in SubZ.</td>
+</tr>
+<tr>
+<td>Registered Clerk</td>
+<td>Investigation, Persuasion</td>
+<td>Desk Favor. Once per cycle, a Registrar clerk you know can pull one record for you.</td>
+</tr>
+<tr>
+<td>Repo Agent</td>
+<td>Athletics, Intimidation</td>
+<td>Collection Routes. You know how repo crews move, and can find a hold order's path.</td>
+</tr>
+<tr>
+<td>Helix Test Subject</td>
+<td>Medicine, Insight</td>
+<td>Trial Records. You have a Helix file, which opens some clinics and some doors.</td>
+</tr>
+<tr>
+<td>Dock Hand</td>
+<td>Athletics, Perception</td>
+<td>Freight Friends. Lift 7 freight staff give you a second look before they say no.</td>
+</tr>
+<tr>
+<td>Street Medic</td>
+<td>Medicine, Perception</td>
+<td>Back Room Trust. Unlicensed clinics treat you as one of their own.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="step-6-access-id-and-passes">Step 6: Access ID and passes</h2>
+<p>Every character starts with a <strong>Civic ID</strong>, which opens public areas in every level and lets you use public services.</p>
+<ul>
+<li><strong>Shift Pass (the Grid):</strong> Issued at the Lift 7 desk after a work permit. Some Origins or Backgrounds may start with one.</li>
+<li><strong>Chrome ID (the Spires and Apex):</strong> Only for elite clearance. Almost no starting character has one. The GM decides if your story earns one.</li>
+</ul>
+<p>See <a href="the-world.html">The World</a> for which levels each pass opens.</p>
+<h2 id="step-7-credits-and-debt">Step 7: Credits and debt</h2>
+<ul>
+<li><strong>Starting credits:</strong> 1,000 cr.</li>
+<li><strong>Starting debt:</strong> Set by the GM. Suggested starting debt is 5,000 cr, owed to a lender such as Milia Trade Company. Debt grows through fees and interest, and the GM will track it between cycles.</li>
+</ul>
+<h3 id="debt-standing">Debt standing</h3>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clear</td>
+<td>Your debt is paid or in good standing. No special effects.</td>
+</tr>
+<tr>
+<td>Overdue</td>
+<td>You missed a payment. Collectors may call. You can still move freely.</td>
+</tr>
+<tr>
+<td>Flagged</td>
+<td>You missed several payments. The Registrar may place a hold on your Grid access.</td>
+</tr>
+<tr>
+<td>Repossession Notice</td>
+<td>The lender has issued a notice. The GM decides what this means for your character.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="step-8-starting-augment">Step 8: Starting augment</h2>
+<p>Your Role gives you one starting augment, a Tier I node from its line (listed in your Role). Note its Load cost. Augments are explained in <a href="augments.html">Augments and Skill Trees</a>.</p>
+<h2 id="step-9-gear">Step 9: Gear</h2>
+<p>Spend your credits on gear from <a href="gear.html">Gear and Services</a>. Your Role lists starting equipment; you may replace it with an equal-value option.</p>
+<h2 id="step-10-story">Step 10: Story</h2>
+<p>Write three lines: who you were before Vantara, what you owe, and who you do not trust. Your GM will build your first session around them.</p>
+<blockquote>
+<p><strong>Rules note:</strong> Anything not covered here uses the 5e rule for the same situation.</p>
+</blockquote>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

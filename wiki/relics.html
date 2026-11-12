@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relics | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html" class="on">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="relics">Relics</h1>
+<p>Relics are unique objects with their own history. Some were made by a corporation and lost. Some were built in a SubZ back room and got too good. A Relic is a tool with a personality, a save DC, and a limited number of charges.</p>
+<h2 id="how-relics-work">How relics work</h2>
+<ul>
+<li><strong>Attunement:</strong> As in 5e, a character may attune to up to three relics at once. Attuning takes a short rest with the relic in hand.</li>
+<li><strong>Relic Save DC:</strong> Each relic has a save DC shown in its entry. It is set by rank (Standard 12, Rare 14, Unique 16). Use this DC for any save the relic forces.</li>
+<li><strong>Charges:</strong> A relic's charges come back on a long rest unless the entry says otherwise.</li>
+<li><strong>Finding relics:</strong> Relics are rare. The GM decides when a character finds one, and every relic has a reason it is in the city.</li>
+</ul>
+<h2 id="standard-relics">Standard relics</h2>
+<h3 id="ashline-knife">Ashline Knife</h3>
+<p><em>Standard, Relic Save DC 12. Attunement required.</em></p>
+<p>A thin blade with a heat core. The edge is always warm.</p>
+<ul>
+<li><strong>Weapon:</strong> Simple melee weapon. 1d8 slashing damage, finesse.</li>
+<li><strong>Cauterize:</strong> Once per long rest, when you hit with the Ashline Knife, the target takes 2d6 fire damage and must make a CON save. On a failure, it bleeds for 1d4 damage at the start of each of its turns until it uses an action to stop the bleeding.</li>
+</ul>
+<h3 id="quiet-hand">Quiet Hand</h3>
+<p><em>Standard, Relic Save DC 12. Attunement required.</em></p>
+<p>A thin glove that fits over a bare hand or a chrome hand.</p>
+<ul>
+<li><strong>Silent Touch:</strong> You have advantage on Sleight of Hand checks made with this hand.</li>
+<li><strong>Lock Sense:</strong> Three times per long rest, you can open a mechanical or electronic lock by touch. The lock is not destroyed.</li>
+</ul>
+<h2 id="rare-relics">Rare relics</h2>
+<h3 id="hollow-rifle">Hollow Rifle</h3>
+<p><em>Rare, Relic Save DC 14. Attunement required.</em></p>
+<p>A rig rifle with a long, scratched stock. The barrel hums when it is loaded.</p>
+<ul>
+<li><strong>Weapon:</strong> Martial ranged weapon. 2d8 piercing damage, heavy, two-handed, range 150/600 feet.</li>
+<li><strong>Hollow Round:</strong> Three times per long rest, a shot ignores half cover. On a critical hit, the target's augments are disabled until the end of its next turn, as if by the Lockout intrusion.</li>
+</ul>
+<h3 id="vesper-lens">Vesper Lens</h3>
+<p><em>Rare, Relic Save DC 14. Attunement required.</em></p>
+<p>An optic relic in a small brass frame. It was built for people to see what the city hides.</p>
+<ul>
+<li><strong>Read the Tag:</strong> Twice per long rest, as an action, you can see the ID marks, tags, and file notes of one creature you can see clearly. The GM describes what you find.</li>
+<li><strong>Lens Vision:</strong> You can see through walls up to 10 feet thick for 1 minute, once per short rest.</li>
+</ul>
+<h3 id="sable-mantle">Sable Mantle</h3>
+<p><em>Rare, Relic Save DC 14. Attunement required.</em></p>
+<p>A long coat with a mesh lining that eats light and sound.</p>
+<ul>
+<li><strong>Quiet Coat:</strong> You have advantage on Stealth checks while you are wearing the coat.</li>
+<li><strong>Mesh Armor:</strong> Once per short rest, when you take damage, you may gain resistance to that damage type for 1 minute.</li>
+<li><strong>Blind Spot:</strong> Drones and cameras cannot track you unless you are within 30 feet of them.</li>
+</ul>
+<h3 id="mercy-syringe">Mercy Syringe</h3>
+<p><em>Rare, Relic Save DC 14. Attunement required (Medtech only).</em></p>
+<p>A sealed injector with three doses of a restorative compound.</p>
+<ul>
+<li><strong>Dose:</strong> Three times per long rest, as an action, you may inject a creature you touch to restore 2d8 + WIS modifier hit points. The creature also ends one poison effect on itself.</li>
+<li><strong>Overdose:</strong> If you use the syringe on a creature that has already been dosed this cycle, the GM may roll on the Glitch table for that creature.</li>
+</ul>
+<h2 id="unique-relics">Unique relics</h2>
+<h3 id="gold-ledger">Gold Ledger</h3>
+<p><em>Unique, Relic Save DC 16. Attunement required.</em></p>
+<p>A ledger bound in gold-colored cloth. Every entry in it is in ink that never fades.</p>
+<ul>
+<li><strong>Write the Debt:</strong> Once per cycle, you can write a debt into the ledger and transfer it to a willing creature. The transfer is recorded only in the ledger. The Registrar file does not change until someone checks.</li>
+<li><strong>Read the Ledger:</strong> Once per long rest, you can ask the GM one question about a debt, a contract, or a lender. The GM answers truthfully, though the answer may be partial.</li>
+</ul>
+<h3 id="tether-anchor">Tether Anchor</h3>
+<p><em>Unique, Relic Save DC 16. Attunement required.</em></p>
+<p>A clamp of dark metal with a counterweight on a cable. It was taken from the Tether's lower spool, and it still holds.</p>
+<ul>
+<li><strong>Anchor:</strong> As an action, attach the anchor to a surface within 60 feet. For 1 minute, the anchor can hold up to 2,000 pounds, or lift and lower a creature or object within 60 feet of it. Once per short rest.</li>
+<li><strong>Counterweight:</strong> You may spend an action to use the anchor as a shield against one melee attack. Your AC gains +2 against that attack.</li>
+</ul>
+<h2 id="relics-and-the-story">Relics and the story</h2>
+<p>Every relic has a story that the GM can use. Ask the GM for it at the table. A relic that players do not understand is one the city will try to take.</p>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>

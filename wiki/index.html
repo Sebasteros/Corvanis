@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Main Page | Corvanis</title>
+<style>
+:root{--bg:#0b0f0d;--panel:#111815;--ink:#d6f5e3;--muted:#7fa894;--accent:#48ffa0;--line:#1f3a2c;--warn:#ff8a5c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}}
+:root[data-theme="light"]{--bg:#f4f8f5;--panel:#ffffff;--ink:#14231b;--muted:#4b6b58;--accent:#0a7a47;--line:#c9dccf;--warn:#b5462a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+nav .brand{font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:14px;display:block;text-decoration:none}
+nav h4{margin:14px 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:4px 8px;border-radius:4px;text-decoration:none;color:var(--ink)}
+nav li a.on,nav li a:hover{background:var(--line)}
+main{padding:32px 40px;max-width:900px}
+h1{font-size:2rem;margin:0 0 8px;color:var(--accent)}
+h2{border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:36px}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--accent)}
+code{background:var(--panel);padding:1px 5px;border-radius:3px}
+blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
+.note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
+.menu{display:none}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ main{padding:20px 16px}
+}
+</style></head>
+<body><div class="wrap">
+<nav><a class="brand" href="index.html">CORVANIS</a>
+<h4>Start</h4><ul><li><a href="index.html" class="on">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</nav>
+<main>
+<h1 id="corvanis">Corvanis</h1>
+<blockquote>
+<p>Chrome and debt. A city built upward, where the height you live at is the strength you have.</p>
+</blockquote>
+<p>Corvanis is a cyberpunk sandbox for Dungeons &amp; Dragons 5th Edition. Characters are augmented people in a vertical city, fighting for work, credit, and a way up the Tether. There is no magic here. There is only very advanced technology, and the people who own it.</p>
+<p>This bible contains everything a group needs to play: how to make a character, what they can do, the city they live in, the people who want something from them, and a complete first session to start with.</p>
+<h2 id="pick-your-path">Pick your path</h2>
+<ul>
+<li><strong>New to Corvanis?</strong> Read <a href="getting-started.html">Getting Started</a> first. It takes about ten minutes.</li>
+<li><strong>Making a character?</strong> Go to <a href="character-creation.html">Character Creation</a>, then <a href="origins.html">Origins</a> and <a href="roles.html">Roles</a>.</li>
+</ul>
+<h2 id="the-core-ideas">The core ideas</h2>
+<ul>
+<li><strong>Levels mean access.</strong> Vantara is built in levels. Where you can walk, what you can buy, and who will answer your call all depend on which level you hold a pass for. See <a href="the-world.html">The World</a>.</li>
+<li><strong>Your body is a budget.</strong> Augments make you stronger and faster, and every one costs Load. Your body can only carry so much. See <a href="augments.html">Augments and Skill Trees</a>.</li>
+<li><strong>Debt is a leash.</strong> Most people in Corvanis owe someone. The Registrar keeps the records, and the records decide where you can go. See <a href="factions.html">Factions</a>.</li>
+<li><strong>Trust is the hardest thing to find.</strong> The people who save your life may also be writing your file. Plan for that.</li>
+</ul>
+<h2 id="setting-at-a-glance">Setting at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Corvanis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Starting level</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Rules base</td>
+<td>5e System Reference Document, modified as described in this bible</td>
+</tr>
+<tr>
+<td>Currency</td>
+<td>Credits (cr)</td>
+</tr>
+<tr>
+<td>Main city</td>
+<td>Vantara, a free city in levels around the Tether</td>
+</tr>
+<tr>
+<td>Time unit</td>
+<td>The cycle (a span of downtime between sessions)</td>
+</tr>
+<tr>
+<td>Magic</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-is-in-this-bible">What is in this bible</h2>
+<p><strong>Players:</strong> Getting Started, Character Creation, Origins, Roles, Feats, Augments and Skill Trees, Surge, Gear and Services, Relics.</p>
+<p><strong>World:</strong> The World, Factions, Glossary.</p>
+<p><strong>Game Master:</strong> Bestiary, Encounters, DM Guide, Session One.</p>
+<p><strong>Legal:</strong> License.</p>
+<blockquote>
+<p>This wiki is the player's bible for Corvanis. The GM's notes and the DM's private secrets are kept separately and revealed in play.</p>
+</blockquote>
+<footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
+</main></div></body></html>
