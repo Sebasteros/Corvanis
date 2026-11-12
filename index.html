@@ -167,11 +167,6 @@ dd{margin:0;text-align:right}
 .join .join-msg{color:var(--amber)}
 /* terminal apps: tabs under the header; the map stays the default */
 .appbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.ap-aug{border-top:1px solid var(--line);padding:8px 0}
-.ap-aug p{margin:2px 0}
-.ap-dim{opacity:.45}
-.ap-cyan{color:var(--holo)}
-.ap-on{border-color:var(--holo)}
 .app-tab{position:relative;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;padding:8px 12px;border:1px solid var(--line);color:var(--muted);background:none;cursor:pointer}
 .app-tab:hover{color:var(--holo);border-color:var(--holo-dim)}
 .app-tab[aria-current="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
@@ -270,7 +265,7 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
     <button type="button" class="app-tab" data-app="map" aria-current="true">MAP</button>
     <button type="button" class="app-tab" data-app="tag" aria-current="false">NEURAL-TAG</button>
     <button type="button" class="app-tab" data-app="wallet" aria-current="false">WALLET</button>
-    <button type="button" class="app-tab" data-app="augments" aria-current="false">AUGMENTS</button>
+    <button type="button" class="app-tab" data-app="augments" aria-current="false">AUGMENTS<span class="app-badge" id="aug-badge" hidden>0</span></button>
     <button type="button" class="app-tab" data-app="vitalis" aria-current="false">VITALIS</button>
     <button type="button" class="app-tab" data-app="messages" aria-current="false">MESSAGES<span class="app-badge" id="msg-badge" hidden>0</span></button>
     <button type="button" class="app-tab" data-app="jobs" aria-current="false">JOBS</button>
@@ -364,15 +359,484 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
 
 <script src="map-data.js"></script>
 <script>
-/* ---------- DM-EDITABLE STATE (update between sessions) ---------- */
-/* Augment skill trees (from the Corvanis wiki, data/augment_tree.json). Read-only for players. */
-const AUG_TREE = [{"id": "reflex", "name": "Reflex", "nodes": [{"id": "reflex-quick-tendon", "name": "Quick Tendon", "tier": 1, "load": 1, "credits": 300, "effect": "Your speed increases by 5 feet."}, {"id": "reflex-grip-assist", "name": "Grip Assist", "tier": 1, "load": 1, "credits": 300, "effect": "+1 to Athletics checks to grab, hold, or climb."}, {"id": "reflex-dash-coil", "name": "Dash Coil", "tier": 2, "load": 2, "credits": 900, "effect": "Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest."}, {"id": "reflex-lightning-step", "name": "Lightning Step", "tier": 2, "load": 2, "credits": 900, "effect": "Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks."}, {"id": "reflex-reflex-core", "name": "Reflex Core", "tier": 3, "load": 3, "credits": 2500, "effect": "Your speed increases by 10 feet. You cannot be surprised."}, {"id": "reflex-reaction-surge", "name": "Reaction Surge", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, take an extra reaction on your turn. Costs 2 Surge."}]}, {"id": "optic", "name": "Optic", "nodes": [{"id": "optic-night-lens", "name": "Night Lens", "tier": 1, "load": 1, "credits": 300, "effect": "You have darkvision out to 30 feet."}, {"id": "optic-target-lock", "name": "Target Lock", "tier": 1, "load": 1, "credits": 300, "effect": "+1 to ranged attacks against a creature you can see clearly."}, {"id": "optic-thermal-eye", "name": "Thermal Eye", "tier": 2, "load": 2, "credits": 900, "effect": "For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness."}, {"id": "optic-zoom-glass", "name": "Zoom Glass", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on Perception checks to spot something at range."}, {"id": "optic-overlay", "name": "Overlay", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per short rest, learn the current health and augment types of a creature you can see."}, {"id": "optic-kill-frame", "name": "Kill Frame", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, when a ranged attack of yours misses, reroll it."}]}, {"id": "dermal", "name": "Dermal", "nodes": [{"id": "dermal-sealant-layer", "name": "Sealant Layer", "tier": 1, "load": 1, "credits": 300, "effect": "+1 AC while you are not wearing armor."}, {"id": "dermal-bleed-seal", "name": "Bleed Seal", "tier": 1, "load": 1, "credits": 300, "effect": "As an action, stop your own bleeding."}, {"id": "dermal-ablative-weave", "name": "Ablative Weave", "tier": 2, "load": 2, "credits": 900, "effect": "Reaction, once per short rest: reduce the damage of one attack by 1d6."}, {"id": "dermal-poison-filter", "name": "Poison Filter", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on saving throws against poison."}, {"id": "dermal-mesh-skin", "name": "Mesh Skin", "tier": 3, "load": 3, "credits": 2500, "effect": "+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)"}, {"id": "dermal-flash-sheath", "name": "Flash Sheath", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per long rest, become resistant to one damage type for 1 minute."}]}, {"id": "frame", "name": "Frame", "nodes": [{"id": "frame-bone-lattice", "name": "Bone Lattice", "tier": 1, "load": 1, "credits": 300, "effect": "Your carrying capacity doubles. +1 to Strength checks to lift or push."}, {"id": "frame-tool-hand", "name": "Tool Hand", "tier": 1, "load": 1, "credits": 300, "effect": "An extra arm. You can hold a second object or use a tool in your free hand as part of another action."}, {"id": "frame-hydraulic-grip", "name": "Hydraulic Grip", "tier": 2, "load": 2, "credits": 900, "effect": "Advantage on grapple and shove checks."}, {"id": "frame-load-bearer", "name": "Load Bearer", "tier": 2, "load": 2, "credits": 900, "effect": "Your Load limit increases by 1."}, {"id": "frame-ram-frame", "name": "Ram Frame", "tier": 3, "load": 3, "credits": 2500, "effect": "Once per turn, shove a creature as a bonus action."}, {"id": "frame-reinforced-spine", "name": "Reinforced Spine", "tier": 3, "load": 3, "credits": 2500, "effect": "Resistance to falling damage. You cannot be knocked prone by a single attack."}]}, {"id": "neural", "name": "Neural", "nodes": [{"id": "neural-port-jack", "name": "Port Jack", "tier": 1, "load": 1, "credits": 300, "effect": "You can jack into a deck. Required for Netrunners."}, {"id": "neural-voice-filter", "name": "Voice Filter", "tier": 1, "load": 1, "credits": 300, "effect": "+2 to Deception checks made through a device. You can change your voice."}, {"id": "neural-buffer", "name": "Buffer", "tier": 2, "load": 2, "credits": 900, "effect": "Your maximum Surge increases by 1."}, {"id": "neural-rig-link", "name": "Rig Link", "tier": 2, "load": 2, "credits": 900, "effect": "Intrusions you cast may be cast through a device within 120 feet, if you can see the device."}, {"id": "neural-deep-net", "name": "Deep Net", "tier": 3, "load": 3, "credits": 2500, "effect": "You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost."}, {"id": "neural-neural-shield", "name": "Neural Shield", "tier": 3, "load": 3, "credits": 2500, "effect": "Advantage on Intelligence and Wisdom saving throws against mental effects."}]}];
-const COVER_TIERS = [
-  { name:"Walk-in", price:"200 cr per treatment", what:"Stabilization and basic repairs. No subscription." },
-  { name:"Grid Cover", price:"50 cr per cycle", what:"Response within the scene in the Grid. Stabilization at 0 HP once per cycle. Common augment installs." },
-  { name:"Spire Cover", price:"200 cr per cycle", what:"Priority response across the Spires. Mil-spec installs at 25% off." },
-  { name:"Apex Cover", price:"800 cr per cycle", what:"Full coverage on the Tether route and in Apex. Prime installs, emergency transport, any augment repair." }
+/* Corvanis shared file: augment skill trees and the Vitalis card.
+   Used by the player terminal (index.html) and the DM console (admin.html).
+   Edit node names, Load and effects in AUG_TREE. Node ids must stay the same once players own them. */
+const AUG_TREE = [
+ {
+  "id": "reflex",
+  "name": "Reflex",
+  "color": "#ffd21f",
+  "nodes": [
+   {
+    "id": "reflex-quick-tendon",
+    "name": "Quick Tendon",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Your speed increases by 5 feet."
+   },
+   {
+    "id": "reflex-grip-assist",
+    "name": "Grip Assist",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "+1 to Athletics checks to grab, hold, or climb."
+   },
+   {
+    "id": "reflex-dash-coil",
+    "name": "Dash Coil",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest."
+   },
+   {
+    "id": "reflex-lightning-step",
+    "name": "Lightning Step",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks."
+   },
+   {
+    "id": "reflex-reflex-core",
+    "name": "Reflex Core",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Your speed increases by 10 feet. You cannot be surprised."
+   },
+   {
+    "id": "reflex-reaction-surge",
+    "name": "Reaction Surge",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per long rest, take an extra reaction on your turn. Costs 2 Surge."
+   }
+  ]
+ },
+ {
+  "id": "optic",
+  "name": "Optic",
+  "color": "#6fe9ff",
+  "nodes": [
+   {
+    "id": "optic-night-lens",
+    "name": "Night Lens",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You have darkvision out to 30 feet."
+   },
+   {
+    "id": "optic-target-lock",
+    "name": "Target Lock",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "+1 to ranged attacks against a creature you can see clearly."
+   },
+   {
+    "id": "optic-thermal-eye",
+    "name": "Thermal Eye",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness."
+   },
+   {
+    "id": "optic-zoom-glass",
+    "name": "Zoom Glass",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Advantage on Perception checks to spot something at range."
+   },
+   {
+    "id": "optic-overlay",
+    "name": "Overlay",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per short rest, learn the current health and augment types of a creature you can see."
+   },
+   {
+    "id": "optic-kill-frame",
+    "name": "Kill Frame",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per long rest, when a ranged attack of yours misses, reroll it."
+   }
+  ]
+ },
+ {
+  "id": "dermal",
+  "name": "Dermal",
+  "color": "#3dffa2",
+  "nodes": [
+   {
+    "id": "dermal-sealant-layer",
+    "name": "Sealant Layer",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "+1 AC while you are not wearing armor."
+   },
+   {
+    "id": "dermal-bleed-seal",
+    "name": "Bleed Seal",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "As an action, stop your own bleeding."
+   },
+   {
+    "id": "dermal-ablative-weave",
+    "name": "Ablative Weave",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Reaction, once per short rest: reduce the damage of one attack by 1d6."
+   },
+   {
+    "id": "dermal-poison-filter",
+    "name": "Poison Filter",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Advantage on saving throws against poison."
+   },
+   {
+    "id": "dermal-mesh-skin",
+    "name": "Mesh Skin",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)"
+   },
+   {
+    "id": "dermal-flash-sheath",
+    "name": "Flash Sheath",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per long rest, become resistant to one damage type for 1 minute."
+   }
+  ]
+ },
+ {
+  "id": "frame",
+  "name": "Frame",
+  "color": "#ff4a4a",
+  "nodes": [
+   {
+    "id": "frame-bone-lattice",
+    "name": "Bone Lattice",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Your carrying capacity doubles. +1 to Strength checks to lift or push."
+   },
+   {
+    "id": "frame-tool-hand",
+    "name": "Tool Hand",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "An extra arm. You can hold a second object or use a tool in your free hand as part of another action."
+   },
+   {
+    "id": "frame-hydraulic-grip",
+    "name": "Hydraulic Grip",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Advantage on grapple and shove checks."
+   },
+   {
+    "id": "frame-load-bearer",
+    "name": "Load Bearer",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Your Load limit increases by 1."
+   },
+   {
+    "id": "frame-ram-frame",
+    "name": "Ram Frame",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per turn, shove a creature as a bonus action."
+   },
+   {
+    "id": "frame-reinforced-spine",
+    "name": "Reinforced Spine",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Resistance to falling damage. You cannot be knocked prone by a single attack."
+   }
+  ]
+ },
+ {
+  "id": "neural",
+  "name": "Neural",
+  "color": "#c77dff",
+  "nodes": [
+   {
+    "id": "neural-port-jack",
+    "name": "Port Jack",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You can jack into a deck. Required for Netrunners."
+   },
+   {
+    "id": "neural-voice-filter",
+    "name": "Voice Filter",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "+2 to Deception checks made through a device. You can change your voice."
+   },
+   {
+    "id": "neural-buffer",
+    "name": "Buffer",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Your maximum Surge increases by 1."
+   },
+   {
+    "id": "neural-rig-link",
+    "name": "Rig Link",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Intrusions you cast may be cast through a device within 120 feet, if you can see the device."
+   },
+   {
+    "id": "neural-deep-net",
+    "name": "Deep Net",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost."
+   },
+   {
+    "id": "neural-neural-shield",
+    "name": "Neural Shield",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Advantage on Intelligence and Wisdom saving throws against mental effects."
+   }
+  ]
+ }
 ];
+
+const ST = (() => {
+  const W = 1560, HT = 830, ROOT = { x: 780, y: 820 };
+  const ANG = [-72, -36, 0, 36, 72];
+  const DIST = { 1: 290, 2: 440, 3: 590 }, OFF = { 1: 40, 2: 54, 3: 64 }, RAD = { 1: 22, 2: 24, 3: 31 };
+  const ROMAN = ['I', 'II', 'III'];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ICON = {
+    reflex: '<path d="M13 2 5 13h6l-1 9 9-12h-6z"/>',
+    optic: '<path d="M2 12c3.5-6 16.5-6 20 0-3.5 6-16.5 6-20 0z"/><circle cx="12" cy="12" r="3"/>',
+    dermal: '<path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5z"/>',
+    frame: '<path d="M4 13l8-8 8 8M4 20l8-8 8 8"/>',
+    neural: '<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+    lock: '<rect x="6" y="11" width="12" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 017 0v3"/>'
+  };
+
+  const owned = a => new Set(Array.isArray(a && a.augments) ? a.augments : []);
+  function loadUsed(a) { const o = owned(a); let n = 0; AUG_TREE.forEach(l => l.nodes.forEach(x => { if (o.has(x.id)) n += x.load; })); return n; }
+  function find(id) { for (const line of AUG_TREE) { const node = line.nodes.find(n => n.id === id); if (node) return { line, node }; } return null; }
+  /* owned | open (can be installed) | locked (needs the tier below in the same line) */
+  function state(a, line, node) {
+    const o = owned(a);
+    if (o.has(node.id)) return 'owned';
+    if (node.tier === 1) return 'open';
+    return line.nodes.some(n => n.tier === node.tier - 1 && o.has(n.id)) ? 'open' : 'locked';
+  }
+  /* why a player cannot install this node right now ('' means they can) */
+  function blocked(a, line, node) {
+    const st = state(a, line, node), pts = Number(a && a.augPoints) || 0, limit = Number(a && a.loadLimit) || 0;
+    if (st === 'owned') return 'Installed.';
+    if (st === 'locked') return 'Locked. Install a Tier ' + ROMAN[node.tier - 2] + ' node in the ' + line.name + ' line first.';
+    if (!limit) return 'Your Load limit is not on file yet. Ask your DM.';
+    if (loadUsed(a) + node.load > limit) return 'Not enough Load. This needs ' + node.load + ' and you have ' + (limit - loadUsed(a)) + ' free.';
+    if (pts < 1) return 'No skill points. Your DM awards them.';
+    return '';
+  }
+
+  function pt(li, d, off) {
+    const t = ANG[li] * Math.PI / 180, ux = Math.sin(t), uy = -Math.cos(t), px = Math.cos(t), py = Math.sin(t);
+    return { x: ROOT.x + ux * d + px * off, y: ROOT.y + uy * d + py * off, ux, uy, px, py };
+  }
+  const f = n => n.toFixed(1);
+  function curve(A, B, u) {
+    const k = Math.hypot(B.x - A.x, B.y - A.y) * 0.45;
+    return `M${f(A.x)},${f(A.y)} C${f(A.x + u.ux * k)},${f(A.y + u.uy * k)} ${f(B.x - u.ux * k)},${f(B.y - u.uy * k)} ${f(B.x)},${f(B.y)}`;
+  }
+  function nodePos(li, node, j) { return pt(li, DIST[node.tier], (j ? 1 : -1) * OFF[node.tier]); }
+
+  function svg(a, opts = {}) {
+    const o = owned(a), sel = opts.sel || null;
+    let dim = '', lit = '', dots = '', nodes = '', labels = '';
+    AUG_TREE.forEach((line, li) => {
+      const u = pt(li, 0, 0), tiers = [1, 2, 3].map(t => line.nodes.filter(n => n.tier === t));
+      const any = t => tiers[t - 1].some(n => o.has(n.id));
+      const hub = pt(li, 160, 0), j1 = pt(li, 365, 0), j2 = pt(li, 515, 0);
+      const stem = { x: ROOT.x + (li - 2) * 18, y: HT + 4 };
+      const segs = [];
+      segs.push([`M${f(stem.x)},${f(stem.y)} C${f(stem.x)},${f(stem.y - 90)} ${f(hub.x - u.ux * 60)},${f(hub.y - u.uy * 60)} ${f(hub.x)},${f(hub.y)}`, any(1)]);
+      tiers[0].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(hub, p, u), o.has(n.id)]); segs.push([curve(p, j1, u), o.has(n.id) && any(2)]); });
+      tiers[1].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j1, p, u), o.has(n.id)]); segs.push([curve(p, j2, u), o.has(n.id) && any(3)]); });
+      tiers[2].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j2, p, u), o.has(n.id)]); });
+      segs.forEach(([d, on]) => { if (on) lit += `<path d="${d}" stroke="${line.color}"/>`; else dim += `<path d="${d}"/>`; });
+      [[hub, any(1)], [j1, any(2)], [j2, any(3)]].forEach(([p, on]) => { dots += `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${on ? 7 : 5}" fill="${on ? line.color : '#2b3440'}"/>`; });
+
+      line.nodes.forEach(n => {
+        const j = tiers[n.tier - 1].indexOf(n), p = nodePos(li, n, j), r = RAD[n.tier], st = state(a, line, n), sc = r / 19;
+        nodes += `<g class="st-node st-${st}${sel === n.id ? ' st-sel' : ''}" data-node="${n.id}" tabindex="0" role="button" aria-label="${esc(n.name)}, ${esc(line.name)} line, Tier ${ROMAN[n.tier - 1]}, ${st === 'owned' ? 'installed' : st === 'open' ? 'available' : 'locked'}" style="--c:${line.color}">
+          <circle class="st-hit" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 14}"/>
+          ${sel === n.id ? `<circle class="st-ring" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 8}"/>` : ''}
+          <circle class="st-disc" cx="${f(p.x)}" cy="${f(p.y)}" r="${r}"/>
+          <g class="st-ico" transform="translate(${f(p.x - 12 * sc)},${f(p.y - 12 * sc)}) scale(${sc.toFixed(2)})">${ICON[line.id]}</g>
+          ${st === 'locked' ? `<g transform="translate(${f(p.x - r * 0.72 - 9)},${f(p.y + r * 0.72 - 9)})"><circle cx="9" cy="9" r="10" fill="#0c1016" stroke="#4a5563" stroke-width="1.5"/><g class="st-lock" transform="translate(1.8,1.2) scale(0.6)">${ICON.lock}</g></g>` : ''}
+          <title>${esc(n.name)} · Tier ${ROMAN[n.tier - 1]} · ${n.load} Load</title>
+        </g>`;
+      });
+      const lp = pt(li, 716, 0), have = line.nodes.filter(n => o.has(n.id)).length;
+      labels += `<text class="st-line" x="${f(lp.x)}" y="${f(lp.y)}" fill="${line.color}">${esc(line.name.toUpperCase())}</text><text class="st-count" x="${f(lp.x)}" y="${f(lp.y + 40)}" fill="${line.color}">${have}/${line.nodes.length}</text>`;
+    });
+    return `<svg class="st-svg" viewBox="0 0 ${W} ${HT}" role="group" aria-label="Augment skill trees">
+      <g class="st-dim">${dim}</g><g class="st-lit">${lit}</g>${dots}${labels}${nodes}</svg>`;
+  }
+
+  /* the panel under the tree. opts.dm: DM controls. opts.arm: node id waiting for a second press. */
+  function detail(a, id, opts = {}) {
+    const hit = id && find(id);
+    if (!hit) return `<div class="st-detail"><p class="st-dmono">${opts.dm ? 'Select a node to install or remove it for this player.' : 'Select a node to read what it does.'}</p></div>`;
+    const { line, node } = hit, st = state(a, line, node);
+    let act = '';
+    if (opts.dm) {
+      act = `<button type="button" class="st-btn" data-st-toggle="${node.id}">${st === 'owned' ? 'REMOVE FROM PLAYER' : 'INSTALL FOR PLAYER'}</button>`;
+    } else {
+      const why = blocked(a, line, node);
+      act = why ? `<p class="st-why">${esc(why)}</p>`
+        : `<button type="button" class="st-btn${opts.arm === node.id ? ' st-arm' : ''}" data-st-buy="${node.id}">${opts.arm === node.id ? 'CONFIRM · THIS IS PERMANENT' : 'INSTALL · 1 SKILL POINT'}</button>`;
+    }
+    return `<div class="st-detail" style="--c:${line.color}">
+      <p class="st-dmono">${esc(line.name.toUpperCase())} LINE · TIER ${ROMAN[node.tier - 1]} · ${node.load} LOAD · LIST PRICE ${Number(node.credits).toLocaleString('en-US')} CR</p>
+      <h3>${esc(node.name)}</h3><p>${esc(node.effect)}</p>${act}</div>`;
+  }
+
+  /* ---------- Vitalis Rescue member card ---------- */
+  const PLANS = {
+    'Walk-in':     { c: '#8a97a3', resp: 'Standard queue', stab: '200 cr per treatment', inst: 'Not covered', price: '200 cr per treatment' },
+    'Grid Cover':  { c: '#6fe9ff', resp: 'In-scene · The Grid', stab: 'Covered · 1 per cycle', inst: 'Common', price: '50 cr per cycle' },
+    'Spire Cover': { c: '#c9d6ff', resp: 'Priority · The Spires', stab: 'Covered', inst: 'Mil-spec · 25% off', price: '200 cr per cycle' },
+    'Apex Cover':  { c: '#ffcf5a', resp: 'Full · Tether and Apex', stab: 'Covered + transport', inst: 'Prime + any repair', price: '800 cr per cycle' }
+  };
+  function memberId(id) {
+    let h = 7; for (const ch of String(id || 'x')) h = (h * 31 + ch.charCodeAt(0)) % 100000000;
+    const s = String(h).padStart(8, '0'); return 'VR-' + s.slice(0, 4) + '-' + s.slice(4);
+  }
+  function card(a, name, id) {
+    const plan = PLANS[a && a.cover] ? a.cover : 'Walk-in', p = PLANS[plan], none = plan === 'Walk-in';
+    const cell = (k, v) => `<div><span>${k}</span><b>${esc(v)}</b></div>`;
+    return `<div class="vc${none ? ' vc-none' : ''}" style="--vc:${p.c}">
+      <div class="vc-top">
+        <div class="vc-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M16 9h8v7h7v8h-7v7h-8v-7H9v-8h7z" fill="currentColor"/></svg><div><b>VITALIS</b><span>RESCUE</span></div></div>
+        <div class="vc-plan"><span>PLAN</span><b>${esc(plan.toUpperCase())}</b></div>
+      </div>
+      <div class="vc-mid">${cell('MEMBER', name || 'Unregistered')}${cell('MEMBER ID', memberId(id))}</div>
+      <div class="vc-cells">${cell('RESPONSE', p.resp)}${cell('STABILIZATION', p.stab)}${cell('AUGMENT INSTALLS', p.inst)}</div>
+      <div class="vc-foot"><div class="vc-bars" aria-hidden="true"></div><span class="vc-stamp">${none ? 'NO PLAN ON FILE' : 'ACTIVE'}</span></div>
+      <p class="vc-fine">Present to responding medics. Every treatment is logged to your Registrar file.</p>
+    </div>`;
+  }
+  function plans(a) {
+    const cur = PLANS[a && a.cover] ? a.cover : 'Walk-in';
+    return Object.entries(PLANS).map(([k, p]) => `<div class="vc-row${k === cur ? ' vc-cur' : ''}" style="--vc:${p.c}"><b>${esc(k)}</b><span>${esc(p.price)}</span>${k === cur ? '<i>YOUR PLAN</i>' : ''}</div>`).join('');
+  }
+
+  const css = `
+.st-wrap{overflow-x:auto;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 100%,#161019 0%,#0a0b10 55%,#06070a 100%)}
+.st-svg{display:block;width:100%;min-width:900px;height:auto}
+.st-dim path{fill:none;stroke:#2b3440;stroke-width:3}
+.st-lit path{fill:none;stroke-width:10;stroke-linecap:round}
+.st-lit{filter:drop-shadow(0 0 7px rgba(255,255,255,.28))}
+.st-node{cursor:pointer;outline:none}
+.st-hit{fill:transparent}
+.st-disc{fill:#10151c;stroke:#4a5563;stroke-width:2.5}
+.st-ico{fill:none;stroke:#5d6978;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.st-lock{fill:none;stroke:#8c98a8;stroke-width:2.4;stroke-linecap:round}
+.st-open .st-disc{stroke:var(--c);fill:#0d1218}
+.st-open .st-ico{stroke:var(--c)}
+.st-owned .st-disc{fill:var(--c);stroke:var(--c);filter:drop-shadow(0 0 9px var(--c))}
+.st-owned .st-ico{stroke:#0a0b10;stroke-width:2.4}
+.st-name{font-family:var(--f-mono);font-size:14px;letter-spacing:.08em;fill:#66727f;pointer-events:none}
+.st-open .st-name{fill:#aab6c3}
+.st-owned .st-name{fill:var(--c)}
+.st-ring{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:5 5}
+.st-node:hover .st-disc,.st-node:focus-visible .st-disc{stroke:#fff}
+.st-line{font-family:var(--f-display);font-size:24px;letter-spacing:.14em;text-anchor:middle}
+.st-count{font-family:var(--f-display);font-weight:700;font-size:36px;text-anchor:middle}
+.st-detail{border:1px solid var(--line);border-left:3px solid var(--c,var(--line));padding:14px 16px;margin-top:12px;min-height:120px}
+.st-detail h3{font-family:var(--f-display);font-weight:500;font-size:19px;letter-spacing:.06em;color:var(--c);margin:0 0 6px}
+.st-detail p{margin:0 0 10px}
+.st-dmono{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.st-why{font-family:var(--f-mono);font-size:12px;color:var(--amber)}
+.st-btn{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;color:var(--c,var(--holo));background:none;border:1px solid var(--c,var(--holo));border-radius:0;padding:10px 14px;cursor:pointer}
+.st-btn:hover{background:var(--c,var(--holo));color:#06070a}
+.st-btn.st-arm{background:var(--amber);border-color:var(--amber);color:#06070a}
+.st-stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.st-stat{border:1px solid var(--line);padding:10px 16px;min-width:150px}
+.st-stat span{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.st-stat b{font-family:var(--f-display);font-size:26px;color:var(--holo)}
+.st-stat b.st-hot{color:var(--amber)}
+.vc{max-width:440px;aspect-ratio:1.586;border-radius:16px;padding:18px 20px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;color:#e8eef3;font-family:var(--f-body);border:1px solid color-mix(in srgb,var(--vc) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--vc) 26%,#0b0f14) 0%,#0b0f14 46%,color-mix(in srgb,var(--vc) 12%,#0b0f14) 100%);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.vc span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;color:#93a1ad}
+.vc b{font-weight:600;font-size:15px;letter-spacing:.03em}
+.vc-top,.vc-mid,.vc-foot{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.vc-brand{display:flex;align-items:center;gap:10px;color:var(--vc)}
+.vc-brand svg{width:38px;height:38px}
+.vc-brand b{display:block;font-family:var(--f-display);font-size:19px;letter-spacing:.2em;line-height:1}
+.vc-brand span{color:var(--vc);letter-spacing:.5em;margin-top:3px}
+.vc-plan{text-align:right}
+.vc-plan b{font-family:var(--f-display);color:var(--vc);font-size:14px;letter-spacing:.1em}
+.vc-mid b{font-family:var(--f-mono);font-size:16px;letter-spacing:.08em}
+.vc-mid div:last-child{text-align:right}
+.vc-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:8px}
+.vc-cells b{font-size:13px}
+.vc-foot{align-items:center}
+.vc-bars{height:22px;flex:1;max-width:190px;background:repeating-linear-gradient(90deg,#dfe7ee 0 2px,transparent 2px 5px,#dfe7ee 5px 6px,transparent 6px 10px,#dfe7ee 10px 13px,transparent 13px 15px);opacity:.75}
+.vc-stamp{font-family:var(--f-display);font-size:11px;letter-spacing:.16em;color:var(--vc);border:1px solid var(--vc);padding:4px 8px;border-radius:4px;display:inline-block}
+.vc-fine{font-size:10.5px;color:#93a1ad;margin:6px 0 0;line-height:1.25}
+.vc-none{filter:saturate(.4)}
+.vc-none .vc-stamp{color:var(--amber);border-color:var(--amber)}
+.vc-row{display:flex;gap:12px;align-items:baseline;padding:9px 0 9px 10px;border-top:1px solid var(--line);border-left:3px solid var(--vc)}
+.vc-row b{min-width:104px;white-space:nowrap}
+.vc-row span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.vc-row i{margin-left:auto;white-space:nowrap;font-style:normal;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--vc)}
+@media (max-width:460px){.vc{aspect-ratio:auto;padding:16px 14px 12px;gap:12px}.vc-cells{grid-template-columns:1fr 1fr}.vc b{font-size:13px}.vc-cells b{font-size:11.5px}.vc-brand b{font-size:16px}}
+`;
+  if (typeof document !== 'undefined') { const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s); }
+
+  return { svg, detail, card, plans, state, blocked, find, loadUsed, owned };
+})();
+</script>
+<script>
+/* ---------- DM-EDITABLE STATE (update between sessions) ---------- */
 let CYCLE = 1;
 let WALLET = 1000;
 let DEBT = { principal: 40000, fees: 8000, rate: 2, minDue: 1000, due: 'Cycle 02' };
@@ -955,7 +1419,11 @@ function noteEditing() {
 function renderApp(force = false) {
   if (APP === 'map') return;
   if (!force && noteEditing()) return;
+  const sw = appView.querySelector('.st-wrap'), sl = sw ? sw.scrollLeft : null;
   appView.innerHTML = appHTML();
+  const nw = appView.querySelector('.st-wrap');
+  if (nw) nw.scrollLeft = sl != null ? sl : (nw.scrollWidth - nw.clientWidth) / 2;
+  augBadge();
 }
 function appHTML() {
   if (!ME_ID) return '<section class="ap-card"><p class="ap-mono">Enter your character name first.</p></section>';
@@ -993,34 +1461,36 @@ function tagApp(a) {
     </section>
   </div>`;
 }
-function augOwned(a) { return new Set(Array.isArray(a.augments) ? a.augments : []); }
-function augLoadUsed(a) {
-  const owned = augOwned(a); let used = 0;
-  AUG_TREE.forEach(l => l.nodes.forEach(n => { if (owned.has(n.id)) used += n.load; }));
-  return used;
-}
-function augState(a, line, node) {
-  const owned = augOwned(a);
-  if (owned.has(node.id)) return 'owned';
-  if (node.tier === 1) return 'open';
-  const need = node.tier - 1;
-  const ok = line.nodes.some(n => n.tier === need && owned.has(n.id));
-  return ok ? 'open' : 'locked';
+/* ---------- augment skill trees and the Vitalis card (drawn by skilltree.js) ---------- */
+let ST_SEL = null, ST_ARM = null;
+function augBadge() {
+  const b = document.getElementById('aug-badge'), n = Number(ACC && ACC.augPoints) || 0;
+  if (b) { b.textContent = n; b.hidden = !n; }
 }
 function augmentsApp(a) {
-  const limit = Number(a.loadLimit) || 0, used = augLoadUsed(a);
-  const over = used > limit;
-  const head = `<section class="ap-card"><p class="ap-mono">LOAD</p><p class="ap-big${over ? ' ap-amber' : ''}">${used} / ${limit}</p>${over ? '<p class="ap-mono ap-amber">Over limit. Expect Glitches. Ask your DM before the next cycle.</p>' : '<p class="ap-mono">Within limit.</p>'}<p class="ap-mono">Tiers: I = 1 Load · II = 2 Load · III = 3 Load. Tier II needs a Tier I node in the same line. Tier III needs a Tier II node in the same line.</p></section>`;
-  const lines = AUG_TREE.map(l => `<section class="ap-card"><p class="ap-mono">${H(l.name.toUpperCase())} LINE</p>${l.nodes.map(n => {
-    const st = augState(a, l, n);
-    const tag = st === 'owned' ? '<span class="ap-mono">OWNED</span>' : st === 'open' ? '<span class="ap-mono ap-cyan">AVAILABLE</span>' : '<span class="ap-mono">LOCKED</span>';
-    return `<div class="ap-aug${st === 'locked' ? ' ap-dim' : ''}"><p><strong>${H(n.name)}</strong> · Tier ${['I','II','III'][n.tier-1]} · ${n.load} Load · ${NUM(n.credits)} cr ${tag}</p><p class="ap-mono">${H(n.effect)}</p></div>`;
-  }).join('')}</section>`).join('');
-  return `<div class="ap-grid">${head}${lines}</div>`;
+  const pts = Number(a.augPoints) || 0, limit = Number(a.loadLimit) || 0, used = ST.loadUsed(a);
+  return `<div class="st-stats">
+      <div class="st-stat"><span>SKILL POINTS</span><b class="${pts ? 'st-hot' : ''}">${pts}</b></div>
+      <div class="st-stat"><span>LOAD</span><b class="${limit && used > limit ? 'st-hot' : ''}">${used} / ${limit || '-'}</b></div>
+    </div>
+    <div class="st-wrap">${ST.svg(a, { sel: ST_SEL })}</div>
+    ${ST.detail(a, ST_SEL, { arm: ST_ARM })}`;
+}
+async function buyAugment(id) {
+  const a = ACC || {}, hit = ST.find(id);
+  if (!hit || ST.blocked(a, hit.line, hit.node)) return;
+  if (ST_ARM !== id) { ST_ARM = id; return renderApp(true); }
+  ST_ARM = null;
+  try {
+    await setDoc(doc(db, 'accounts', ME_ID), { augments: [...(Array.isArray(a.augments) ? a.augments : []), id], augPoints: (Number(a.augPoints) || 0) - 1 }, { merge: true });
+    note(hit.node.name + ' installed.');
+  } catch (err) { note('Could not install: ' + (err.code || err.message)); }
 }
 function vitalisApp(a) {
-  const cur = a.cover || 'Walk-in';
-  return `<div class="ap-grid"><section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">VITALIS RESCUE · YOUR COVER</p><p class="ap-big">${H(cur)}</p><p class="ap-mono">Every treatment is logged to your Registrar file.</p></section>${COVER_TIERS.map(t => `<section class="ap-card${t.name === cur ? ' ap-on' : ''}"><p class="ap-mono">${H(t.name.toUpperCase())}${t.name === cur ? ' · ACTIVE' : ''}</p><p>${H(t.what)}</p><p class="ap-mono">${H(t.price)}</p></section>`).join('')}</div>`;
+  return `<div class="ap-grid">
+    <section>${ST.card(a, a.holder || ME_NAME, ME_ID)}</section>
+    <section class="ap-card"><p class="ap-mono">VITALIS RESCUE · PLANS</p>${ST.plans(a)}<p class="ap-mono" style="margin-top:12px">To change plan, speak to a Vitalis desk.</p></section>
+  </div>`;
 }
 function walletApp(a) {
   const owed = (a.principal || 0) + (a.fees || 0);
@@ -1199,8 +1669,14 @@ document.getElementById('appbar').addEventListener('click', e => { const b = e.t
 const appView = document.getElementById('app-view');
 appView.addEventListener('click', e => {
   const m = e.target.closest('[data-msg]'); if (m) return markRead(m.dataset.msg);
+  const sn = e.target.closest('[data-node]'); if (sn) { ST_SEL = sn.dataset.node; ST_ARM = null; return renderApp(true); }
+  const sb = e.target.closest('[data-st-buy]'); if (sb) return buyAugment(sb.dataset.stBuy);
   const r = e.target.closest('[data-remove]');
   if (r) { const list = [...((ACC && ACC.contacts) || [])]; list.splice(Number(r.dataset.remove), 1); saveMine({ contacts: list }); }
+});
+appView.addEventListener('keydown', e => {
+  const sn = e.target.closest && e.target.closest('[data-node]');
+  if (sn && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); ST_SEL = sn.dataset.node; ST_ARM = null; renderApp(true); }
 });
 appView.addEventListener('submit', e => {
   const f = e.target.closest('form[data-app-form]'); if (!f) return;
