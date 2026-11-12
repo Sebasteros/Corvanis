@@ -172,6 +172,46 @@ dd{margin:0;text-align:right}
 .app-tab[aria-current="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
 .app-badge{display:inline-block;margin-left:8px;padding:0 6px;border-radius:9px;background:var(--mag);color:var(--bg);font-size:11px}
 #app-view{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+/* Registrar ID card (Neural-Tag) */
+.idc{max-width:620px;border-radius:16px;padding:20px 22px 14px;display:flex;flex-direction:column;gap:14px;color:#e8f6ee;border:1px solid color-mix(in srgb,var(--holo) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--holo) 22%,#07110d) 0%,#07110d 46%,color-mix(in srgb,var(--holo) 10%,#07110d) 100%);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.idc span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;color:#8fb3a1}
+.idc b{font-weight:600;font-size:15px;letter-spacing:.03em}
+.idc-top,.idc-foot{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.idc-brand{display:flex;align-items:center;gap:10px;color:var(--holo)}
+.idc-brand svg{width:38px;height:38px}
+.idc-brand b{display:block;font-family:var(--f-display);font-size:18px;letter-spacing:.2em;line-height:1}
+.idc-brand span{color:var(--holo);letter-spacing:.3em;margin-top:4px}
+.idc-code{text-align:right}
+.idc-code b{font-family:var(--f-mono);font-size:14px;letter-spacing:.08em}
+.idc-body{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+.idc .ap-portrait{width:120px;height:120px;margin:0;border-radius:8px;background:rgba(0,0,0,.25)}
+.idc-form{margin-top:8px}
+.idc-form .ap-field{font-size:12px;padding:6px 8px;margin:0 0 6px}
+.idc-form .ap-btn{font-size:10px;padding:6px 8px;margin:0;width:100%}
+.idc h3{font-family:var(--f-display);font-weight:600;font-size:22px;letter-spacing:.06em;margin:2px 0 12px;color:#fff}
+.idc-cells{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.idc-cells .wide{grid-column:1/-1}
+.idc-stamp{font-family:var(--f-display);font-size:11px;letter-spacing:.16em;color:var(--s);border:1px solid var(--s);padding:4px 8px;border-radius:4px;white-space:nowrap}
+.idc-fine{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#8fb3a1;margin:0}
+@media (max-width:460px){.idc{padding:16px 14px 12px}.idc-body{grid-template-columns:96px minmax(0,1fr);gap:12px}.idc .ap-portrait{width:96px;height:96px}.idc h3{font-size:18px}.idc-cells{grid-template-columns:1fr}}
+/* job board */
+.jb-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--muted);border-bottom:1px solid var(--holo-dim);padding:0 0 10px;margin-bottom:14px}
+.jb-head b{color:var(--holo);font-weight:400}
+.jb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.jb{position:relative;border:1px solid var(--line);border-top:3px solid var(--jc);background:linear-gradient(180deg,color-mix(in srgb,var(--jc) 9%,var(--panel)),var(--panel) 60%);padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px}
+.jb-open{--jc:var(--holo)}.jb-taken{--jc:var(--amber)}.jb-done{--jc:#4d5c55;opacity:.6}
+.jb-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.jb-st{color:var(--jc);border:1px solid var(--jc);padding:2px 7px}
+.jb h3{font-family:var(--f-display);font-weight:500;font-size:17px;letter-spacing:.05em;color:var(--text);margin:2px 0 0}
+.jb-done h3{text-decoration:line-through}
+.jb-pay{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--jc);margin:0;letter-spacing:.03em}
+.jb-pay small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.jb-meta{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:8px;font-size:15px}
+.jb-meta span{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted);padding-top:4px}
+.jb-meta b{font-weight:500;text-align:right}
+.jb-risk i{display:inline-block;width:9px;height:9px;border-radius:50%;border:1px solid var(--rc);margin-left:4px}
+.jb-risk i.on{background:var(--rc)}
+.jb-note{margin:0;color:var(--muted);font-size:15px;border-left:2px solid var(--line);padding-left:10px}
 .ap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
 .ap-card{border:1px solid var(--line);background:var(--panel);padding:16px}
 .ap-card h3{font-family:var(--f-display);font-weight:500;color:var(--holo);margin:0 0 6px;font-size:17px;letter-spacing:.06em}
@@ -1442,23 +1482,32 @@ function appHTML() {
   return '';
 }
 function tagApp(a) {
-  const passes = a.passes || [], name = a.holder || ME_NAME;
-  return `<div class="ap-grid">
-    <section class="ap-tag">
-      <div class="ap-portrait">${a.portrait ? `<img src="${H(a.portrait)}" alt="">` : H(name.slice(0, 1).toUpperCase())}</div>
-      <h3>${H(name)}</h3>
-      <p class="ap-mono">NEURAL-TAG · ${H(ME_ID.toUpperCase().slice(0, 16))}</p>
-      ${ROW('Tier', a.tier || 'Sublevel Zero')}
-      ${ROW('Residence', a.residence || 'Unregistered')}
-      ${ROW('Work permit', passes.includes('grid') ? 'Grid · shift pass' : 'None on file')}
-      ${ROW('Registrar standing', a.standing || 'Clean')}
-      ${ROW('Chrome ID', a.chrome ? 'Issued' : 'Not issued')}
-      ${ROW('Implants on record', (a.implants || []).join(', ') || 'None on record')}
-      <p class="ap-mono ap-flicker" style="margin-top:12px">Implant integrity: nominal</p>
-    </section>
-    <section class="ap-card"><p class="ap-mono">PORTRAIT LINK</p>
-      <form data-app-form="portrait"><input class="ap-field" name="portrait" placeholder="Paste a picture link" value="${H(a.portrait || '')}"><button class="ap-btn" type="submit">SAVE PORTRAIT</button></form>
-    </section>
+  const passes = a.passes || [], name = a.holder || ME_NAME, standing = a.standing || 'Clean';
+  const sc = standing === 'Flagged' ? 'var(--red)' : standing === 'Under Review' ? 'var(--amber)' : 'var(--holo)';
+  const cell = (k, v, wide) => `<div${wide ? ' class="wide"' : ''}><span>${H(k)}</span><b>${H(v)}</b></div>`;
+  return `<div class="idc">
+    <div class="idc-top">
+      <div class="idc-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 36 11v18L20 38 4 29V11z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M13 14h14M13 20h14M13 26h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><div><b>REGISTRAR</b><span>VANTARA CIVIC ID</span></div></div>
+      <div class="idc-code"><span>NEURAL-TAG</span><b>${H(ME_ID.toUpperCase().slice(0, 16))}</b></div>
+    </div>
+    <div class="idc-body">
+      <div>
+        <div class="ap-portrait">${a.portrait ? `<img src="${H(a.portrait)}" alt="">` : H(name.slice(0, 1).toUpperCase())}</div>
+        <form data-app-form="portrait" class="idc-form"><input class="ap-field" name="portrait" aria-label="Portrait picture link" placeholder="Picture link" value="${H(a.portrait || '')}"><button class="ap-btn" type="submit">SAVE PORTRAIT</button></form>
+      </div>
+      <div>
+        <span>HOLDER</span><h3>${H(name)}</h3>
+        <div class="idc-cells">
+          ${cell('TIER', a.tier || 'Sublevel Zero')}
+          ${cell('RESIDENCE', a.residence || 'Unregistered')}
+          ${cell('WORK PERMIT', passes.includes('grid') ? 'Grid · shift pass' : 'None on file')}
+          ${cell('CHROME ID', a.chrome ? 'Issued' : 'Not issued')}
+          ${cell('IMPLANTS ON RECORD', (a.implants || []).join(', ') || 'None on record', true)}
+        </div>
+      </div>
+    </div>
+    <div class="idc-foot"><div class="vc-bars" aria-hidden="true"></div><span class="idc-stamp" style="--s:${sc}">STANDING · ${H(standing.toUpperCase())}</span></div>
+    <p class="idc-fine ap-flicker">Implant integrity: nominal</p>
   </div>`;
 }
 /* ---------- augment skill trees and the Vitalis card (drawn by skilltree.js) ---------- */
@@ -1490,6 +1539,7 @@ function vitalisApp(a) {
   return `<div class="ap-grid">
     <section>${ST.card(a, a.holder || ME_NAME, ME_ID)}</section>
     <section class="ap-card"><p class="ap-mono">VITALIS RESCUE · PLANS</p>${ST.plans(a)}<p class="ap-mono" style="margin-top:12px">To change plan, speak to a Vitalis desk.</p></section>
+    <section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">TREATMENT RECORD · COPIED TO YOUR REGISTRAR FILE</p>${(a.vitalisLog || []).map(l => `<p class="ap-log">${H(l)}</p>`).join('') || '<p>No treatments on record.</p>'}</section>
   </div>`;
 }
 function walletApp(a) {
@@ -1609,9 +1659,20 @@ function messagesApp() {
   return `<section class="ap-card"><p class="ap-mono">NEW MESSAGE</p>${starts}${alertsBtn}</section>${bar}${threads}${inbox || (threads ? '' : '<section class="ap-card"><p>No messages yet.</p></section>')}`;
 }
 function jobsApp() {
-  const jobs = WORLD.jobs || [];
+  const jobs = (WORLD.jobs || []).map((j, i) => ({ ...j, no: i + 1, st: ['taken', 'done'].includes(j.status) ? j.status : 'open' }));
   if (!jobs.length) return '<section class="ap-card"><p>No jobs posted.</p></section>';
-  return `<div class="ap-grid">${jobs.map(j => `<section class="ap-card"><p class="ap-mono">${H((j.status || 'open').toUpperCase())}</p><h3>${H(j.title)}</h3><p>Pay ${H(j.pay)} · ${H(j.contact)}</p><p class="ap-dim">${H(j.note)}</p></section>`).join('')}</div>`;
+  const ord = { open: 0, taken: 1, done: 2 }, LBL = { open: 'OPEN', taken: 'TAKEN', done: 'CLOSED' };
+  const RISK = { Low: [1, 'var(--holo)'], Medium: [2, 'var(--amber)'], High: [3, 'var(--red)'] };
+  const risk = r => RISK[r] ? `<div class="jb-meta"><span>RISK</span><b class="jb-risk" style="--rc:${RISK[r][1]}">${H(r)} ${[1, 2, 3].map(n => `<i class="${n <= RISK[r][0] ? 'on' : ''}"></i>`).join('')}</b></div>` : '';
+  const card = j => `<article class="jb jb-${j.st}">
+    <div class="jb-top"><span>CONTRACT ${String(j.no).padStart(2, '0')}</span><span class="jb-st">${LBL[j.st]}</span></div>
+    <h3>${H(j.title)}</h3>
+    <p class="jb-pay"><small>PAY</small>${H(j.pay || '-')}</p>
+    <div class="jb-meta"><span>CONTACT</span><b>${H(j.contact || 'Unlisted')}</b></div>${risk(j.risk)}
+    ${j.note ? `<p class="jb-note">${H(j.note)}</p>` : ''}
+  </article>`;
+  return `<header class="jb-head"><span>JOB BOARD · TERMINAL 0-114</span><span><b>${jobs.filter(j => j.st === 'open').length}</b> OPEN · ${jobs.length} POSTED</span></header>
+    <div class="jb-grid">${[...jobs].sort((a, b) => ord[a.st] - ord[b.st]).map(card).join('')}</div>`;
 }
 function contactsApp(a) {
   const list = a.contacts || [];

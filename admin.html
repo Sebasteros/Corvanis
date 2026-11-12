@@ -54,6 +54,27 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .online{font-family:var(--f-mono);font-size:13px;color:var(--holo);margin:0 0 12px}
 .row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap;align-items:center}
 .row>span:first-child{font-family:var(--f-mono);font-size:12px;color:var(--muted);flex:0 0 auto}
+/* job board editor */
+#jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.jobc{border:1px solid var(--line);border-top:3px solid var(--jc);border-radius:12px;background:rgba(3,16,11,.6);padding:14px;display:flex;flex-direction:column;gap:10px}
+.jobc[data-st="open"]{--jc:var(--holo)}.jobc[data-st="taken"]{--jc:var(--amber)}.jobc[data-st="done"]{--jc:#4d5c55}
+.jobc-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--jc)}
+.jobc-head button{padding:5px 10px;font-size:10px}
+.jobc-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.jobc textarea{min-height:64px}
+.jobc input[data-k="title"]{font-family:var(--f-display);font-size:15px;letter-spacing:.04em}
+.jobc input[data-k="pay"]{font-family:var(--f-display);color:var(--jc);font-weight:700}
+/* newswire editor */
+.nrow{display:grid;grid-template-columns:minmax(0,220px) 1fr auto;grid-template-areas:'no no no' 'src . btn' 'text text text';gap:8px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.nrow input{grid-area:src}.nrow textarea{grid-area:text}.nrow-btn{grid-area:btn}
+.nrow:first-child{border-top:0}
+.nrow-no{grid-area:no;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.nrow:first-child .nrow-no{color:var(--holo)}
+.nrow input{font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.newsedit .nrow textarea{min-height:58px;font-size:16px;line-height:1.35}
+.nrow-btn{display:flex;gap:4px}
+.nrow-btn button{padding:8px 10px;border-radius:8px}
+
 .job{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;padding:10px 0;border-top:1px solid var(--line)}
 .msgrow{border-top:1px solid var(--line);padding:10px 0;display:flex;flex-direction:column;gap:4px}
 .msgrow .mono{margin:0}
@@ -102,7 +123,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .worldbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .worldbar label{flex-direction:row;align-items:center;gap:8px}
 .worldbar input{width:110px}
-.newsedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}
+.newsedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
 .newsedit textarea{min-height:420px;font-size:16px;line-height:1.5}
 @media (max-width:900px){.newsedit{grid-template-columns:1fr}}
 .chatwrap{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;align-items:start}
@@ -150,6 +171,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
             <div class="tabs">
               <button type="button" data-tab="account" aria-selected="true">ACCOUNT</button>
               <button type="button" data-tab="augments" aria-selected="false">AUGMENTS</button>
+              <button type="button" data-tab="vitalis" aria-selected="false">VITALIS</button>
               <button type="button" data-tab="phone" aria-selected="false">PHONE VIEW</button>
               <button type="button" data-tab="messages" aria-selected="false">MESSAGES</button>
               <button type="button" data-tab="secrets" aria-selected="false">SECRETS</button>
@@ -177,8 +199,10 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
       <div class="top"><h2>NEWSWIRE</h2></div>
       <div class="newsedit">
         <div class="card">
-          <p class="mono">ONE HEADLINE PER LINE. START A LINE WITH A SOURCE AND A COLON, LIKE "HELIX: TEXT".</p>
-          <textarea id="news" rows="20"></textarea>
+          <p class="mono">THE FIRST HEADLINE IS THE LEAD STORY. THE SOURCE IS THE TAG PLAYERS SEE (LEAVE IT EMPTY FOR "WIRE").</p>
+          <div id="news-rows"></div>
+          <datalist id="news-src"><option value="HELIX"><option value="REGISTRAR"><option value="MILIA"><option value="VITALIS"><option value="SOLVARIS"><option value="ARDRENN"><option value="KYREX"><option value="TETHER"><option value="WEATHER"><option value="WIRE"></datalist>
+          <div class="row"><button class="quiet" type="button" id="addnews">+ ADD HEADLINE</button></div>
           <div class="row"><button class="btn" type="button" id="save-news">SAVE NEWSWIRE</button><span class="msg" id="news-msg"></span></div>
         </div>
         <div class="card">
@@ -200,7 +224,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
       <div class="card">
         <div id="jobs"></div>
         <div class="row" style="margin-top:12px"><button type="button" class="quiet" id="addjob">+ ADD JOB</button></div>
-        <p class="hint">When a job is finished, set it to done here. Then open the crew member on the Players page and tick Shift Pass.</p>
+        <p class="hint" style="margin-top:12px">Players see open jobs first, then taken, then closed. When a job is finished, set it to done here. Then open the crew member on the Players page and tick Shift Pass.</p>
       </div>
       <div class="bar">
         <button type="button" id="save-jobs">SAVE JOB BOARD</button>
@@ -767,8 +791,6 @@ const FIELDS = [
   { k: 'minDue', label: 'Minimum due', t: 'num' },
   { k: 'due', label: 'Next visit', t: 'text' },
   { k: 'grid', label: 'Shift Pass · The Grid', t: 'check' },
-  { k: 'loadLimit', label: 'Load limit (CON score)', t: 'num' },
-  { k: 'cover', label: 'Vitalis cover', t: 'select', opts: ['Walk-in', 'Grid Cover', 'Spire Cover', 'Apex Cover'] },
   { k: 'log', label: 'Activity (one entry per line, newest first)', t: 'area' }
 ];
 function valueOf(a, f) {
@@ -882,12 +904,26 @@ function renderTab() {
         <button type="button" data-pts="1">GIVE 1 POINT</button>
         <button type="button" data-pts="-1">TAKE 1 POINT</button>
         <button type="button" data-pts-all>GIVE EVERY PLAYER 1 POINT</button>
+      </div>
+      <div class="row" style="justify-content:flex-start">
+        <label style="flex-direction:row;align-items:center;gap:10px">LOAD LIMIT (THE CHARACTER'S CON SCORE) <input id="load-limit" type="number" min="0" max="40" step="1" value="${limit}" style="width:90px"></label>
+        <button type="button" data-load-save>SAVE LOAD LIMIT</button>
         <span class="msg" id="aug-msg"></span>
       </div>
-      <p class="hint">The player spends points on their own terminal. You can also select any node here and install or remove it yourself, with no point cost and no tier or Load check. Changes save at once. Set the Load limit in the ACCOUNT tab.</p>
+      <p class="hint">The player spends points on their own terminal. You can also select any node here and install or remove it yourself, with no point cost and no tier or Load check. Changes save at once.</p>
       <div class="st-wrap" style="margin-top:12px">${ST.svg(a, { sel: stSel })}</div>
       ${ST.detail(a, stSel, { dm: true })}`;
     const nw = body.querySelector('.st-wrap'); if (nw) nw.scrollLeft = sl != null ? sl : (nw.scrollWidth - nw.clientWidth) / 2;
+  } else if (tab === 'vitalis') {
+    const plans = ['Walk-in', 'Grid Cover', 'Spire Cover', 'Apex Cover'], cur = plans.includes(a.cover) ? a.cover : 'Walk-in';
+    body.innerHTML = `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start;gap:18px">
+      <div><p class="mono">THE CARD ON THE PLAYER'S TERMINAL</p>${ST.card(a, a.holder || sel, sel)}</div>
+      <div>
+        <p class="mono">PLAN · CLICK TO CHANGE, SAVES AT ONCE</p>
+        <div class="row" style="justify-content:flex-start;border-top:0;padding-top:0">${plans.map(p => `<button type="button" class="${p === cur ? '' : 'quiet'}" data-cover="${p}" aria-pressed="${p === cur}">${p.toUpperCase()}</button>`).join('')}</div>
+        <label style="margin-top:14px">Treatment record (one entry per line, newest first). The player sees it under their card.<textarea id="vit-log" rows="6" placeholder="Cycle 02 · Stabilized on Null Row · Dr. N. Rell">${esc((a.vitalisLog || []).join('\n'))}</textarea></label>
+        <div class="row" style="margin-top:10px;border-top:0"><button type="button" data-vitlog>SAVE TREATMENT RECORD</button><span class="msg" id="vit-msg"></span></div>
+      </div></div>`;
   } else if (tab === 'phone') {
     body.innerHTML = `
       <p class="mono">CONTACTS AND NOTES (WHAT THEIR PHONE SHOWS)</p>
@@ -949,6 +985,21 @@ async function toggleAugment(id) {
   const next = cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id];
   try { await setDoc(doc(db, 'accounts', sel), { augments: next }, { merge: true }); say('aug-msg', 'Saved ' + stamp() + '. The player sees it now.'); }
   catch (e) { say('aug-msg', explain(e)); }
+}
+async function saveLoadLimit() {
+  if (!sel) return;
+  try { await setDoc(doc(db, 'accounts', sel), { loadLimit: Math.max(0, Math.round(Number($('load-limit').value) || 0)) }, { merge: true }); say('aug-msg', 'Load limit saved ' + stamp() + '.'); }
+  catch (e) { say('aug-msg', explain(e)); }
+}
+async function setCover(plan) {
+  if (!sel) return;
+  try { await setDoc(doc(db, 'accounts', sel), { cover: plan }, { merge: true }); renderTab(); say('vit-msg', plan + ' saved ' + stamp() + '.'); }
+  catch (e) { say('vit-msg', explain(e)); }
+}
+async function saveVitLog() {
+  if (!sel) return;
+  try { await setDoc(doc(db, 'accounts', sel), { vitalisLog: $('vit-log').value.split('\n').map(s => s.trim()).filter(Boolean) }, { merge: true }); say('vit-msg', 'Saved ' + stamp() + '. The player sees it now.'); }
+  catch (e) { say('vit-msg', explain(e)); }
 }
 async function saveAccount() {
   if (!sel) return;
@@ -1023,11 +1074,27 @@ function loadState(s) {
   STATE = s; HIDDEN = s.hidden || {};
   const d = Object.assign({}, STATE_DEFAULTS, s);
   $('cycle').value = d.cycle;
-  $('news').value = (d.news || []).join('\n');
+  if (!$('news-rows').contains(document.activeElement)) fillNews(d.news || []);
   paintNews();
   fillJobs(d.jobs || []);
 }
-function newsLines() { return $('news').value.split('\n').map(l => l.trim()).filter(Boolean); }
+function newsRow(line = '') {
+  const m = /^([^:]{2,20}):\s*(.*)$/.exec(line), d = document.createElement('div');
+  d.className = 'nrow';
+  d.innerHTML = `<span class="nrow-no"></span>
+    <input data-n="src" list="news-src" maxlength="20" placeholder="SOURCE" aria-label="Source" value="${esc(m ? m[1] : '')}">
+    <textarea data-n="text" rows="2" placeholder="Headline" aria-label="Headline">${esc(m ? m[2] : line)}</textarea>
+    <div class="nrow-btn"><button type="button" class="quiet" data-nup aria-label="Move up">↑</button><button type="button" class="quiet" data-ndown aria-label="Move down">↓</button><button type="button" class="danger" data-nrm aria-label="Remove headline">✕</button></div>`;
+  return d;
+}
+function numberNews() { [...$('news-rows').children].forEach((r, i) => { r.querySelector('.nrow-no').textContent = i ? 'HEADLINE ' + String(i + 1).padStart(2, '0') : 'LEAD STORY'; }); }
+function fillNews(list) { $('news-rows').replaceChildren(...list.map(newsRow)); numberNews(); }
+function newsLines() {
+  return [...$('news-rows').children].map(r => {
+    const src = r.querySelector('[data-n="src"]').value.trim().replace(/:/g, ''), text = r.querySelector('[data-n="text"]').value.replace(/\s+/g, ' ').trim();
+    return text ? (src.length >= 2 ? src.toUpperCase() + ': ' + text : text) : '';
+  }).filter(Boolean);
+}
 function newsHTML(items, cycle) {
   if (!items.length) return '<p class="mono">Nothing on the wire.</p>';
   const parse = t => { const m = /^([^:]{2,20}):\s*(.*)$/.exec(t); const body = m ? m[2] : t; return { src: m ? m[1].toUpperCase() : 'WIRE', text: body.charAt(0).toUpperCase() + body.slice(1) }; };
@@ -1041,7 +1108,16 @@ function newsHTML(items, cycle) {
   </section>`;
 }
 function paintNews() { $('news-preview').innerHTML = newsHTML(newsLines(), $('cycle').value || 1); }
-$('news').addEventListener('input', paintNews);
+$('news-rows').addEventListener('input', paintNews);
+$('news-rows').addEventListener('click', e => {
+  const r = e.target.closest('.nrow'); if (!r) return;
+  if (e.target.closest('[data-nup]') && r.previousElementSibling) r.previousElementSibling.before(r);
+  else if (e.target.closest('[data-ndown]') && r.nextElementSibling) r.nextElementSibling.after(r);
+  else if (e.target.closest('[data-nrm]')) r.remove();
+  else return;
+  numberNews(); paintNews();
+});
+$('addnews').onclick = () => { const r = newsRow(); $('news-rows').appendChild(r); numberNews(); r.querySelector('[data-n="src"]').focus(); };
 $('save-news').onclick = async () => {
   try { await setDoc(stateRef, { news: newsLines() }, { merge: true }); say('news-msg', 'Saved ' + stamp() + '. Players see it now.'); }
   catch (e) { say('news-msg', explain(e)); }
@@ -1075,13 +1151,16 @@ $('cycle-next').onclick = async () => {
   } catch (e) { say('world-msg', explain(e)); }
 };
 function jobRow(j = {}) {
-  const d = document.createElement('div'); d.className = 'job';
-  const field = (k, ph) => { const i = document.createElement('input'); i.placeholder = ph; i.value = j[k] || ''; i.dataset.k = k; i.setAttribute('aria-label', ph); return i; };
-  const st = document.createElement('select'); st.dataset.k = 'status'; st.setAttribute('aria-label', 'Status');
-  for (const v of ['open', 'taken', 'done']) { const o = document.createElement('option'); o.value = v; o.textContent = v; st.appendChild(o); }
-  st.value = j.status || 'open';
-  const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'quiet'; rm.textContent = 'REMOVE'; rm.onclick = () => d.remove();
-  d.append(field('title', 'Title'), field('pay', 'Pay'), field('contact', 'Contact'), field('note', 'Note'), st, rm);
+  const d = document.createElement('div'); d.className = 'jobc'; d.dataset.st = ['taken', 'done'].includes(j.status) ? j.status : 'open';
+  const opt = (list, cur) => list.map(([v, t]) => `<option value="${v}" ${v === cur ? 'selected' : ''}>${t}</option>`).join('');
+  d.innerHTML = `<div class="jobc-head"><span>CONTRACT</span><button type="button" class="danger" data-jrm>REMOVE</button></div>
+    <label>Title<input data-k="title" value="${esc(j.title || '')}" placeholder="Courier run, Lift 7 to East Gate"></label>
+    <div class="jobc-2"><label>Pay<input data-k="pay" value="${esc(j.pay || '')}" placeholder="150 cr"></label><label>Contact<input data-k="contact" value="${esc(j.contact || '')}" placeholder="Tavi · Nine Bowls"></label></div>
+    <label>Note<textarea data-k="note" rows="2" placeholder="What the players read under the job">${esc(j.note || '')}</textarea></label>
+    <div class="jobc-2"><label>Status<select data-k="status">${opt([['open', 'Open'], ['taken', 'Taken'], ['done', 'Done (closed)']], d.dataset.st)}</select></label>
+      <label>Risk<select data-k="risk">${opt([['', 'Not shown'], ['Low', 'Low'], ['Medium', 'Medium'], ['High', 'High']], j.risk || '')}</select></label></div>`;
+  d.querySelector('[data-k="status"]').onchange = e => { d.dataset.st = e.target.value; };
+  d.querySelector('[data-jrm]').onclick = () => d.remove();
   return d;
 }
 function fillJobs(list) { $('jobs').replaceChildren(...list.map(jobRow)); }
@@ -1109,6 +1188,9 @@ document.querySelector('[data-sec="players"]').addEventListener('click', e => {
   const tg = e.target.closest('[data-st-toggle]'); if (tg) return toggleAugment(tg.dataset.stToggle);
   const gp = e.target.closest('[data-pts]'); if (gp) return givePoints(Number(gp.dataset.pts));
   if (e.target.closest('[data-pts-all]')) return givePointsAll();
+  if (e.target.closest('[data-load-save]')) return saveLoadLimit();
+  const cv = e.target.closest('[data-cover]'); if (cv) return setCover(cv.dataset.cover);
+  if (e.target.closest('[data-vitlog]')) return saveVitLog();
   if (e.target.closest('[data-delsec]')) return deleteSecrets();
   const dm = e.target.closest('[data-delmsg]'); if (dm) return deleteDoc(doc(db, 'accounts', sel, 'messages', dm.dataset.delmsg));
 });
@@ -1141,7 +1223,8 @@ onSnapshot(accountsCol, snap => {
   accounts = {};
   snap.forEach(d => { accounts[d.id] = d.data(); });
   renderList();
-  if (tab === 'phone' || tab === 'secrets' || tab === 'augments') renderTab();
+  const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (!typing && (tab === 'phone' || tab === 'secrets' || tab === 'augments' || tab === 'vitalis')) renderTab();
   renderSecrets();
 }, err => say('msg', explain(err)));
 onSnapshot(playersCol, snap => {
