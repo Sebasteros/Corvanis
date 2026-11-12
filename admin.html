@@ -44,6 +44,58 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 .split{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
 .plist{display:flex;flex-direction:column;gap:8px}
+/* ---------- bank ---------- */
+.bk{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.bk-head{position:relative;overflow:hidden;border:1px solid var(--holo);border-radius:14px;padding:18px;background:linear-gradient(135deg,rgba(61,255,162,.16),rgba(5,21,16,.94) 55%,rgba(111,233,255,.10))}
+.bk-head::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;border:1px solid rgba(61,255,162,.25);box-shadow:0 0 0 22px rgba(61,255,162,.05),0 0 0 48px rgba(61,255,162,.03)}
+.bk-bank{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.2em;color:var(--holo);margin:0}
+.bk-bank small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.18em;color:var(--muted);margin-top:3px}
+.bk-no{font-family:var(--f-mono);font-size:17px;letter-spacing:.2em;color:var(--text);margin:18px 0 12px}
+.bk-who{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.bk-who b{display:block;font-family:var(--f-display);font-weight:500;font-size:14px;letter-spacing:.06em;color:var(--text);margin-top:2px}
+.bk-accts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.bk-acct{border:1px solid var(--line);border-radius:12px;background:var(--panel,rgba(5,21,16,.84));padding:16px}
+.bk-kind{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--muted);margin:0 0 8px}
+.bk-bal{font-family:var(--f-display);font-weight:700;font-size:30px;color:var(--holo);margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.bk-bal small{font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:.1em}
+.bk-bal.owe{color:var(--amber)}
+.bk-sub{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin:4px 0 10px}
+.bk-line{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.bk-line span:first-child{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted);padding-top:3px}
+.bk-line span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.bk-bar{height:8px;border-radius:99px;background:rgba(255,184,77,.16);overflow:hidden;margin:10px 0 4px}
+.bk-bar i{display:block;height:100%;background:var(--holo);border-radius:99px}
+.bk-pay{border:1px solid var(--holo);border-radius:12px;background:var(--panel,rgba(5,21,16,.84));padding:16px}
+.bk-pay h3{font-family:var(--f-display);font-weight:500;font-size:15px;letter-spacing:.12em;color:var(--holo);margin:0 0 4px}
+.bk-amt{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;background:#03100b;padding:4px 12px;margin:10px 0}
+.bk-amt:focus-within{border-color:var(--holo)}
+.bk-amt input{flex:1;min-width:0;width:100%;border:0;outline:0;background:none;color:var(--text);font-family:var(--f-display);font-weight:700;font-size:26px;padding:6px 0;font-variant-numeric:tabular-nums}
+.bk-amt span{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.bk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.bk-chips button{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--text);background:none;border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer}
+.bk-chips button:hover{border-color:var(--holo);color:var(--holo)}
+.bk-prev{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;min-height:1.4em}
+.bk-prev b{color:var(--text);font-weight:400}
+.bk-go{display:flex;gap:8px;flex-wrap:wrap}
+.bk-go .ap-btn{margin:0;padding:12px 16px;font-size:13px;flex:1;min-width:140px;text-align:center;border-radius:8px}
+.bk-list{border:1px solid var(--line);border-radius:12px;background:var(--panel,rgba(5,21,16,.84));padding:16px}
+.bk-tx{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.bk-tx:first-of-type{border-top:0}
+.bk-tx p{margin:0}
+.bk-tx .t1{font-size:15px}
+.bk-tx .t2{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--muted);margin-top:2px}
+.bk-tx .r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bk-tx .r .t1{color:var(--holo);font-family:var(--f-display);font-weight:500}
+.bk-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:14px}
+.bk-tile{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--glass)}
+.bk-tile span{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.bk-tile b{display:block;font-family:var(--f-display);font-weight:700;font-size:22px;color:var(--holo);margin-top:4px;font-variant-numeric:tabular-nums}
+.bk-tile b.owe{color:var(--amber)}
+.bk-scroll{overflow-x:auto}
+.bk-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.bk-table th{font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.14em;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.bk-table td{padding:8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.bk-table .n{text-align:right}
 .pcard{display:flex;flex-direction:column;gap:2px;text-align:left;color:var(--text);background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-family:var(--f-body);font-size:16px;letter-spacing:0}
 .pcard:hover{border-color:var(--holo-dim);background:var(--glass);color:var(--text)}
 .pcard[aria-pressed="true"]{border-color:var(--holo);box-shadow:inset 3px 0 0 var(--holo)}
@@ -170,6 +222,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
             <div class="top"><h2 id="profile-name"></h2></div>
             <div class="tabs">
               <button type="button" data-tab="account" aria-selected="true">ACCOUNT</button>
+              <button type="button" data-tab="bank" aria-selected="false">BANK</button>
               <button type="button" data-tab="augments" aria-selected="false">AUGMENTS</button>
               <button type="button" data-tab="vitalis" aria-selected="false">VITALIS</button>
               <button type="button" data-tab="phone" aria-selected="false">PHONE VIEW</button>
@@ -754,6 +807,10 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = n => Number(n || 0).toLocaleString('en-US');
 const pad = n => String(n).padStart(2, '0');
+/* ---------- bank helpers ---------- */
+const bankNo = id => { let h = 7; for (const c of String(id || '')) h = (h * 31 + c.charCodeAt(0)) % 1e12; const s = String(Math.floor(h)).padStart(12, '0'); return s.slice(0, 4) + ' ' + s.slice(4, 8) + ' ' + s.slice(8); };
+const paidTotal = a => (Array.isArray(a.payments) ? a.payments : []).reduce((t, p) => t + (Number(p.amount) || 0), 0);
+const bankDay = ms => { try { return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch (e) { return ''; } };
 const stamp = () => new Date().toLocaleTimeString();
 const ONLINE_MS = 150000;
 const STATE_DEFAULTS = {
@@ -866,7 +923,7 @@ function renderList() {
   $('plist').replaceChildren(...ids.map(id => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'pcard'; b.dataset.sel = id; b.setAttribute('aria-pressed', String(sel === id));
-    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small>`;
+    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small><small>${fmt(accounts[id].wallet)} CR · OWES ${fmt((Number(accounts[id].principal) || 0) + (Number(accounts[id].fees) || 0))}</small>`;
     return b;
   }));
   const on = ids.filter(isOnline).map(nameOf);
@@ -914,6 +971,28 @@ function renderTab() {
       <div class="st-wrap" style="margin-top:12px">${ST.svg(a, { sel: stSel })}</div>
       ${ST.detail(a, stSel, { dm: true })}`;
     const nw = body.querySelector('.st-wrap'); if (nw) nw.scrollLeft = sl != null ? sl : (nw.scrollWidth - nw.clientWidth) / 2;
+  } else if (tab === 'bank') {
+    const pays = Array.isArray(a.payments) ? a.payments : [], owed = (Number(a.principal) || 0) + (Number(a.fees) || 0), last = pays[0];
+    const ids = Object.keys(accounts).sort((x, y) => nameOf(x).localeCompare(nameOf(y)));
+    body.innerHTML = `
+      <p class="mono">BANK NO. ${bankNo(sel)} · LIVE FROM THE PLAYER'S ACCOUNT</p>
+      <div class="bk-tiles">
+        <div class="bk-tile"><span>CREDITS</span><b>${fmt(a.wallet)} cr</b></div>
+        <div class="bk-tile"><span>OWED NOW</span><b class="owe">${fmt(owed)} cr</b></div>
+        <div class="bk-tile"><span>PRINCIPAL / INTEREST AND FEES</span><b class="owe" style="font-size:16px">${fmt(a.principal)} / ${fmt(a.fees)}</b></div>
+        <div class="bk-tile"><span>PAID TO DATE</span><b>${fmt(paidTotal(a))} cr</b></div>
+        <div class="bk-tile"><span>PAYMENTS MADE</span><b>${pays.length}</b></div>
+        <div class="bk-tile"><span>LAST PAYMENT</span><b style="font-size:16px">${last ? fmt(last.amount) + ' cr · Cycle ' + pad(last.cycle || 0) : 'None yet'}</b></div>
+      </div>
+      <p class="mono">PAYMENTS BY THIS PLAYER · NEWEST FIRST</p>
+      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>REF</th><th>CYCLE</th><th>DAY</th><th class="n">PAID</th><th class="n">TO FEES</th><th class="n">TO PRINCIPAL</th><th class="n">CREDITS AFTER</th><th class="n">OWED AFTER</th></tr></thead><tbody>
+        ${pays.map(t => `<tr><td>${esc(t.ref || '')}</td><td>${pad(t.cycle || 0)}</td><td>${esc(t.at ? bankDay(t.at) : '')}</td><td class="n">${fmt(t.amount)}</td><td class="n">${fmt(t.fees)}</td><td class="n">${fmt(t.principal)}</td><td class="n">${fmt(t.wallet)}</td><td class="n">${fmt(t.owed)}</td></tr>`).join('') || '<tr><td colspan="8">No payments yet.</td></tr>'}
+      </tbody></table></div>
+      <p class="mono" style="margin-top:18px">ALL ACCOUNTS</p>
+      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>PLAYER</th><th class="n">CREDITS</th><th class="n">OWED</th><th class="n">PAID TO DATE</th><th class="n">PAYMENTS</th><th>LAST PAYMENT</th></tr></thead><tbody>
+        ${ids.map(id => { const x = accounts[id] || {}, ps = Array.isArray(x.payments) ? x.payments : []; return `<tr><td>${esc(nameOf(id))}</td><td class="n">${fmt(x.wallet)}</td><td class="n">${fmt((Number(x.principal) || 0) + (Number(x.fees) || 0))}</td><td class="n">${fmt(paidTotal(x))}</td><td class="n">${ps.length}</td><td>${ps[0] ? fmt(ps[0].amount) + ' cr · Cycle ' + pad(ps[0].cycle || 0) : '-'}</td></tr>`; }).join('')}
+      </tbody></table></div>
+      <p class="hint">Players pay from the BANK tab on their terminal. To change a balance yourself (pay for a job, add a fee), use the ACCOUNT tab. Reopen the ACCOUNT tab before editing so you start from the newest numbers.</p>`;
   } else if (tab === 'vitalis') {
     const plans = ['Walk-in', 'Grid Cover', 'Spire Cover', 'Apex Cover'], cur = plans.includes(a.cover) ? a.cover : 'Walk-in';
     body.innerHTML = `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start;gap:18px">
@@ -1224,7 +1303,7 @@ onSnapshot(accountsCol, snap => {
   snap.forEach(d => { accounts[d.id] = d.data(); });
   renderList();
   const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
-  if (!typing && (tab === 'phone' || tab === 'secrets' || tab === 'augments' || tab === 'vitalis')) renderTab();
+  if (!typing && (tab === 'phone' || tab === 'secrets' || tab === 'augments' || tab === 'vitalis' || tab === 'bank')) renderTab();
   renderSecrets();
 }, err => say('msg', explain(err)));
 onSnapshot(playersCol, snap => {
