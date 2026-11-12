@@ -1610,6 +1610,25 @@ async function buyAugment(id) {
     note(hit.node.name + ' installed.');
   } catch (err) { note('Could not install: ' + (err.code || err.message)); }
 }
+async function payDebt(amount) {
+  const a = ACC || {};
+  if (!ME_ID) return;
+  const wallet = Number(a.wallet) || 0, fees = Number(a.fees) || 0, principal = Number(a.principal) || 0, owed = fees + principal;
+  if (!Number.isFinite(amount) || amount < 1) return note('Enter an amount of at least 1 cr.');
+  if (owed <= 0) return note('Nothing is owed right now.');
+  if (amount > wallet) return note('You do not have that many credits.');
+  const pay = Math.min(amount, owed);
+  const feesPaid = Math.min(fees, pay), principalPaid = pay - feesPaid;
+  const newFees = fees - feesPaid, newPrincipal = principal - principalPaid;
+  const cleared = newFees + newPrincipal === 0;
+  const log = [...(Array.isArray(a.log) ? a.log : []), `Paid ${fmt(pay)} cr toward debt at Terminal 0-114`].slice(-40);
+  const patch = { wallet: wallet - pay, fees: newFees, principal: newPrincipal, log };
+  if (cleared) patch.standing = 'Clear';
+  try {
+    await setDoc(doc(db, 'accounts', ME_ID), patch, { merge: true });
+    note(cleared ? 'Debt cleared.' : `Paid ${fmt(pay)} cr.`);
+  } catch (err) { note('Could not pay: ' + (err.code || err.message)); }
+}
 function vitalisApp(a) {
   return `<div class="ap-grid">
     <section>${ST.card(a, a.holder || ME_NAME, ME_ID)}</section>
@@ -1627,6 +1646,11 @@ function walletApp(a) {
       ${ROW('Added each cycle', '+' + NUM(Math.round(owed * (a.rate || 0) / 100)) + ' cr (' + (a.rate || 0) + '%)')}
       ${ROW('Minimum due', NUM(a.minDue) + ' cr')}
       ${ROW('Next visit', a.due || '-')}
+    </section>
+    <section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">PAY TOWARD DEBT · FEES FIRST, THEN PRINCIPAL</p>
+      ${owed > 0 && (a.wallet || 0) > 0
+        ? `<form data-app-form="debt-pay" class="chat-form"><input class="ap-field" name="amount" type="number" inputmode="numeric" min="1" step="1" max="${Math.min(a.wallet || 0, owed)}" placeholder="Amount in cr" required><button class="ap-btn" type="submit">PAY</button></form><p class="ap-mono">Pay any amount up to your credits or your full balance, whichever is smaller.</p>`
+        : `<p>${owed > 0 ? 'You have no credits to pay with.' : 'Nothing is owed right now.'}</p>`}
     </section>
     <section class="ap-card" style="grid-column:1/-1"><p class="ap-mono">ACTIVITY</p>${(a.log || []).map(l => `<p class="ap-log">${H(l)}</p>`).join('') || '<p>Nothing yet.</p>'}</section>
   </div>`;
@@ -1828,6 +1852,7 @@ appView.addEventListener('submit', e => {
   if (kind === 'portrait') { const link = String(data.get('portrait') || '').trim().slice(0, 400); return link ? saveMine({ portrait: link }) : note('Paste a picture link first.'); }
   if (kind === 'notebook') return saveMine({ notebook: String(data.get('notebook') || '').slice(0, 4000) });
   if (kind === 'chat-send') return sendChat(String(data.get('text') || '').trim());
+  if (kind === 'debt-pay') return payDebt(Math.floor(Number(data.get('amount'))));
   const list = [...((ACC && ACC.contacts) || [])];
   if (kind === 'contact-add') {
     list.push({ name: String(data.get('name') || '').trim().slice(0, 40), role: String(data.get('role') || '').trim().slice(0, 40), note: String(data.get('note') || '').slice(0, 400) });
