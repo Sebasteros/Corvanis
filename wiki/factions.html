@@ -27,16 +27,34 @@ code{background:var(--panel);padding:1px 5px;border-radius:3px}
 blockquote{border-left:3px solid var(--accent);margin:12px 0;padding:4px 14px;color:var(--muted)}
 .note{border:1px dashed var(--warn);padding:8px 12px;border-radius:6px;color:var(--warn)}
 footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)}
-.menu{display:none}
+.bar{display:contents}
+.menu-btn{display:none}
 @media (max-width:820px){
- .wrap{grid-template-columns:1fr}
- nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ .wrap{grid-template-columns:minmax(0,1fr)}
+ main{min-width:0}
+ nav{position:sticky;top:0;z-index:50;height:auto;overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding:0}
+ .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px}
+ nav .brand{margin:0;flex:0 0 auto}
+ .menu-btn{display:flex;align-items:center;gap:8px;min-width:0;max-width:62%;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer}
+ .menu-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .menu-btn::after{content:"▾";color:var(--accent);flex:0 0 auto}
+ nav.open .menu-btn::after{content:"▴"}
+ .links{display:none;max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 16px;border-top:1px solid var(--line);background:var(--panel)}
+ nav.open .links{display:block}
+ nav li a{padding:10px 8px}
  main{padding:20px 16px}
+ h1,h2,h3{scroll-margin-top:72px}
+ table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ pre{overflow-x:auto}
+ img{max-width:100%}
 }
 </style></head>
 <body><div class="wrap">
-<nav><a class="brand" href="index.html">CORVANIS</a>
+<nav id="nav"><div class="bar"><a class="brand" href="index.html">CORVANIS</a>
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="links"><span>Factions</span></button></div>
+<div class="links" id="links">
 <h4>Start</h4><ul><li><a href="index.html">Main Page</a></li><li><a href="getting-started.html">Getting Started</a></li><li><a href="player-primer.html">Player Primer</a></li></ul><h4>Players</h4><ul><li><a href="character-creation.html">Character Creation</a></li><li><a href="origins.html">Origins</a></li><li><a href="roles.html">Roles</a></li><li><a href="feats.html">Feats</a></li><li><a href="augments.html">Augments and Skill Trees</a></li><li><a href="surge.html">Surge</a></li><li><a href="gear.html">Gear and Services</a></li><li><a href="relics.html">Relics</a></li></ul><h4>World</h4><ul><li><a href="the-world.html">The World</a></li><li><a href="factions.html" class="on">Factions</a></li><li><a href="glossary.html">Glossary</a></li></ul><h4>Legal</h4><ul><li><a href="license.html">License</a></li></ul>
+</div>
 </nav>
 <main>
 <h1 id="factions">Factions</h1>
@@ -105,4 +123,15 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 </ul>
 <h2 id="using-factions-in-play">Using factions in play</h2>
 <footer>Corvanis is an original setting. Released under CC BY-NC-SA 4.0 (see License). Built on the 5e System Reference Document; see License for attribution.</footer>
-</main></div></body></html>
+</main></div>
+<script>
+(function(){
+  var nav=document.getElementById("nav"),btn=document.getElementById("menu-btn");
+  if(!nav||!btn)return;
+  function set(o){nav.classList.toggle("open",o);btn.setAttribute("aria-expanded",o?"true":"false");}
+  btn.addEventListener("click",function(){var o=!nav.classList.contains("open");set(o);if(o){var on=nav.querySelector("a.on"),l=document.getElementById("links");if(on)l.scrollTop=Math.max(0,on.offsetTop-80);}});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false);});
+  document.addEventListener("click",function(e){if(!nav.contains(e.target))set(false);});
+})();
+</script>
+</body></html>
