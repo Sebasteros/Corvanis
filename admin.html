@@ -129,6 +129,8 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .boxed .row{border-top:0;justify-content:flex-start;padding:4px 0}
 .boxed select,.boxed input{width:auto;flex:1 1 200px;max-width:420px}
 .holders select{width:auto;max-width:260px}
+.alertbar{display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid var(--red);background:rgba(255,59,59,.12);color:#ffd6d6;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:15px}
+.alertbar[hidden]{display:none}
 .pcard small.alert{color:var(--red);letter-spacing:.14em}
 .vcall{border:1px solid var(--red);border-radius:12px;padding:14px;margin-bottom:14px;background:rgba(255,59,59,.07)}
 .vcall h3{font-family:var(--f-display);font-weight:500;font-size:15px;letter-spacing:.14em;color:var(--red);margin:0 0 6px}
@@ -275,6 +277,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
   </aside>
 
   <main class="main">
+    <div class="alertbar" id="alert" hidden role="alert"><span></span><button type="button" class="quiet" onclick="this.parentNode.hidden=true">DISMISS</button></div>
     <!-- PLAYERS -->
     <section data-sec="players">
       <div class="top"><div><h2>PLAYERS</h2><p class="online" id="online">Nobody is online right now.</p></div></div>
@@ -946,10 +949,15 @@ function readAccount() {
   return out;
 }
 
-const explain = e => e && e.code === 'permission-denied'
-  ? 'This login is not allowed to change that. Check the email in the database rules.'
-  : (e && e.code === 'auth/invalid-credential') ? 'Wrong email or password.'
-  : 'Something went wrong: ' + (e && (e.code || e.message) || 'unknown error');
+function showAlert(t) { const el = $('alert'); if (!el) return; el.hidden = !t; el.querySelector('span').textContent = t; }
+const whoAmI = () => (auth.currentUser && auth.currentUser.email) || 'nobody';
+const explain = e => {
+  if (e && e.code === 'permission-denied') {
+    const t = `NOT SAVED. The database refused that change. You are signed in as ${whoAmI()}. Either this is not the admin email in the rules, or the newest rules are not published yet (Firebase, Firestore, Rules, Publish).`;
+    showAlert(t); return t;
+  }
+  return (e && e.code === 'auth/invalid-credential') ? 'Wrong email or password.' : 'Something went wrong: ' + (e && (e.code || e.message) || 'unknown error');
+};
 const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n.textContent = t; };
 
 /* ---------- live data ---------- */
@@ -1347,7 +1355,7 @@ async function ensureBanks() {
         wallet: Number(a.wallet) || 0, principal: Number(a.principal) || 0, fees: Number(a.fees) || 0, rate: a.rate ?? 2, minDue: Number(a.minDue) || 0, due: a.due || '',
         log: Array.isArray(a.log) ? a.log : [], payments: Array.isArray(a.payments) ? a.payments : [], createdAt: Date.now() });
       await setDoc(doc(db, 'accounts', id), { banked: true }, { merge: true });
-    } catch (e) { console.warn('Bank issue:', e.code || e.message); }
+    } catch (e) { explain(e); }
     issuing.delete(id);
   }
 }
@@ -1589,7 +1597,7 @@ document.querySelector('[data-sec="players"]').addEventListener('click', e => {
   const pn = e.target.closest('[data-phone-note]'); if (pn) { phoneNote = pn.dataset.phoneNote; return renderTab(); }
   if (e.target.closest('[data-vitlog]')) return saveVitLog();
   if (e.target.closest('[data-delsec]')) return deleteSecrets();
-  const dm = e.target.closest('[data-delmsg]'); if (dm) return deleteDoc(doc(db, 'accounts', sel, 'messages', dm.dataset.delmsg));
+  const dm = e.target.closest('[data-delmsg]'); if (dm) return deleteDoc(doc(db, 'accounts', sel, 'messages', dm.dataset.delmsg)).catch(explain);
 });
 $('tab-body').addEventListener('submit', e => {
   e.preventDefault();
@@ -1636,7 +1644,7 @@ onSnapshot(banksCol, snap => {
   const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !document.activeElement.closest('[data-live]');
   if (tab === 'bank' && !typing && !dirty) renderTab();
   banksReady = true; ensureBanks();
-}, err => console.warn('Banks unavailable:', err.code));
+}, err => { console.warn('Banks unavailable:', err.code); if (auth.currentUser && auth.currentUser.email) showAlert('Bank accounts cannot be read. The newest database rules are not published yet (Firebase, Firestore, Rules, Publish). Until they are, bank accounts you issue will vanish.'); });
 onSnapshot(playersCol, snap => {
   players = {};
   snap.forEach(d => { const v = d.data(); players[d.id] = { name: v.name || '', seen: v.lastSeen ? v.lastSeen.toMillis() : Date.now() }; });
@@ -1652,8 +1660,11 @@ setInterval(renderList, 30000);
 
 /* ---------- sign-in ---------- */
 onAuthStateChanged(auth, async user => {
-  $('login').hidden = !!user; $('panel').hidden = !user;
-  if (!user) return say('msg', 'Sign in with your admin email and password.');
+  /* a player sign-in from the terminal in this same browser has no email: it must not open the console */
+  const ok = !!(user && user.email);
+  $('login').hidden = ok; $('panel').hidden = !ok;
+  if (!ok) return say('msg', 'Sign in with your admin email and password.');
+  showAlert('');
   say('msg', 'Signed in as ' + user.email + '.');
   ensureBanks();
   try {
