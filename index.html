@@ -619,7 +619,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "+1 to Athletics checks to grab, hold, or climb."
+    "effect": "+2 to Athletics checks to climb, grab, or hold on. You climb at your full walking speed."
+   },
+   {
+    "id": "reflex-balance-gyro",
+    "name": "Balance Gyro",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Advantage on checks and saving throws against being knocked prone or pushed."
    },
    {
     "id": "reflex-dash-coil",
@@ -627,7 +635,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest."
+    "effect": "Dash as a bonus action. Free once per short rest; after that it costs 1 Surge each time."
    },
    {
     "id": "reflex-lightning-step",
@@ -635,7 +643,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks."
+    "effect": "Reaction, 1 Surge: when an attack misses you, move up to 15 feet without provoking opportunity attacks."
+   },
+   {
+    "id": "reflex-twitch-fiber",
+    "name": "Twitch Fiber",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "+3 to initiative. You can draw or stow two weapons at once."
    },
    {
     "id": "reflex-reflex-core",
@@ -643,7 +659,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Your speed increases by 10 feet. You cannot be surprised."
+    "effect": "Your speed increases by 10 feet. You cannot be surprised. Opportunity attacks against you have disadvantage."
    },
    {
     "id": "reflex-reaction-surge",
@@ -651,14 +667,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, take an extra reaction on your turn. Costs 2 Surge."
+    "effect": "Once per short rest, 2 Surge: take one extra action on your turn. It can be one weapon attack, Dash, Disengage, Hide, or Use an Object."
+   },
+   {
+    "id": "reflex-blur-step",
+    "name": "Blur Step",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "+1 AC while you are not wearing heavy armor. Reaction, 1 Surge: add +3 to your AC against one attack that would hit you."
    }
   ]
  },
  {
   "id": "optic",
   "name": "Optic",
-  "color": "#6fe9ff",
+  "color": "#35d6ff",
   "nodes": [
    {
     "id": "optic-night-lens",
@@ -666,7 +690,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "You have darkvision out to 30 feet."
+    "effect": "You have darkvision out to 60 feet."
    },
    {
     "id": "optic-target-lock",
@@ -674,7 +698,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "+1 to ranged attacks against a creature you can see clearly."
+    "effect": "Your ranged attacks ignore half cover."
+   },
+   {
+    "id": "optic-glare-filter",
+    "name": "Glare Filter",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You cannot be blinded by light or flash effects. Advantage on saving throws against being blinded by anything else."
    },
    {
     "id": "optic-thermal-eye",
@@ -682,7 +714,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness."
+    "effect": "1 Surge: for 10 minutes you see the heat of creatures within 60 feet through smoke, darkness, and thin walls."
    },
    {
     "id": "optic-zoom-glass",
@@ -690,7 +722,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on Perception checks to spot something at range."
+    "effect": "Advantage on Perception checks to spot things at range. Attacking at long range does not give you disadvantage."
+   },
+   {
+    "id": "optic-threat-reader",
+    "name": "Threat Reader",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Bonus action: learn the AC of a creature you can see and one damage type it resists or is weak to. Uses equal to your proficiency bonus per long rest."
    },
    {
     "id": "optic-overlay",
@@ -698,7 +738,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per short rest, learn the current health and augment types of a creature you can see."
+    "effect": "Once per short rest, mark a creature you can see for 1 minute. You learn its current hit points and augments, and your attacks against it score a critical hit on a 19 or 20."
    },
    {
     "id": "optic-kill-frame",
@@ -706,14 +746,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, when a ranged attack of yours misses, reroll it."
+    "effect": "Your ranged weapon attacks score a critical hit on a 19 or 20. Once per short rest, reroll a ranged attack that missed."
+   },
+   {
+    "id": "optic-ghost-sight",
+    "name": "Ghost Sight",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "You see invisible creatures, holograms, and optical camouflage for what they are within 30 feet."
    }
   ]
  },
  {
   "id": "dermal",
   "name": "Dermal",
-  "color": "#3dffa2",
+  "color": "#39e07a",
   "nodes": [
    {
     "id": "dermal-sealant-layer",
@@ -729,7 +777,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "As an action, stop your own bleeding."
+    "effect": "Bonus action: stop your own bleeding. You have advantage on death saving throws."
+   },
+   {
+    "id": "dermal-insulated-skin",
+    "name": "Insulated Skin",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You ignore extreme heat and cold. Reduce fire and cold damage you take by 2."
    },
    {
     "id": "dermal-ablative-weave",
@@ -737,7 +793,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Reaction, once per short rest: reduce the damage of one attack by 1d6."
+    "effect": "Reaction, twice per short rest: reduce the damage of one attack against you by 1d10."
    },
    {
     "id": "dermal-poison-filter",
@@ -745,7 +801,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on saving throws against poison."
+    "effect": "You are immune to the poisoned condition and have resistance to poison damage."
+   },
+   {
+    "id": "dermal-shock-lining",
+    "name": "Shock Lining",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Once per turn, a creature that hits you with a melee attack takes 1d6 lightning damage."
    },
    {
     "id": "dermal-mesh-skin",
@@ -753,7 +817,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)"
+    "effect": "+2 AC while you are not wearing heavy armor. This replaces the Sealant Layer bonus; it does not add to it."
    },
    {
     "id": "dermal-flash-sheath",
@@ -761,7 +825,15 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, become resistant to one damage type for 1 minute."
+    "effect": "After a long rest, choose one damage type: you have resistance to it. Once per long rest, change the type as a bonus action."
+   },
+   {
+    "id": "dermal-regrowth-mesh",
+    "name": "Regrowth Mesh",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "At the start of each of your turns, regain 2 hit points if you are below half your hit points and above 0."
    }
   ]
  },
@@ -776,7 +848,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "Your carrying capacity doubles. +1 to Strength checks to lift or push."
+    "effect": "Your carrying capacity doubles. Advantage on Strength checks to lift, push, or break things."
    },
    {
     "id": "frame-tool-hand",
@@ -787,12 +859,20 @@ const AUG_TREE = [
     "effect": "An extra arm. You can hold a second object or use a tool in your free hand as part of another action."
    },
    {
+    "id": "frame-knuckle-plate",
+    "name": "Knuckle Plate",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Your unarmed strikes deal 1d6 + Strength bludgeoning damage and can break glass, locks, and thin walls."
+   },
+   {
     "id": "frame-hydraulic-grip",
     "name": "Hydraulic Grip",
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on grapple and shove checks."
+    "effect": "Advantage on grapple and shove checks. A creature you grapple takes 1d4 bludgeoning damage at the start of each of your turns."
    },
    {
     "id": "frame-load-bearer",
@@ -800,7 +880,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Your Load limit increases by 1."
+    "effect": "Your Load limit increases by 4. This node still costs its own 2 Load, so you come out 2 ahead."
+   },
+   {
+    "id": "frame-piston-arm",
+    "name": "Piston Arm",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "+2 damage with melee weapon attacks and unarmed strikes."
    },
    {
     "id": "frame-ram-frame",
@@ -808,7 +896,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per turn, shove a creature as a bonus action."
+    "effect": "Shove as a bonus action. If you move 10 feet in a straight line and hit with a melee attack, it deals +1d8 damage and the target makes a Strength save or falls prone."
    },
    {
     "id": "frame-reinforced-spine",
@@ -816,14 +904,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Resistance to falling damage. You cannot be knocked prone by a single attack."
+    "effect": "Your hit point maximum increases by 2 per character level. You have resistance to falling damage."
+   },
+   {
+    "id": "frame-siege-frame",
+    "name": "Siege Frame",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Your Strength score increases by 2, to a maximum of 22. You count as one size larger for carrying, grappling, and shoving."
    }
   ]
  },
  {
   "id": "neural",
   "name": "Neural",
-  "color": "#c77dff",
+  "color": "#b06bff",
   "nodes": [
    {
     "id": "neural-port-jack",
@@ -831,7 +927,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "You can jack into a deck. Required for Netrunners."
+    "effect": "You can jack into a deck and link to linked weapons. Required for Netrunners."
    },
    {
     "id": "neural-voice-filter",
@@ -842,12 +938,20 @@ const AUG_TREE = [
     "effect": "+2 to Deception checks made through a device. You can change your voice."
    },
    {
+    "id": "neural-memory-tap",
+    "name": "Memory Tap",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You recall anything you saw or heard in the last cycle exactly. Advantage on Intelligence checks to recall information."
+   },
+   {
     "id": "neural-buffer",
     "name": "Buffer",
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Your maximum Surge increases by 1."
+    "effect": "Your maximum Surge increases by 2."
    },
    {
     "id": "neural-rig-link",
@@ -855,7 +959,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Intrusions you cast may be cast through a device within 120 feet, if you can see the device."
+    "effect": "Your Intrusions can be cast through any device you can see within 120 feet, as if you stood there."
+   },
+   {
+    "id": "neural-co-processor",
+    "name": "Co-Processor",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Once per short rest, after you see the roll, add 1d6 to one of your ability checks or saving throws."
    },
    {
     "id": "neural-deep-net",
@@ -863,7 +975,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost."
+    "effect": "You learn two more Intrusions. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost and 2 extra Surge."
    },
    {
     "id": "neural-neural-shield",
@@ -871,7 +983,15 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Advantage on Intelligence and Wisdom saving throws against mental effects."
+    "effect": "Advantage on Intelligence, Wisdom, and Charisma saving throws. You cannot be charmed."
+   },
+   {
+    "id": "neural-ghost-protocol",
+    "name": "Ghost Protocol",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per long rest, 3 Surge: take control of one drone, turret, camera, or door within 60 feet for 1 minute. A creature operating it makes an Intelligence save to keep it."
    }
   ]
  }
@@ -880,7 +1000,7 @@ const AUG_TREE = [
 const ST = (() => {
   const W = 1560, HT = 830, ROOT = { x: 780, y: 820 };
   const ANG = [-72, -36, 0, 36, 72];
-  const DIST = { 1: 290, 2: 440, 3: 590 }, OFF = { 1: 40, 2: 54, 3: 64 }, RAD = { 1: 22, 2: 24, 3: 31 };
+  const DIST = { 1: 290, 2: 440, 3: 590 }, GAP = { 1: 56, 2: 70, 3: 86 }, RAD = { 1: 21, 2: 24, 3: 30 };
   const ROMAN = ['I', 'II', 'III'];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const ICON = {
@@ -904,11 +1024,11 @@ const ST = (() => {
   }
   /* why a player cannot install this node right now ('' means they can) */
   function blocked(a, line, node) {
-    const st = state(a, line, node), pts = Number(a && a.augPoints) || 0, limit = Number(a && a.loadLimit) || 0;
+    const st = state(a, line, node), pts = Number(a && a.augPoints) || 0, limit = Number(a && a.loadLimit) || 0, red = Number(a && a.redline) || 0;
     if (st === 'owned') return 'Installed.';
     if (st === 'locked') return 'Locked. Install a Tier ' + ROMAN[node.tier - 2] + ' node in the ' + line.name + ' line first.';
     if (!limit) return 'Your Load limit is not on file yet. Ask your DM.';
-    if (loadUsed(a) + node.load > limit) return 'Not enough Load. This needs ' + node.load + ' and you have ' + (limit - loadUsed(a)) + ' free.';
+    if (loadUsed(a) + node.load > limit + red) return 'Not enough Load. This needs ' + node.load + ' and you have ' + Math.max(0, limit + red - loadUsed(a)) + ' free' + (red ? ', redline included.' : '. A redline rig lets you go past your limit, at a cost in hit points.');
     if (pts < 1) return 'No skill points. Your DM awards them.';
     return '';
   }
@@ -922,7 +1042,7 @@ const ST = (() => {
     const k = Math.hypot(B.x - A.x, B.y - A.y) * 0.45;
     return `M${f(A.x)},${f(A.y)} C${f(A.x + u.ux * k)},${f(A.y + u.uy * k)} ${f(B.x - u.ux * k)},${f(B.y - u.uy * k)} ${f(B.x)},${f(B.y)}`;
   }
-  function nodePos(li, node, j) { return pt(li, DIST[node.tier], (j ? 1 : -1) * OFF[node.tier]); }
+  function nodePos(li, node, j, count) { return pt(li, DIST[node.tier] + (count > 2 && j === 1 ? 14 : 0), (j - (count - 1) / 2) * GAP[node.tier]); }
 
   function svg(a, opts = {}) {
     const o = owned(a), sel = opts.sel || null;
@@ -934,14 +1054,14 @@ const ST = (() => {
       const stem = { x: ROOT.x + (li - 2) * 18, y: HT + 4 };
       const segs = [];
       segs.push([`M${f(stem.x)},${f(stem.y)} C${f(stem.x)},${f(stem.y - 90)} ${f(hub.x - u.ux * 60)},${f(hub.y - u.uy * 60)} ${f(hub.x)},${f(hub.y)}`, any(1)]);
-      tiers[0].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(hub, p, u), o.has(n.id)]); segs.push([curve(p, j1, u), o.has(n.id) && any(2)]); });
-      tiers[1].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j1, p, u), o.has(n.id)]); segs.push([curve(p, j2, u), o.has(n.id) && any(3)]); });
-      tiers[2].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j2, p, u), o.has(n.id)]); });
+      tiers[0].forEach((n, j) => { const p = nodePos(li, n, j, tiers[0].length); segs.push([curve(hub, p, u), o.has(n.id)]); segs.push([curve(p, j1, u), o.has(n.id) && any(2)]); });
+      tiers[1].forEach((n, j) => { const p = nodePos(li, n, j, tiers[1].length); segs.push([curve(j1, p, u), o.has(n.id)]); segs.push([curve(p, j2, u), o.has(n.id) && any(3)]); });
+      tiers[2].forEach((n, j) => { const p = nodePos(li, n, j, tiers[2].length); segs.push([curve(j2, p, u), o.has(n.id)]); });
       segs.forEach(([d, on]) => { if (on) lit += `<path d="${d}" stroke="${line.color}"/>`; else dim += `<path d="${d}"/>`; });
       [[hub, any(1)], [j1, any(2)], [j2, any(3)]].forEach(([p, on]) => { dots += `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${on ? 7 : 5}" fill="${on ? line.color : '#2b3440'}"/>`; });
 
       line.nodes.forEach(n => {
-        const j = tiers[n.tier - 1].indexOf(n), p = nodePos(li, n, j), r = RAD[n.tier], st = state(a, line, n), sc = r / 19;
+        const j = tiers[n.tier - 1].indexOf(n), p = nodePos(li, n, j, tiers[n.tier - 1].length), r = RAD[n.tier], st = state(a, line, n), sc = r / 19;
         nodes += `<g class="st-node st-${st}${sel === n.id ? ' st-sel' : ''}" data-node="${n.id}" tabindex="0" role="button" aria-label="${esc(n.name)}, ${esc(line.name)} line, Tier ${ROMAN[n.tier - 1]}, ${st === 'owned' ? 'installed' : st === 'open' ? 'available' : 'locked'}" style="--c:${line.color}">
           <circle class="st-hit" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 14}"/>
           ${sel === n.id ? `<circle class="st-ring" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 8}"/>` : ''}
@@ -1730,7 +1850,7 @@ const paidTotal = a => (Array.isArray(a.payments) ? a.payments : []).reduce((t, 
 const bankDay = ms => { try { return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch (e) { return ''; } };
 /* ---------- help marks: a small ? next to a word, tap or hover for a short explanation ---------- */
 const TIPS = {
-  load: 'Load is how much cybernetic hardware your body can carry. Every augment adds Load. Your limit is your Constitution score. Go over it and your augments start to glitch.',
+  load: 'Load is how much cybernetic hardware your body can carry. Every augment adds Load. Your limit is your Constitution score. You cannot go past it without a redline rig, and a redline rig costs you hit points.',
   points: 'Skill points install augments. Your GM hands them out when you level up or hit a big story moment. One point installs one node you qualify for.',
   tier: 'The city level the Registrar files you under. It decides which services treat you as a resident.',
   permit: 'A Shift Pass lets you ride Lift 7 up to the Grid for work. Without one, the Grid is closed to you.',
@@ -1738,6 +1858,8 @@ const TIPS = {
   standing: 'How the Registrar sees you. Clean means no trouble. Under Review means someone is reading your file. Flagged means holds and collectors.',
   implants: 'The augments the Registrar knows about. You can update this list yourself. What you leave off is your business, until someone checks.',
   residence: 'Where the Registrar thinks you live. You can update it yourself.',
+  redline: 'A redline rig lets you carry Load past your limit. Every point over the limit lowers your hit point maximum by twice your proficiency bonus (4 at levels 1 to 4, 6 at levels 5 to 8, 8 at levels 9 and 10). The first number is how far over you are. The second is how far your rig lets you go.',
+  marker: 'A marker is chips the house lent you. It is a debt to the people who run Paradise, not to a bank. It is on no Registrar file, and they collect in person.',
   principal: 'The amount you borrowed and still owe, before interest.',
   fees: 'Interest and late fees added on top of what you borrowed. Your payments clear these first.',
   interest: 'Every cycle the lender adds this percentage of everything you owe.',
@@ -1815,7 +1937,7 @@ function setApp(k) {
 function noteEditing() {
   if (APP === 'notes') return appView.contains(document.activeElement);
   if (APP === 'messages') return !!(document.activeElement && document.activeElement.closest('form[data-app-form="chat-send"]'));
-  if (APP === 'wallet') return !!(document.activeElement && document.activeElement.closest('form[data-app-form="bank-pay"]'));
+  if (APP === 'wallet') return !!(document.activeElement && document.activeElement.closest('form[data-app-form="bank-pay"], form[data-app-form="house-pay"]'));
   if (APP === 'tag') return !!(document.activeElement && document.activeElement.closest('form[data-app-form="tag-edit"]'));
   if (APP === 'vitalis') return !!(document.activeElement && document.activeElement.matches('form[data-app-form="vit-call"] input'));
   return false;
@@ -1951,10 +2073,11 @@ function augBadge() {
   if (b) { b.textContent = n; b.hidden = !n; }
 }
 function augmentsApp(a) {
-  const pts = Number(a.augPoints) || 0, limit = Number(a.loadLimit) || 0, used = ST.loadUsed(a);
+  const pts = Number(a.augPoints) || 0, limit = Number(a.loadLimit) || 0, used = ST.loadUsed(a), red = Number(a.redline) || 0, over = limit ? Math.max(0, used - limit) : 0;
   return `<div class="st-stats">
       <div class="st-stat"><span>SKILL POINTS${Q('points')}</span><b class="${pts ? 'st-hot' : ''}">${pts}</b></div>
-      <div class="st-stat"><span>LOAD${Q('load')}</span><b class="${limit && used > limit ? 'st-hot' : ''}">${used} / ${limit || '-'}</b></div>
+      <div class="st-stat"><span>LOAD${Q('load')}</span><b class="${over ? 'st-hot' : ''}">${used} / ${limit || '-'}</b></div>
+      ${red || over ? `<div class="st-stat"><span>REDLINE${Q('redline')}</span><b class="${over ? 'st-hot' : ''}">${over} / ${red}</b></div>` : ''}
     </div>
     <div class="st-wrap">${ST.svg(a, { sel: ST_SEL })}</div>
     ${ST.detail(a, ST_SEL, { arm: ST_ARM })}`;
@@ -2141,7 +2264,46 @@ function walletApp(a) {
       ${pays.map(t => `<div class="bk-tx"><div><p class="t1">Loan payment${joint && t.byName ? ' · ' + H(t.byName) : ''}</p><p class="t2">${H(t.ref || '')} · CYCLE ${String(t.cycle || 0).padStart(2, '0')}${t.at ? ' · ' + H(bankDay(t.at)) : ''}</p></div><div class="r"><p class="t1">${NUM(t.amount)} cr</p><p class="t2">OWED AFTER ${NUM(t.owed)}</p></div></div>`).join('') || '<p class="bk-prev">No payments yet.</p>'}
     </section>` : ''}
     <section class="bk-list"><p class="ap-mono">ACCOUNT ACTIVITY</p>${(b.log || []).map(l => `<p class="ap-log">${H(l)}</p>`).join('') || '<p class="bk-prev">Nothing yet.</p>'}</section>
+    ${houseBox(a, b)}
   </div>`;
+}
+/* the Paradise marker: a debt to the house, paid from a bank account the same way a loan is */
+let HOUSE_ARM = 0;
+function houseBox(a, b) {
+  const pr = a.paradise || {}, owed = Number(pr.marker) || 0, pays = Array.isArray(pr.pays) ? pr.pays : [];
+  if (!pr.found || (!owed && !pays.length)) return '';
+  const wallet = Number(b.wallet) || 0, max = Math.min(wallet, owed);
+  if (HOUSE_ARM > max) HOUSE_ARM = 0;
+  const hist = pays.length ? `<p class="ap-mono" style="margin-top:12px">PAID TO THE HOUSE</p>${pays.slice(0, 8).map(t => `<div class="bk-tx"><div><p class="t1">Marker payment</p><p class="t2">CYCLE ${String(t.cycle || 0).padStart(2, '0')}${t.at ? ' · ' + H(bankDay(t.at)) : ''} · FROM ···· ${H(t.from || '')}</p></div><div class="r"><p class="t1">${NUM(t.amount)} cr</p><p class="t2">OWED AFTER ${NUM(t.owed)}</p></div></div>`).join('')}` : '';
+  const body = !owed ? '<p class="bk-prev">Paid in full. The house says your credit is good again.</p>'
+    : !wallet ? '<p class="bk-prev">This account holds 0 cr. The house does not take promises.</p>'
+    : HOUSE_ARM ? `<p class="bk-bal owe">${NUM(HOUSE_ARM)} <small>CR</small></p><p class="bk-sub">FROM ···· ${H(bankNumber(b).slice(-4))} TO THE HOUSE</p>
+        <div class="bk-line"><span>CREDITS AFTER</span><span>${NUM(wallet - HOUSE_ARM)} cr</span></div><div class="bk-line"><span>OWED TO THE HOUSE AFTER</span><span>${NUM(owed - HOUSE_ARM)} cr</span></div>
+        <div class="bk-go" style="margin-top:12px"><button type="button" class="ap-btn" data-house-confirm>SEND IT</button><button type="button" class="ap-btn quiet" data-house-cancel>CANCEL</button></div>`
+    : `<p class="bk-sub">ANY AMOUNT FROM 1 CR UP TO ${NUM(max)} CR · PAID FROM THE ACCOUNT SHOWN ABOVE</p>
+        <form data-app-form="house-pay" novalidate><label class="bk-amt"><input name="amount" type="number" inputmode="numeric" min="1" step="1" placeholder="0" aria-label="Amount to pay the house" data-house-amount><span>CR</span></label>
+        <div class="bk-chips"><button type="button" data-house-fill="${Math.max(1, Math.floor(max / 2))}">HALF · ${NUM(Math.max(1, Math.floor(max / 2)))}</button><button type="button" data-house-fill="${max}">${max >= owed ? 'PAY IT ALL' : 'ALL THE CREDITS'} · ${NUM(max)}</button></div>
+        <div class="bk-go"><button class="ap-btn" type="submit">REVIEW PAYMENT</button></div></form>`;
+  return `<section class="bk-pay" style="border-color:var(--mag)"><h3 style="color:var(--mag)">PARADISE · HOUSE MARKER${Q('marker')}</h3>
+    <p class="bk-bal owe">${NUM(owed)} <small>CR OWED TO THE HOUSE</small></p>${body}${hist}</section>`;
+}
+async function payHouse(amount, bankId) {
+  const a = ACC || {}, pr = { ...(a.paradise || {}) }, b = BANKS.find(x => x.id === bankId) || curBank();
+  const owed = Number(pr.marker) || 0, wallet = b ? Number(b.wallet) || 0 : 0;
+  amount = Math.floor(Number(amount)); HOUSE_ARM = 0;
+  if (!b || !Number.isFinite(amount) || amount < 1 || amount > wallet || amount > owed) { renderApp(true); note('That payment is not valid. Check the balances and try again.'); return false; }
+  const who = (a.holder) || ME_NAME;
+  try {
+    await setDoc(doc(db, 'banks', b.id), { wallet: wallet - amount, log: [`Cycle ${String(CYCLE).padStart(2, '0')} · Transfer out: ${NUM(amount)} cr · ${who}`, ...(Array.isArray(b.log) ? b.log : [])].slice(0, 60) }, { merge: true });
+    const pays = [{ at: Date.now(), cycle: CYCLE, amount, owed: owed - amount, from: bankNumber(b).slice(-4) }, ...(Array.isArray(pr.pays) ? pr.pays : [])].slice(0, 30);
+    const patch = { marker: owed - amount, pays };
+    if (PAR) { PAR.marker = owed - amount; PAR.pays = pays; }
+    await saveMine({ paradise: { ...pr, ...patch } }, true);
+    note(owed - amount === 0 ? 'The house is paid in full.' : `${NUM(amount)} cr sent to the house.`);
+  } catch (err) {
+    note(err && err.code === 'permission-denied' ? 'The payment was refused. Tell your GM: the database rules need the update.' : 'Could not pay: ' + (err.code || err.message));
+  }
+  renderApp(true); return true;
 }
 function bankPreview() {
   const el = document.getElementById('bank-prev'), inp = appView.querySelector('[data-bank-amount]'); if (!el || !inp) return;
@@ -2435,6 +2597,7 @@ function pzRender() {
       ${others.length ? `<form class="ln" data-pz-form="buy"><span>BUY CHIPS WITH CREDITS · 1 CR = 1 CHIP</span><select name="bank" aria-label="Account to pay from">${others.map(b => `<option value="${H(b.id)}">···· ${H(bankNumber(b).slice(-4))} · ${NUM(b.wallet)} cr${b.hidden ? ' · off-ledger' : ''}</option>`).join('')}</select><input name="amount" type="number" inputmode="numeric" min="5" step="5" placeholder="Amount" aria-label="Chips to buy" required><button class="pz-b go" type="submit">BUY</button></form>` : '<p class="ln">You have no bank account to buy chips with. The house can still extend you a marker.</p>'}
       <form class="ln" data-pz-form="marker"><span>ASK THE HOUSE FOR A MARKER · CHIPS NOW, YOU PAY LATER${room ? ` · UP TO ${NUM(room)}` : ' · YOU ARE AT YOUR LIMIT'}</span><input name="amount" type="number" inputmode="numeric" min="5" step="5" max="${room}" placeholder="Amount" aria-label="Marker amount"${room ? ' required' : ' disabled'}><button class="pz-b" type="submit"${room ? '' : ' disabled'}>TAKE MARKER</button></form>
       ${PAR.chips ? `<form class="ln" data-pz-form="out"><span>CASH OUT ALL ${NUM(PAR.chips)} CHIPS${PAR.marker ? ' · THE HOUSE TAKES ITS MARKER FIRST' : ''}</span>${others.length ? `<select name="bank" aria-label="Account to receive credits">${others.map(b => `<option value="${H(b.id)}">···· ${H(bankNumber(b).slice(-4))}${b.hidden ? ' · off-ledger' : ''}</option>`).join('')}</select>` : ''}<button class="pz-b go" type="submit"${others.length || PAR.marker ? '' : ' disabled'}>CASH OUT</button></form>` : ''}
+      ${PAR.marker && others.length ? `<form class="ln" data-pz-form="settle"><span>PAY THE HOUSE WITH CREDITS · YOU OWE ${NUM(PAR.marker)}</span><select name="bank" aria-label="Account to pay from">${others.map(b => `<option value="${H(b.id)}">···· ${H(bankNumber(b).slice(-4))} · ${NUM(b.wallet)} cr${b.hidden ? ' · off-ledger' : ''}</option>`).join('')}</select><input name="amount" type="number" inputmode="numeric" min="1" step="1" placeholder="Amount" aria-label="Credits to pay the house" required><button class="pz-b go" type="submit">PAY</button></form>` : ''}
       <div class="ln"><button class="pz-b" type="button" data-pz="cash-close">BACK TO THE TABLE</button></div>
       <p class="pz-note">Table limits: ${PZ_MIN} to ${PZ_MAX}. Side bets up to ${PZ_SIDE_MAX}. Nothing here is on your Registrar file.</p>
     </div></div>` : '';
@@ -2545,6 +2708,7 @@ async function pzCashier(kind, data) {
   const n = Math.floor(Number(data.get('amount')) || 0), b = BANKS.find(x => x.id === data.get('bank')) || BANKS[0];
   const stampLog = t => `Cycle ${String(CYCLE).padStart(2, '0')} · ${t} · ${(ACC && ACC.holder) || ME_NAME}`;
   try {
+    if (kind === 'settle') { await payHouse(n, data.get('bank')); return pzRender(); }
     if (kind === 'buy') {
       if (!b || n < 5 || n % 5) return note('Chips come in fives.');
       if (n > (Number(b.wallet) || 0)) return note('That account does not hold that much.');
@@ -2612,6 +2776,9 @@ appView.addEventListener('click', e => {
   if (fill) { const inp = appView.querySelector('[data-bank-amount]'); if (inp) { inp.value = fill.dataset.bankFill; bankPreview(); } return; }
   if (e.target.closest('[data-bank-confirm]')) return payDebt(BANK_ARM);
   if (e.target.closest('[data-bank-cancel]')) { BANK_ARM = 0; return renderApp(true); }
+  const hf = e.target.closest('[data-house-fill]'); if (hf) { const inp = appView.querySelector('[data-house-amount]'); if (inp) inp.value = hf.dataset.houseFill; return; }
+  if (e.target.closest('[data-house-confirm]')) return payHouse(HOUSE_ARM);
+  if (e.target.closest('[data-house-cancel]')) { HOUSE_ARM = 0; return renderApp(true); }
   const bs = e.target.closest('[data-bank-sel]'); if (bs) { BANK_SEL = bs.dataset.bankSel; BANK_ARM = 0; return renderApp(true); }
   if (e.target.closest('[data-tag-edit]')) { TAG_EDIT = true; return renderApp(true); }
   if (e.target.closest('[data-tag-cancel]')) { TAG_EDIT = false; return renderApp(true); }
@@ -2631,6 +2798,13 @@ appView.addEventListener('submit', e => {
   if (kind === 'notebook') return saveMine({ notebook: String(data.get('notebook') || '').slice(0, 4000) });
   if (kind === 'chat-send') return sendChat(String(data.get('text') || '').trim());
   if (kind === 'bank-pay') return bankReview(Math.floor(Number(data.get('amount'))));
+  if (kind === 'house-pay') {
+    const n = Math.floor(Number(data.get('amount'))), b = curBank() || {}, owed = Number(((ACC || {}).paradise || {}).marker) || 0;
+    if (!Number.isFinite(n) || n < 1) return note('Enter an amount of at least 1 cr.');
+    if (n > (Number(b.wallet) || 0)) return note(`There are ${NUM(b.wallet)} cr in this account.`);
+    if (n > owed) return note(`You owe the house ${NUM(owed)} cr.`);
+    HOUSE_ARM = n; return renderApp(true);
+  }
   if (kind === 'tag-edit') {
     TAG_EDIT = false;
     return saveMine({ residence: String(data.get('residence') || '').trim().slice(0, 60), occupation: String(data.get('occupation') || '').trim().slice(0, 60),

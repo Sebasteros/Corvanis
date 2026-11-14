@@ -397,7 +397,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "+1 to Athletics checks to grab, hold, or climb."
+    "effect": "+2 to Athletics checks to climb, grab, or hold on. You climb at your full walking speed."
+   },
+   {
+    "id": "reflex-balance-gyro",
+    "name": "Balance Gyro",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Advantage on checks and saving throws against being knocked prone or pushed."
    },
    {
     "id": "reflex-dash-coil",
@@ -405,7 +413,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest."
+    "effect": "Dash as a bonus action. Free once per short rest; after that it costs 1 Surge each time."
    },
    {
     "id": "reflex-lightning-step",
@@ -413,7 +421,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks."
+    "effect": "Reaction, 1 Surge: when an attack misses you, move up to 15 feet without provoking opportunity attacks."
+   },
+   {
+    "id": "reflex-twitch-fiber",
+    "name": "Twitch Fiber",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "+3 to initiative. You can draw or stow two weapons at once."
    },
    {
     "id": "reflex-reflex-core",
@@ -421,7 +437,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Your speed increases by 10 feet. You cannot be surprised."
+    "effect": "Your speed increases by 10 feet. You cannot be surprised. Opportunity attacks against you have disadvantage."
    },
    {
     "id": "reflex-reaction-surge",
@@ -429,14 +445,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, take an extra reaction on your turn. Costs 2 Surge."
+    "effect": "Once per short rest, 2 Surge: take one extra action on your turn. It can be one weapon attack, Dash, Disengage, Hide, or Use an Object."
+   },
+   {
+    "id": "reflex-blur-step",
+    "name": "Blur Step",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "+1 AC while you are not wearing heavy armor. Reaction, 1 Surge: add +3 to your AC against one attack that would hit you."
    }
   ]
  },
  {
   "id": "optic",
   "name": "Optic",
-  "color": "#6fe9ff",
+  "color": "#35d6ff",
   "nodes": [
    {
     "id": "optic-night-lens",
@@ -444,7 +468,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "You have darkvision out to 30 feet."
+    "effect": "You have darkvision out to 60 feet."
    },
    {
     "id": "optic-target-lock",
@@ -452,7 +476,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "+1 to ranged attacks against a creature you can see clearly."
+    "effect": "Your ranged attacks ignore half cover."
+   },
+   {
+    "id": "optic-glare-filter",
+    "name": "Glare Filter",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You cannot be blinded by light or flash effects. Advantage on saving throws against being blinded by anything else."
    },
    {
     "id": "optic-thermal-eye",
@@ -460,7 +492,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness."
+    "effect": "1 Surge: for 10 minutes you see the heat of creatures within 60 feet through smoke, darkness, and thin walls."
    },
    {
     "id": "optic-zoom-glass",
@@ -468,7 +500,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on Perception checks to spot something at range."
+    "effect": "Advantage on Perception checks to spot things at range. Attacking at long range does not give you disadvantage."
+   },
+   {
+    "id": "optic-threat-reader",
+    "name": "Threat Reader",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Bonus action: learn the AC of a creature you can see and one damage type it resists or is weak to. Uses equal to your proficiency bonus per long rest."
    },
    {
     "id": "optic-overlay",
@@ -476,7 +516,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per short rest, learn the current health and augment types of a creature you can see."
+    "effect": "Once per short rest, mark a creature you can see for 1 minute. You learn its current hit points and augments, and your attacks against it score a critical hit on a 19 or 20."
    },
    {
     "id": "optic-kill-frame",
@@ -484,14 +524,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, when a ranged attack of yours misses, reroll it."
+    "effect": "Your ranged weapon attacks score a critical hit on a 19 or 20. Once per short rest, reroll a ranged attack that missed."
+   },
+   {
+    "id": "optic-ghost-sight",
+    "name": "Ghost Sight",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "You see invisible creatures, holograms, and optical camouflage for what they are within 30 feet."
    }
   ]
  },
  {
   "id": "dermal",
   "name": "Dermal",
-  "color": "#3dffa2",
+  "color": "#39e07a",
   "nodes": [
    {
     "id": "dermal-sealant-layer",
@@ -507,7 +555,15 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "As an action, stop your own bleeding."
+    "effect": "Bonus action: stop your own bleeding. You have advantage on death saving throws."
+   },
+   {
+    "id": "dermal-insulated-skin",
+    "name": "Insulated Skin",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You ignore extreme heat and cold. Reduce fire and cold damage you take by 2."
    },
    {
     "id": "dermal-ablative-weave",
@@ -515,7 +571,7 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Reaction, once per short rest: reduce the damage of one attack by 1d6."
+    "effect": "Reaction, twice per short rest: reduce the damage of one attack against you by 1d10."
    },
    {
     "id": "dermal-poison-filter",
@@ -523,7 +579,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on saving throws against poison."
+    "effect": "You are immune to the poisoned condition and have resistance to poison damage."
+   },
+   {
+    "id": "dermal-shock-lining",
+    "name": "Shock Lining",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Once per turn, a creature that hits you with a melee attack takes 1d6 lightning damage."
    },
    {
     "id": "dermal-mesh-skin",
@@ -531,7 +595,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)"
+    "effect": "+2 AC while you are not wearing heavy armor. This replaces the Sealant Layer bonus; it does not add to it."
    },
    {
     "id": "dermal-flash-sheath",
@@ -539,7 +603,15 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per long rest, become resistant to one damage type for 1 minute."
+    "effect": "After a long rest, choose one damage type: you have resistance to it. Once per long rest, change the type as a bonus action."
+   },
+   {
+    "id": "dermal-regrowth-mesh",
+    "name": "Regrowth Mesh",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "At the start of each of your turns, regain 2 hit points if you are below half your hit points and above 0."
    }
   ]
  },
@@ -554,7 +626,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "Your carrying capacity doubles. +1 to Strength checks to lift or push."
+    "effect": "Your carrying capacity doubles. Advantage on Strength checks to lift, push, or break things."
    },
    {
     "id": "frame-tool-hand",
@@ -565,12 +637,20 @@ const AUG_TREE = [
     "effect": "An extra arm. You can hold a second object or use a tool in your free hand as part of another action."
    },
    {
+    "id": "frame-knuckle-plate",
+    "name": "Knuckle Plate",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "Your unarmed strikes deal 1d6 + Strength bludgeoning damage and can break glass, locks, and thin walls."
+   },
+   {
     "id": "frame-hydraulic-grip",
     "name": "Hydraulic Grip",
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Advantage on grapple and shove checks."
+    "effect": "Advantage on grapple and shove checks. A creature you grapple takes 1d4 bludgeoning damage at the start of each of your turns."
    },
    {
     "id": "frame-load-bearer",
@@ -578,7 +658,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Your Load limit increases by 1."
+    "effect": "Your Load limit increases by 4. This node still costs its own 2 Load, so you come out 2 ahead."
+   },
+   {
+    "id": "frame-piston-arm",
+    "name": "Piston Arm",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "+2 damage with melee weapon attacks and unarmed strikes."
    },
    {
     "id": "frame-ram-frame",
@@ -586,7 +674,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Once per turn, shove a creature as a bonus action."
+    "effect": "Shove as a bonus action. If you move 10 feet in a straight line and hit with a melee attack, it deals +1d8 damage and the target makes a Strength save or falls prone."
    },
    {
     "id": "frame-reinforced-spine",
@@ -594,14 +682,22 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Resistance to falling damage. You cannot be knocked prone by a single attack."
+    "effect": "Your hit point maximum increases by 2 per character level. You have resistance to falling damage."
+   },
+   {
+    "id": "frame-siege-frame",
+    "name": "Siege Frame",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Your Strength score increases by 2, to a maximum of 22. You count as one size larger for carrying, grappling, and shoving."
    }
   ]
  },
  {
   "id": "neural",
   "name": "Neural",
-  "color": "#c77dff",
+  "color": "#b06bff",
   "nodes": [
    {
     "id": "neural-port-jack",
@@ -609,7 +705,7 @@ const AUG_TREE = [
     "tier": 1,
     "load": 1,
     "credits": 300,
-    "effect": "You can jack into a deck. Required for Netrunners."
+    "effect": "You can jack into a deck and link to linked weapons. Required for Netrunners."
    },
    {
     "id": "neural-voice-filter",
@@ -620,12 +716,20 @@ const AUG_TREE = [
     "effect": "+2 to Deception checks made through a device. You can change your voice."
    },
    {
+    "id": "neural-memory-tap",
+    "name": "Memory Tap",
+    "tier": 1,
+    "load": 1,
+    "credits": 300,
+    "effect": "You recall anything you saw or heard in the last cycle exactly. Advantage on Intelligence checks to recall information."
+   },
+   {
     "id": "neural-buffer",
     "name": "Buffer",
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Your maximum Surge increases by 1."
+    "effect": "Your maximum Surge increases by 2."
    },
    {
     "id": "neural-rig-link",
@@ -633,7 +737,15 @@ const AUG_TREE = [
     "tier": 2,
     "load": 2,
     "credits": 900,
-    "effect": "Intrusions you cast may be cast through a device within 120 feet, if you can see the device."
+    "effect": "Your Intrusions can be cast through any device you can see within 120 feet, as if you stood there."
+   },
+   {
+    "id": "neural-co-processor",
+    "name": "Co-Processor",
+    "tier": 2,
+    "load": 2,
+    "credits": 900,
+    "effect": "Once per short rest, after you see the roll, add 1d6 to one of your ability checks or saving throws."
    },
    {
     "id": "neural-deep-net",
@@ -641,7 +753,7 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost."
+    "effect": "You learn two more Intrusions. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost and 2 extra Surge."
    },
    {
     "id": "neural-neural-shield",
@@ -649,7 +761,15 @@ const AUG_TREE = [
     "tier": 3,
     "load": 3,
     "credits": 2500,
-    "effect": "Advantage on Intelligence and Wisdom saving throws against mental effects."
+    "effect": "Advantage on Intelligence, Wisdom, and Charisma saving throws. You cannot be charmed."
+   },
+   {
+    "id": "neural-ghost-protocol",
+    "name": "Ghost Protocol",
+    "tier": 3,
+    "load": 3,
+    "credits": 2500,
+    "effect": "Once per long rest, 3 Surge: take control of one drone, turret, camera, or door within 60 feet for 1 minute. A creature operating it makes an Intelligence save to keep it."
    }
   ]
  }
@@ -658,7 +778,7 @@ const AUG_TREE = [
 const ST = (() => {
   const W = 1560, HT = 830, ROOT = { x: 780, y: 820 };
   const ANG = [-72, -36, 0, 36, 72];
-  const DIST = { 1: 290, 2: 440, 3: 590 }, OFF = { 1: 40, 2: 54, 3: 64 }, RAD = { 1: 22, 2: 24, 3: 31 };
+  const DIST = { 1: 290, 2: 440, 3: 590 }, GAP = { 1: 56, 2: 70, 3: 86 }, RAD = { 1: 21, 2: 24, 3: 30 };
   const ROMAN = ['I', 'II', 'III'];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const ICON = {
@@ -682,11 +802,11 @@ const ST = (() => {
   }
   /* why a player cannot install this node right now ('' means they can) */
   function blocked(a, line, node) {
-    const st = state(a, line, node), pts = Number(a && a.augPoints) || 0, limit = Number(a && a.loadLimit) || 0;
+    const st = state(a, line, node), pts = Number(a && a.augPoints) || 0, limit = Number(a && a.loadLimit) || 0, red = Number(a && a.redline) || 0;
     if (st === 'owned') return 'Installed.';
     if (st === 'locked') return 'Locked. Install a Tier ' + ROMAN[node.tier - 2] + ' node in the ' + line.name + ' line first.';
     if (!limit) return 'Your Load limit is not on file yet. Ask your DM.';
-    if (loadUsed(a) + node.load > limit) return 'Not enough Load. This needs ' + node.load + ' and you have ' + (limit - loadUsed(a)) + ' free.';
+    if (loadUsed(a) + node.load > limit + red) return 'Not enough Load. This needs ' + node.load + ' and you have ' + Math.max(0, limit + red - loadUsed(a)) + ' free' + (red ? ', redline included.' : '. A redline rig lets you go past your limit, at a cost in hit points.');
     if (pts < 1) return 'No skill points. Your DM awards them.';
     return '';
   }
@@ -700,7 +820,7 @@ const ST = (() => {
     const k = Math.hypot(B.x - A.x, B.y - A.y) * 0.45;
     return `M${f(A.x)},${f(A.y)} C${f(A.x + u.ux * k)},${f(A.y + u.uy * k)} ${f(B.x - u.ux * k)},${f(B.y - u.uy * k)} ${f(B.x)},${f(B.y)}`;
   }
-  function nodePos(li, node, j) { return pt(li, DIST[node.tier], (j ? 1 : -1) * OFF[node.tier]); }
+  function nodePos(li, node, j, count) { return pt(li, DIST[node.tier] + (count > 2 && j === 1 ? 14 : 0), (j - (count - 1) / 2) * GAP[node.tier]); }
 
   function svg(a, opts = {}) {
     const o = owned(a), sel = opts.sel || null;
@@ -712,14 +832,14 @@ const ST = (() => {
       const stem = { x: ROOT.x + (li - 2) * 18, y: HT + 4 };
       const segs = [];
       segs.push([`M${f(stem.x)},${f(stem.y)} C${f(stem.x)},${f(stem.y - 90)} ${f(hub.x - u.ux * 60)},${f(hub.y - u.uy * 60)} ${f(hub.x)},${f(hub.y)}`, any(1)]);
-      tiers[0].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(hub, p, u), o.has(n.id)]); segs.push([curve(p, j1, u), o.has(n.id) && any(2)]); });
-      tiers[1].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j1, p, u), o.has(n.id)]); segs.push([curve(p, j2, u), o.has(n.id) && any(3)]); });
-      tiers[2].forEach((n, j) => { const p = nodePos(li, n, j); segs.push([curve(j2, p, u), o.has(n.id)]); });
+      tiers[0].forEach((n, j) => { const p = nodePos(li, n, j, tiers[0].length); segs.push([curve(hub, p, u), o.has(n.id)]); segs.push([curve(p, j1, u), o.has(n.id) && any(2)]); });
+      tiers[1].forEach((n, j) => { const p = nodePos(li, n, j, tiers[1].length); segs.push([curve(j1, p, u), o.has(n.id)]); segs.push([curve(p, j2, u), o.has(n.id) && any(3)]); });
+      tiers[2].forEach((n, j) => { const p = nodePos(li, n, j, tiers[2].length); segs.push([curve(j2, p, u), o.has(n.id)]); });
       segs.forEach(([d, on]) => { if (on) lit += `<path d="${d}" stroke="${line.color}"/>`; else dim += `<path d="${d}"/>`; });
       [[hub, any(1)], [j1, any(2)], [j2, any(3)]].forEach(([p, on]) => { dots += `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${on ? 7 : 5}" fill="${on ? line.color : '#2b3440'}"/>`; });
 
       line.nodes.forEach(n => {
-        const j = tiers[n.tier - 1].indexOf(n), p = nodePos(li, n, j), r = RAD[n.tier], st = state(a, line, n), sc = r / 19;
+        const j = tiers[n.tier - 1].indexOf(n), p = nodePos(li, n, j, tiers[n.tier - 1].length), r = RAD[n.tier], st = state(a, line, n), sc = r / 19;
         nodes += `<g class="st-node st-${st}${sel === n.id ? ' st-sel' : ''}" data-node="${n.id}" tabindex="0" role="button" aria-label="${esc(n.name)}, ${esc(line.name)} line, Tier ${ROMAN[n.tier - 1]}, ${st === 'owned' ? 'installed' : st === 'open' ? 'available' : 'locked'}" style="--c:${line.color}">
           <circle class="st-hit" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 14}"/>
           ${sel === n.id ? `<circle class="st-ring" cx="${f(p.x)}" cy="${f(p.y)}" r="${r + 8}"/>` : ''}
@@ -1112,6 +1232,7 @@ function renderTab() {
       </div>
       <div class="row" style="justify-content:flex-start">
         <label style="flex-direction:row;align-items:center;gap:10px">LOAD LIMIT (THE CHARACTER'S CON SCORE) <input id="load-limit" type="number" min="0" max="40" step="1" value="${limit}" style="width:90px"></label>
+        <label style="flex-direction:row;align-items:center;gap:10px">REDLINE (LOAD ALLOWED PAST THE LIMIT) <input id="redline" type="number" min="0" max="12" step="1" value="${Number(a.redline) || 0}" style="width:90px"></label>
         <button type="button" data-load-save>SAVE LOAD LIMIT</button>
         <span class="msg" id="aug-msg"></span>
       </div>
@@ -1166,6 +1287,7 @@ function renderTab() {
         ${pr.found ? `<div class="bk-tiles">
           <div class="bk-tile"><span>CHIPS IN HAND</span><b>${fmt(pr.chips)}</b></div>
           <div class="bk-tile"><span>OWES THE HOUSE</span><b class="owe">${fmt(pr.marker)} cr</b></div>
+          <div class="bk-tile"><span>PAID TO THE HOUSE</span><b>${fmt((Array.isArray(pr.pays) ? pr.pays : []).reduce((t, x) => t + (Number(x.amount) || 0), 0))} cr</b></div>
           <div class="bk-tile"><span>HANDS PLAYED</span><b>${fmt(pr.hands)}</b></div>
           <div class="bk-tile"><span>WAGERED</span><b>${fmt(pr.wagered)}</b></div>
           <div class="bk-tile"><span>${Number(pr.net) < 0 ? 'LOST AT THE TABLE' : 'WON AT THE TABLE'}</span><b class="${Number(pr.net) < 0 ? 'owe' : ''}">${fmt(Math.abs(Number(pr.net) || 0))}</b></div>
@@ -1297,7 +1419,7 @@ async function toggleAugment(id) {
 }
 async function saveLoadLimit() {
   if (!sel) return;
-  try { await setDoc(doc(db, 'accounts', sel), { loadLimit: Math.max(0, Math.round(Number($('load-limit').value) || 0)) }, { merge: true }); dirty = false; keep('aug-msg', 'Load limit saved ' + stamp() + '.'); }
+  try { await setDoc(doc(db, 'accounts', sel), { loadLimit: Math.max(0, Math.round(Number($('load-limit').value) || 0)), redline: Math.max(0, Math.round(Number($('redline').value) || 0)) }, { merge: true }); dirty = false; keep('aug-msg', 'Load saved ' + stamp() + '.'); }
   catch (e) { say('aug-msg', explain(e)); }
 }
 async function setCover(plan) {
