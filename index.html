@@ -1851,7 +1851,7 @@ const bankDay = ms => { try { return new Date(ms).toLocaleDateString('en-US', { 
 /* ---------- help marks: a small ? next to a word, tap or hover for a short explanation ---------- */
 const TIPS = {
   load: 'Load is how much cybernetic hardware your body can carry. Every augment adds Load. Your limit is your Constitution score. You cannot go past it without a redline rig, and a redline rig costs you hit points.',
-  points: 'Skill points install augments. Your GM hands them out when you level up or hit a big story moment. One point installs one node you qualify for.',
+  points: 'Skill points install augments. Your DM hands them out when you level up or hit a big story moment. One point installs one node you qualify for.',
   tier: 'The city level the Registrar files you under. It decides which services treat you as a resident.',
   permit: 'A Shift Pass lets you ride Lift 7 up to the Grid for work. Without one, the Grid is closed to you.',
   chrome: 'Elite clearance. A Chrome ID opens the Spires and Apex. Almost nobody in SubZ has one.',
@@ -2125,7 +2125,7 @@ async function payDebt(amount) {
     await setDoc(doc(db, 'banks', b.id), patch, { merge: true });
     note(owed - amount === 0 ? 'Payment received. Your loan is paid in full.' : `Payment of ${NUM(amount)} cr received.`);
   } catch (err) {
-    note(err && err.code === 'permission-denied' ? 'The bank refused the payment. Tell your GM: the database rules need the bank update.' : 'Could not pay: ' + (err.code || err.message));
+    note(err && err.code === 'permission-denied' ? 'The bank refused the payment. Tell your DM: the database rules need the bank update.' : 'Could not pay: ' + (err.code || err.message));
   }
   renderApp(true);
 }
@@ -2147,7 +2147,7 @@ function vitalisApp(a) {
       <p>${cur === 'Walk-in' ? 'You have no plan. A team may still come, after covered clients, at 200 cr per treatment.' : lapsed ? `Your ${H(cur)} payment is overdue. Dispatch may treat you as a walk-in.` : `${H(cur)} is on file. Response: ${H(P[cur].resp)}.`}</p>
       <form data-app-form="vit-call"><input class="ap-field" name="where" maxlength="120" value="${H(VIT_WHERE)}" placeholder="Where are you? What happened? (optional)" aria-label="Where are you and what happened">
       <button class="vt-btn${VIT_CALL_ARM ? ' arm' : ''}" type="submit">${VIT_CALL_ARM ? 'TAP AGAIN TO CONFIRM THE CALL' : 'CALL VITALIS RESCUE'}</button></form>
-      <p class="ap-mono" style="margin:8px 0 0">YOUR GM ANSWERS AS DISPATCH. EVERY CALL IS LOGGED TO YOUR REGISTRAR FILE.</p></section>`;
+      <p class="ap-mono" style="margin:8px 0 0">YOUR DM ANSWERS AS DISPATCH. EVERY CALL IS LOGGED TO YOUR REGISTRAR FILE.</p></section>`;
   }
   const last4 = b ? bankNumber(b).slice(-4) : '';
   const planCard = ([k, p]) => {
@@ -2186,7 +2186,7 @@ async function payCover(plan) {
     await setDoc(doc(db, 'accounts', ME_ID), { cover: plan, coverThrough: fee ? (same ? Number(a.coverThrough) + 1 : CYCLE) : null }, { merge: true });
     note(fee ? `${plan} is active. ${NUM(fee)} cr paid.` : 'Plan dropped. You are a walk-in now.');
   } catch (err) {
-    note(err && err.code === 'permission-denied' ? 'Vitalis could not take the payment. Tell your GM: the database rules need the update.' : 'Could not change plan: ' + (err.code || err.message));
+    note(err && err.code === 'permission-denied' ? 'Vitalis could not take the payment. Tell your DM: the database rules need the update.' : 'Could not change plan: ' + (err.code || err.message));
   }
   renderApp(true);
 }
@@ -2199,7 +2199,7 @@ async function callVitalis(where) {
 }
 function walletApp(a) {
   const b = curBank();
-  if (!b) return `<div class="bk"><section class="bk-pay"><h3>NO BANK ACCOUNT ON FILE</h3><p class="bk-prev">The Registrar has no bank account under this Neural-Tag yet. Ask your GM to issue one.</p></section></div>`;
+  if (!b) return `<div class="bk"><section class="bk-pay"><h3>NO BANK ACCOUNT ON FILE</h3><p class="bk-prev">The Registrar has no bank account under this Neural-Tag yet. Ask your DM to issue one.</p></section></div>`;
   const wallet = Number(b.wallet) || 0, fees = Number(b.fees) || 0, principal = Number(b.principal) || 0, owed = fees + principal;
   const pays = Array.isArray(b.payments) ? b.payments : [], paid = paidTotal(b), max = Math.min(wallet, owed);
   const pct = paid + owed > 0 ? Math.round(paid / (paid + owed) * 100) : 0;
@@ -2301,7 +2301,7 @@ async function payHouse(amount, bankId) {
     await saveMine({ paradise: { ...pr, ...patch } }, true);
     note(owed - amount === 0 ? 'The house is paid in full.' : `${NUM(amount)} cr sent to the house.`);
   } catch (err) {
-    note(err && err.code === 'permission-denied' ? 'The payment was refused. Tell your GM: the database rules need the update.' : 'Could not pay: ' + (err.code || err.message));
+    note(err && err.code === 'permission-denied' ? 'The payment was refused. Tell your DM: the database rules need the update.' : 'Could not pay: ' + (err.code || err.message));
   }
   renderApp(true); return true;
 }
@@ -2543,7 +2543,7 @@ function pzSave(extra) { if (extra) Object.assign(PAR, extra); return saveMine({
 async function pzText(key, text) {
   if (PAR.texts && PAR.texts[key]) return;
   PAR.texts = { ...(PAR.texts || {}), [key]: Date.now() };
-  try { await addDoc(collection(db, 'accounts', ME_ID, 'messages'), { from: 'Paradise', text: text.slice(0, 300), read: false, createdAt: serverTimestamp() }); } catch (e) { /* the GM can still send it by hand */ }
+  try { await addDoc(collection(db, 'accounts', ME_ID, 'messages'), { from: 'Paradise', text: text.slice(0, 300), read: false, createdAt: serverTimestamp() }); } catch (e) { /* the DM can still send it by hand */ }
 }
 function pzOpen() {
   if (!ME_ID) return;
@@ -2729,7 +2729,7 @@ async function pzCashier(kind, data) {
       await pzSave(); note(repay ? `The house took ${NUM(repay)} for your marker.${chips ? ' ' + NUM(chips) + ' cr paid out.' : ''}` : `${NUM(chips)} cr paid out.`);
     }
   } catch (err) {
-    note(err && err.code === 'permission-denied' ? 'The cashier window is shut. Tell your GM: the database rules need the Paradise update.' : 'The cashier could not do that: ' + (err.code || err.message));
+    note(err && err.code === 'permission-denied' ? 'The cashier window is shut. Tell your DM: the database rules need the Paradise update.' : 'The cashier could not do that: ' + (err.code || err.message));
   }
   pzRender();
 }
