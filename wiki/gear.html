@@ -255,7 +255,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <tr>
 <td>Helix Flux Patch</td>
 <td>120 cr</td>
-<td>One dose of a Helix stabilizer. Prevents one Glitch roll from over-Load.</td>
+<td>One dose of a Helix stabilizer. Prevents one Glitch roll.</td>
 </tr>
 <tr>
 <td>Street Flux</td>
@@ -331,7 +331,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 </tr>
 </tbody>
 </table>
-<h3 id="transit-and-housing">Transit and housing</h3>
+<h3 id="transit">Transit</h3>
 <table>
 <thead>
 <tr>
@@ -355,16 +355,6 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>East Transit Gate (out of Vantara)</td>
 <td>40 cr</td>
 <td>Road and rail to Kyrex and Vexmar. Subject to Registrar checks.</td>
-</tr>
-<tr>
-<td>Room in SubZ</td>
-<td>40 cr per cycle</td>
-<td>A bed and a door that locks from the inside.</td>
-</tr>
-<tr>
-<td>Civic ID renewal</td>
-<td>10 cr per cycle</td>
-<td>Keeps your Civic ID valid. A lapsed ID is a Registrar hold.</td>
 </tr>
 </tbody>
 </table>
@@ -487,6 +477,785 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>800 cr</td>
 <td>Permanent</td>
 <td>Carries up to 500 pounds at 30 feet per round, hovering 3 feet above the ground.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="weapon-properties">Weapon properties</h2>
+<p>The weapons below use the 5e properties (light, finesse, heavy, two-handed, reach, thrown, versatile) and these Corvanis properties.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reload (N)</td>
+<td>The weapon holds N shots. Reloading takes a bonus action.</td>
+</tr>
+<tr>
+<td>Autofire</td>
+<td>On a hit, you may spend 2 extra shots to add one more weapon damage die.</td>
+</tr>
+<tr>
+<td>Spray</td>
+<td>In place of an attack, spend 5 shots to fill a 15-foot cone. Each creature in it makes a DEX save (DC 8 + your proficiency bonus + your DEX modifier), taking the weapon's damage on a failure or half on a success.</td>
+</tr>
+<tr>
+<td>Scatter</td>
+<td>Add one weapon damage die against a target within 15 feet. Attacks beyond normal range always miss.</td>
+</tr>
+<tr>
+<td>Silenced</td>
+<td>The shot does not give away your position. Hearing it takes a DC 15 Perception check.</td>
+</tr>
+<tr>
+<td>Concealable</td>
+<td>Advantage on Sleight of Hand checks to hide it on your body.</td>
+</tr>
+<tr>
+<td>Brace</td>
+<td>You attack with disadvantage unless you are prone, behind cover you can rest it on, or have Strength 15 or higher.</td>
+</tr>
+<tr>
+<td>Charge</td>
+<td>Tech weapons only. Use a bonus action to charge it. The next shot this turn adds one weapon damage die and ignores half cover.</td>
+</tr>
+<tr>
+<td>Pierce</td>
+<td>The shot ignores half and three-quarters cover, and passes through thin walls and doors.</td>
+</tr>
+<tr>
+<td>Linked</td>
+<td>The weapon talks to a Port Jack. See Linked weapons, below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="blades-and-street-weapons">Blades and street weapons</h2>
+<table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Price</th>
+<th>Damage</th>
+<th>Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shiv</td>
+<td>5 cr</td>
+<td>1d4 piercing</td>
+<td>Simple, light, finesse, concealable.</td>
+</tr>
+<tr>
+<td>Street Knife</td>
+<td>15 cr</td>
+<td>1d4 slashing</td>
+<td>Simple, light, finesse, thrown (20/60).</td>
+</tr>
+<tr>
+<td>Push Dagger</td>
+<td>30 cr</td>
+<td>1d4 piercing</td>
+<td>Simple, light, concealable. Advantage on attacks against a creature you are grappling.</td>
+</tr>
+<tr>
+<td>Stiletto</td>
+<td>40 cr</td>
+<td>1d4 piercing</td>
+<td>Simple, light, finesse. On a critical hit, add 2d4 damage.</td>
+</tr>
+<tr>
+<td>Throwing Stars (5)</td>
+<td>25 cr</td>
+<td>1d4 piercing</td>
+<td>Simple, light, finesse, thrown (30/90).</td>
+</tr>
+<tr>
+<td>Knuckle Dusters</td>
+<td>20 cr</td>
+<td>1d4 bludgeoning</td>
+<td>Simple, light. Counts as an unarmed strike.</td>
+</tr>
+<tr>
+<td>Crowd Bat</td>
+<td>10 cr</td>
+<td>1d6 bludgeoning</td>
+<td>Simple, versatile (1d8).</td>
+</tr>
+<tr>
+<td>Hatchet</td>
+<td>30 cr</td>
+<td>1d6 slashing</td>
+<td>Simple, light, thrown (20/60).</td>
+</tr>
+<tr>
+<td>Machete</td>
+<td>35 cr</td>
+<td>1d6 slashing</td>
+<td>Simple.</td>
+</tr>
+<tr>
+<td>Tow Chain</td>
+<td>25 cr</td>
+<td>1d6 bludgeoning</td>
+<td>Martial, reach. On a hit, you may try to grapple the target as a bonus action.</td>
+</tr>
+<tr>
+<td>Garrote Wire</td>
+<td>60 cr</td>
+<td>1d6 slashing</td>
+<td>Martial, two-handed. Only against a creature you are grappling or that has not seen you. The target cannot speak while held.</td>
+</tr>
+<tr>
+<td>Pike Rod</td>
+<td>50 cr</td>
+<td>1d8 piercing</td>
+<td>Martial, reach, versatile (1d10).</td>
+</tr>
+<tr>
+<td>Sledge</td>
+<td>60 cr</td>
+<td>2d6 bludgeoning</td>
+<td>Martial, heavy, two-handed. Double damage against doors, locks, and walls.</td>
+</tr>
+<tr>
+<td>Vibro-Dagger</td>
+<td>220 cr</td>
+<td>1d6 piercing</td>
+<td>Martial, light, finesse. +1 to attack rolls against targets in medium or heavy armor.</td>
+</tr>
+<tr>
+<td>Thermal Knife</td>
+<td>300 cr</td>
+<td>1d4 slashing + 1d4 fire</td>
+<td>Martial, light, finesse. Cuts through a lock or a chain as an action.</td>
+</tr>
+<tr>
+<td>Shock Whip</td>
+<td>280 cr</td>
+<td>1d6 lightning</td>
+<td>Martial, finesse, reach. On a critical hit, the target drops what it is holding.</td>
+</tr>
+<tr>
+<td>Edge Saber</td>
+<td>350 cr</td>
+<td>1d8 slashing</td>
+<td>Martial, finesse, versatile (1d10).</td>
+</tr>
+<tr>
+<td>Great Cleaver</td>
+<td>450 cr</td>
+<td>2d6 slashing</td>
+<td>Martial, heavy, two-handed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="handguns-and-submachine-guns">Handguns and submachine guns</h2>
+<table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Price</th>
+<th>Damage</th>
+<th>Range / Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pocket Sting</td>
+<td>90 cr</td>
+<td>1d6 piercing</td>
+<td>Simple, light, concealable, ranged 30/90 ft, reload (2).</td>
+</tr>
+<tr>
+<td>Six-Count Revolver</td>
+<td>260 cr</td>
+<td>1d8 piercing</td>
+<td>Martial, ranged 60/180 ft, reload (6). On a critical hit, roll one extra damage die.</td>
+</tr>
+<tr>
+<td>Whisper Pistol</td>
+<td>450 cr</td>
+<td>1d6 piercing</td>
+<td>Martial, light, silenced, ranged 40/120 ft, reload (8).</td>
+</tr>
+<tr>
+<td>Rattler Machine Pistol</td>
+<td>380 cr</td>
+<td>1d6 piercing</td>
+<td>Martial, light, autofire, ranged 40/120 ft, reload (15).</td>
+</tr>
+<tr>
+<td>Anvil Pistol</td>
+<td>400 cr</td>
+<td>1d10 piercing</td>
+<td>Martial, ranged 50/150 ft, reload (5). Needs Strength 11 to fire one-handed.</td>
+</tr>
+<tr>
+<td>Hornet SMG</td>
+<td>480 cr</td>
+<td>1d6 piercing</td>
+<td>Martial, light, autofire, ranged 40/160 ft, reload (20).</td>
+</tr>
+<tr>
+<td>Buzzsaw SMG</td>
+<td>950 cr</td>
+<td>1d8 piercing</td>
+<td>Martial, two-handed, autofire, spray, ranged 60/240 ft, reload (30).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="shotguns-rifles-and-heavy-weapons">Shotguns, rifles, and heavy weapons</h2>
+<table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Price</th>
+<th>Damage</th>
+<th>Range / Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Door Knocker</td>
+<td>200 cr</td>
+<td>2d6 piercing</td>
+<td>Martial, scatter, concealable under a coat, ranged 15/45 ft, reload (2).</td>
+</tr>
+<tr>
+<td>Street Sweeper</td>
+<td>450 cr</td>
+<td>2d8 piercing</td>
+<td>Martial, two-handed, scatter, ranged 30/90 ft, reload (6).</td>
+</tr>
+<tr>
+<td>Riot Auto</td>
+<td>1,100 cr</td>
+<td>2d8 piercing</td>
+<td>Martial, heavy, two-handed, scatter, autofire, ranged 30/90 ft, reload (8).</td>
+</tr>
+<tr>
+<td>Courier Carbine</td>
+<td>550 cr</td>
+<td>1d10 piercing</td>
+<td>Martial, two-handed, ranged 80/320 ft, reload (15).</td>
+</tr>
+<tr>
+<td>Grid Rifle</td>
+<td>1,000 cr</td>
+<td>1d10 piercing</td>
+<td>Martial, two-handed, autofire, ranged 100/400 ft, reload (30).</td>
+</tr>
+<tr>
+<td>Longwatch</td>
+<td>1,400 cr</td>
+<td>2d8 piercing</td>
+<td>Martial, heavy, two-handed, ranged 200/800 ft, reload (10).</td>
+</tr>
+<tr>
+<td>Spire Needle</td>
+<td>2,800 cr</td>
+<td>2d10 piercing</td>
+<td>Martial, heavy, two-handed, brace, pierce, ranged 300/1,200 ft, reload (5).</td>
+</tr>
+<tr>
+<td>Chain Hog</td>
+<td>2,200 cr</td>
+<td>2d6 piercing</td>
+<td>Martial, heavy, two-handed, brace, autofire, spray, ranged 100/400 ft, reload (60).</td>
+</tr>
+<tr>
+<td>Thumper</td>
+<td>1,800 cr</td>
+<td>3d6 force</td>
+<td>Martial, heavy, two-handed, ranged 60/180 ft, reload (1). Hits a 10-foot radius, DEX save for half.</td>
+</tr>
+<tr>
+<td>Burn Hose</td>
+<td>1,600 cr</td>
+<td>2d6 fire</td>
+<td>Martial, heavy, two-handed. 30-foot cone, DEX save for half. Anything that burns catches fire. 5 uses per tank.</td>
+</tr>
+<tr>
+<td>Lancer Tube</td>
+<td>4,000 cr</td>
+<td>5d6 force</td>
+<td>Martial, heavy, two-handed, brace, ranged 150/600 ft, reload (1). Hits a 20-foot radius, DEX save for half. Illegal on every level.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="thrown-weapons-and-explosives">Thrown weapons and explosives</h2>
+<p>Each of these is used once. Throwing range is 30/60 feet.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Burn Bottle</td>
+<td>20 cr</td>
+<td>1d6 fire damage in a 5-foot radius, DEX save for half. The area burns for 1 minute.</td>
+</tr>
+<tr>
+<td>Flash Canister</td>
+<td>80 cr</td>
+<td>15-foot radius. CON save or blinded and deafened until the end of the target's next turn.</td>
+</tr>
+<tr>
+<td>Gas Canister</td>
+<td>150 cr</td>
+<td>15-foot radius cloud for 1 minute. CON save at the start of each turn in it or poisoned.</td>
+</tr>
+<tr>
+<td>Frag Canister</td>
+<td>120 cr</td>
+<td>3d6 piercing damage in a 20-foot radius, DEX save for half.</td>
+</tr>
+<tr>
+<td>Pulse Canister</td>
+<td>200 cr</td>
+<td>15-foot radius. Each creature makes a CON save or its augments shut down until the end of its next turn. Drones and turrets are stunned for 1 round.</td>
+</tr>
+<tr>
+<td>Breach Putty</td>
+<td>250 cr</td>
+<td>Stick it to a surface and set a timer of up to 1 minute. 4d6 force damage in a 5-foot radius, doubled against doors, walls, and vehicles.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tech-weapons">Tech weapons</h2>
+<p>Tech weapons run on power cells, not powder. A cell holds the shots listed under reload, and recharging a cell takes a short rest at any power outlet.</p>
+<table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Price</th>
+<th>Damage</th>
+<th>Range / Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arc Pistol</td>
+<td>700 cr</td>
+<td>1d8 lightning</td>
+<td>Martial, light, charge, ranged 40/120 ft, reload (10). On a critical hit, the arc jumps to a second creature within 10 feet for half damage.</td>
+</tr>
+<tr>
+<td>Static Net Gun</td>
+<td>500 cr</td>
+<td>None</td>
+<td>Martial, ranged 20/40 ft, reload (1). A Large or smaller target is restrained until it or an ally uses an action and makes a DC 13 Strength check.</td>
+</tr>
+<tr>
+<td>Sonic Driver</td>
+<td>900 cr</td>
+<td>2d6 thunder</td>
+<td>Martial, two-handed. 15-foot cone, CON save for half. On a failure, the target is deafened for 1 minute. 6 uses per cell.</td>
+</tr>
+<tr>
+<td>Cryo Sprayer</td>
+<td>1,100 cr</td>
+<td>2d6 cold</td>
+<td>Martial, two-handed. 15-foot cone, CON save for half. On a failure, the target's speed is halved until the end of its next turn. 6 uses per cell.</td>
+</tr>
+<tr>
+<td>Heat Lance</td>
+<td>1,300 cr</td>
+<td>2d8 fire</td>
+<td>Martial, two-handed. A 30-foot line, DEX save for half. 5 uses per cell.</td>
+</tr>
+<tr>
+<td>Coil Carbine</td>
+<td>1,600 cr</td>
+<td>2d6 piercing</td>
+<td>Martial, two-handed, charge, pierce, ranged 120/480 ft, reload (12).</td>
+</tr>
+<tr>
+<td>Pulse Rifle</td>
+<td>1,900 cr</td>
+<td>2d8 force</td>
+<td>Martial, two-handed, charge, ranged 100/400 ft, reload (12). On a hit, a Large or smaller target makes a Strength save (DC 13) or is pushed 5 feet.</td>
+</tr>
+<tr>
+<td>Rail Lance</td>
+<td>4,500 cr</td>
+<td>3d10 piercing</td>
+<td>Martial, heavy, two-handed, brace, pierce, ranged 400/1,600 ft, reload (3). It must be charged before every shot.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="linked-weapons">Linked weapons</h2>
+<p>A linked weapon has a small rig of its own, and it answers to a mind. You need the <strong>Port Jack</strong> augment to use its link.</p>
+<ul>
+<li><strong>Linking:</strong> Use a bonus action to link to a weapon you are holding. You stay linked until you let go of it, fall unconscious, or link to something else.</li>
+<li><strong>While linked:</strong> You gain +1 to attack rolls with it, nobody else can fire it, and you can use its Link effect.</li>
+<li><strong>One at a time:</strong> You can be linked to one weapon. With the Rig Link node you can be linked to two.</li>
+<li><strong>Unlinked:</strong> Without a Port Jack, or without linking, it is an ordinary weapon with the listed damage and no Link effect.</li>
+<li><strong>Cut off:</strong> The Lockout Intrusion, or a Pulse Canister, breaks your link until the end of your next turn.</li>
+<li><strong>Stolen weapons:</strong> A linked weapon remembers its owner. Binding it to a new owner takes a Techkit or a deck, 10 minutes, and a DC 15 Intelligence check.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Price</th>
+<th>Damage</th>
+<th>Range / Properties</th>
+<th>Link effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seeker Pistol</td>
+<td>900 cr</td>
+<td>1d8 piercing</td>
+<td>Martial, light, ranged 60/200 ft, reload (8).</td>
+<td>The rounds steer. Your attacks ignore half and three-quarters cover, and long range gives no disadvantage.</td>
+</tr>
+<tr>
+<td>Ghost Blade</td>
+<td>1,200 cr</td>
+<td>1d8 slashing</td>
+<td>Martial, finesse, thrown (30/60).</td>
+<td>After you throw it, it flies back to your hand at the end of your turn.</td>
+</tr>
+<tr>
+<td>Reflex Scatter</td>
+<td>1,300 cr</td>
+<td>2d8 piercing</td>
+<td>Martial, two-handed, scatter, ranged 30/90 ft, reload (6).</td>
+<td>Reaction, 1 Surge: fire at a creature that moves to within 15 feet of you.</td>
+</tr>
+<tr>
+<td>Thread SMG</td>
+<td>1,500 cr</td>
+<td>1d6 piercing</td>
+<td>Martial, light, autofire, ranged 60/240 ft, reload (24).</td>
+<td>1 Surge: one attack roll hits two targets within 10 feet of each other. Roll damage once.</td>
+</tr>
+<tr>
+<td>Halo Gun</td>
+<td>2,000 cr</td>
+<td>1d8 piercing</td>
+<td>Shoulder mount, hands free, ranged 60/240 ft, reload (20).</td>
+<td>Fire it as a bonus action without using your hands.</td>
+</tr>
+<tr>
+<td>Oracle Rifle</td>
+<td>2,600 cr</td>
+<td>2d8 piercing</td>
+<td>Martial, heavy, two-handed, ranged 150/600 ft, reload (10).</td>
+<td>Bonus action: mark a creature you can see. Once per turn, reroll a missed attack against the marked creature.</td>
+</tr>
+<tr>
+<td>Siren Launcher</td>
+<td>3,200 cr</td>
+<td>3d6 force</td>
+<td>Martial, heavy, two-handed, ranged 120/480 ft, reload (3).</td>
+<td>1 Surge per shot: the micro-missile locks on. No attack roll. The target and each creature within 10 feet of it make a DEX save for half damage.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="weapon-mods">Weapon mods</h2>
+<p>A weapon takes up to two mods. A Techie fits one in an hour. Anyone else pays a shop 50 cr.</p>
+<table>
+<thead>
+<tr>
+<th>Mod</th>
+<th>Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Suppressor</td>
+<td>150 cr</td>
+<td>A handgun, SMG, or rifle gains the silenced property.</td>
+</tr>
+<tr>
+<td>Long Magazine</td>
+<td>100 cr</td>
+<td>The weapon's reload number increases by half.</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>200 cr</td>
+<td>The weapon's normal range doubles. Its long range does not change.</td>
+</tr>
+<tr>
+<td>Bayonet Mount</td>
+<td>40 cr</td>
+<td>A rifle or shotgun can make a melee attack for 1d6 piercing damage.</td>
+</tr>
+<tr>
+<td>Recoil Stock</td>
+<td>180 cr</td>
+<td>The weapon loses the brace property.</td>
+</tr>
+<tr>
+<td>Link Retrofit</td>
+<td>800 cr</td>
+<td>An ordinary firearm gains the linked property. Its Link effect is the +1 to attack rolls only.</td>
+</tr>
+<tr>
+<td>Serial Scrub</td>
+<td>120 cr</td>
+<td>The weapon cannot be traced to a sale. A Registrar check on it finds nothing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="vehicles">Vehicles</h2>
+<p>A vehicle acts on its driver's turn. Driving is part of your movement. Anything risky takes a Dexterity check, and you add your proficiency bonus if you have the Dock Hand background, the Techie Role, or the GM agrees your character has driven for a living.</p>
+<ul>
+<li><strong>Speed</strong> is how far the vehicle moves on a turn in a fight or a chase. On an open road, a vehicle covers about 1 mile per minute for every 100 feet of speed.</li>
+<li><strong>AC and hit points</strong> work as they do for a creature. A vehicle at 0 hit points stops, and everyone inside takes 2d6 bludgeoning damage if it was moving.</li>
+<li><strong>Hardness:</strong> A vehicle ignores any single hit that deals less damage than its Hardness.</li>
+<li><strong>Ramming:</strong> A vehicle deals 1d6 bludgeoning damage for every 20 feet of its speed to what it hits, and takes half of that itself. A creature can make a DEX save (DC 13) to dive clear and take half.</li>
+<li><strong>Cover:</strong> Passengers have half cover. In an armored vehicle with the windows up, they have three-quarters cover.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Vehicle</th>
+<th>Price</th>
+<th>Speed</th>
+<th>Seats</th>
+<th>AC</th>
+<th>HP</th>
+<th>Hardness</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Courier Bike</td>
+<td>400 cr</td>
+<td>120 ft</td>
+<td>1</td>
+<td>13</td>
+<td>20</td>
+<td>0</td>
+<td>Fits through a doorway. Advantage on checks to weave through traffic.</td>
+</tr>
+<tr>
+<td>Racer Bike</td>
+<td>1,800 cr</td>
+<td>180 ft</td>
+<td>2</td>
+<td>14</td>
+<td>25</td>
+<td>0</td>
+<td>The fastest thing on the Grid ring road.</td>
+</tr>
+<tr>
+<td>Hauler Trike</td>
+<td>900 cr</td>
+<td>90 ft</td>
+<td>2</td>
+<td>12</td>
+<td>40</td>
+<td>2</td>
+<td>Open cargo bed for 600 pounds.</td>
+</tr>
+<tr>
+<td>Runabout</td>
+<td>1,200 cr</td>
+<td>100 ft</td>
+<td>4</td>
+<td>12</td>
+<td>45</td>
+<td>2</td>
+<td>The small electric car half the Grid drives. Nobody looks at it twice.</td>
+</tr>
+<tr>
+<td>Grid Sedan</td>
+<td>2,500 cr</td>
+<td>120 ft</td>
+<td>5</td>
+<td>13</td>
+<td>60</td>
+<td>3</td>
+<td>Dull, common, and easy to lose in traffic.</td>
+</tr>
+<tr>
+<td>Street Brawler</td>
+<td>6,000 cr</td>
+<td>160 ft</td>
+<td>2</td>
+<td>14</td>
+<td>70</td>
+<td>4</td>
+<td>A muscle car with a loud engine. Advantage on checks to ram.</td>
+</tr>
+<tr>
+<td>Panel Van</td>
+<td>3,000 cr</td>
+<td>100 ft</td>
+<td>2 + 8 in the back</td>
+<td>12</td>
+<td>80</td>
+<td>4</td>
+<td>The crew van. Room for gear, a bench, and a Techie's rack.</td>
+</tr>
+<tr>
+<td>Box Truck</td>
+<td>5,500 cr</td>
+<td>80 ft</td>
+<td>3</td>
+<td>12</td>
+<td>110</td>
+<td>5</td>
+<td>Carries 4 tons.</td>
+</tr>
+<tr>
+<td>Rig Hauler</td>
+<td>14,000 cr</td>
+<td>80 ft</td>
+<td>2</td>
+<td>14</td>
+<td>160</td>
+<td>6</td>
+<td>A freight tractor. Pulls a full container.</td>
+</tr>
+<tr>
+<td>Dune Runner</td>
+<td>4,000 cr</td>
+<td>140 ft</td>
+<td>4</td>
+<td>13</td>
+<td>55</td>
+<td>3</td>
+<td>An open buggy. Ignores rough ground outside the city.</td>
+</tr>
+<tr>
+<td>Executive Coach</td>
+<td>22,000 cr</td>
+<td>120 ft</td>
+<td>6</td>
+<td>16</td>
+<td>120</td>
+<td>8</td>
+<td>Armored. Sealed air. Seen only in the Spires.</td>
+</tr>
+<tr>
+<td>Riot Wagon</td>
+<td>30,000 cr</td>
+<td>80 ft</td>
+<td>2 + 10</td>
+<td>17</td>
+<td>180</td>
+<td>10</td>
+<td>Armored. Registrar and Keyline crews use these. Not sold to the public.</td>
+</tr>
+<tr>
+<td>Garrison Crawler</td>
+<td>60,000 cr</td>
+<td>60 ft</td>
+<td>3 + 8</td>
+<td>18</td>
+<td>240</td>
+<td>12</td>
+<td>A military carrier on eight wheels, with one hardpoint. Not sold to the public.</td>
+</tr>
+<tr>
+<td>Canal Skiff</td>
+<td>1,500 cr</td>
+<td>80 ft on water</td>
+<td>6</td>
+<td>12</td>
+<td>40</td>
+<td>2</td>
+<td>For the drain canals under SubZ.</td>
+</tr>
+<tr>
+<td>Hover Sled</td>
+<td>9,000 cr</td>
+<td>120 ft, hovering 3 ft</td>
+<td>2</td>
+<td>13</td>
+<td>45</td>
+<td>2</td>
+<td>Ignores ground, water, and traffic jams. Needs a Shift Pass to register.</td>
+</tr>
+<tr>
+<td>Lifter</td>
+<td>45,000 cr</td>
+<td>200 ft, flying</td>
+<td>2 + 6</td>
+<td>15</td>
+<td>100</td>
+<td>5</td>
+<td>A ducted-fan aircraft. Flight above the Grid needs a Chrome ID or a very good lie.</td>
+</tr>
+<tr>
+<td>Vitalis Lifter</td>
+<td>Not for sale</td>
+<td>240 ft, flying</td>
+<td>2 + 4 medics</td>
+<td>16</td>
+<td>120</td>
+<td>6</td>
+<td>Armored and armed. The sound of one means someone has cover.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vehicle-upgrades">Vehicle upgrades</h3>
+<table>
+<thead>
+<tr>
+<th>Upgrade</th>
+<th>Price</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plating</td>
+<td>1,500 cr</td>
+<td>+2 AC and +2 Hardness. Speed drops by 10 feet.</td>
+</tr>
+<tr>
+<td>Turbo</td>
+<td>1,200 cr</td>
+<td>Once per chase or fight, add 60 feet to the vehicle's speed for one turn.</td>
+</tr>
+<tr>
+<td>Run-flats</td>
+<td>400 cr</td>
+<td>The vehicle keeps moving at half speed at 0 hit points for one more minute.</td>
+</tr>
+<tr>
+<td>Smuggler Floor</td>
+<td>600 cr</td>
+<td>A hidden space for 100 pounds. DC 18 Investigation to find.</td>
+</tr>
+<tr>
+<td>Ghost Plates</td>
+<td>500 cr</td>
+<td>The registration changes at the press of a button. Three false sets.</td>
+</tr>
+<tr>
+<td>Hardpoint</td>
+<td>2,000 cr</td>
+<td>A mount for one two-handed weapon, fired by a passenger.</td>
+</tr>
+<tr>
+<td>Autopilot</td>
+<td>1,800 cr</td>
+<td>The vehicle drives itself on a set route. A Netrunner can take it with an Intrusion.</td>
+</tr>
+<tr>
+<td>Link Seat</td>
+<td>2,500 cr</td>
+<td>A driver with a Port Jack drives by thought: advantage on all driving checks.</td>
 </tr>
 </tbody>
 </table>

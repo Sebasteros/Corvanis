@@ -45,10 +45,55 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <ul>
 <li><strong>Load limit:</strong> Equal to your Constitution score (plus any bonuses from your Origin or feats).</li>
 <li><strong>Load cost:</strong> Each augment has a Load cost, shown on its node.</li>
-<li><strong>Total Load:</strong> The sum of Load costs of all augments you own. It cannot be higher than your Load limit.</li>
-<li><strong>Over the limit:</strong> The GM may allow you to go over your limit (for example, by installing a Black Market augment). For each point over the limit, the GM rolls on the Glitch table once per long rest.</li>
-<li><strong>Lowering Load:</strong> Some augments and services can remove augments. Removing an augment refunds 1 Load per tier and costs half its price.</li>
+<li><strong>Total Load:</strong> The sum of the Load costs of all augments you own.</li>
+<li><strong>The cap:</strong> Your total Load cannot be higher than your Load limit, unless you wear a redline rig (below).</li>
+<li><strong>Lowering Load:</strong> Some clinics can remove augments. Removing an augment refunds its Load and costs half its price.</li>
 </ul>
+<h2 id="redline-going-past-your-limit">Redline: going past your limit</h2>
+<p>A <strong>redline rig</strong> is a regulator that lets a body carry more hardware than it should. It keeps the augments running by taking the difference out of you.</p>
+<ul>
+<li><strong>The cost:</strong> For every point of Load over your limit, your hit point maximum drops by twice your proficiency bonus. That is 4 hit points per point at levels 1 to 4, 6 at levels 5 to 8, and 8 at levels 9 and 10.</li>
+<li><strong>How far:</strong> Each rig lets you go a set number of points over your limit. You can wear one rig at a time. A rig is not an augment and costs no Load.</li>
+<li><strong>The floor:</strong> You cannot redline so far that your hit point maximum would fall below half of its normal value.</li>
+<li><strong>Healing:</strong> While you are redlined, nothing can heal you above the lowered maximum.</li>
+<li><strong>Backing off:</strong> If you remove augments and drop back under your limit, your hit point maximum returns after a long rest.</li>
+<li><strong>Without a rig:</strong> You cannot go over your limit. In an emergency the GM may allow it for one scene. If so, the GM rolls on the Glitch table once for each point over.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Rig</th>
+<th>Price</th>
+<th>Load past the limit</th>
+<th>Where</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redline Shunt</td>
+<td>800 cr</td>
+<td>2</td>
+<td>Any clinic</td>
+<td>A belt unit with two lines into the spine.</td>
+</tr>
+<tr>
+<td>Redline Harness</td>
+<td>2,400 cr</td>
+<td>4</td>
+<td>Vitalis or Helix clinic</td>
+<td>Needs character level 5.</td>
+</tr>
+<tr>
+<td>Red Valve</td>
+<td>600 cr</td>
+<td>6</td>
+<td>The Stitchery</td>
+<td>Black Market. Each time you drop to 0 hit points, the GM rolls on the Glitch table.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> Rin has a Constitution of 13, so her Load limit is 13. She is level 3 and carries 15 Load with a Redline Shunt. She is 2 over, so her hit point maximum drops by 8.</p>
 <h2 id="tiers-and-prices">Tiers and prices</h2>
 <table>
 <thead>
@@ -93,7 +138,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 </table>
 <p>Installation takes one cycle at a clinic. A Medtech with Cutting Edge can install a Common augment in a scene.</p>
 <h2 id="how-the-skill-tree-works">How the skill tree works</h2>
-<p>Augments are organized into five <strong>lines</strong>. Each line has three tiers, and each tier has two nodes. Owning a node gives you its effect.</p>
+<p>Augments are organized into five <strong>lines</strong>. Each line has three tiers, and each tier has three nodes. Owning a node gives you its effect. A higher tier costs more Load and more credits, and it does more: a Common node is a small edge, a Mil-spec node changes how you fight or work, and a Prime node is something a character is known for.</p>
 <ul>
 <li><strong>Tier I:</strong> Any node in a line can be taken.</li>
 <li><strong>Tier II:</strong> You must own one Tier I node in the same line.</li>
@@ -124,31 +169,49 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>Grip Assist</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>+1 to Athletics checks to grab, hold, or climb.</td>
+<td>+2 to Athletics checks to climb, grab, or hold on. You climb at your full walking speed.</td>
+</tr>
+<tr>
+<td>Balance Gyro</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>Advantage on checks and saving throws against being knocked prone or pushed.</td>
 </tr>
 <tr>
 <td>Dash Coil</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Once per turn, Dash as a bonus action. Costs 1 Surge per use after the first use per short rest.</td>
+<td>Dash as a bonus action. Free once per short rest; after that it costs 1 Surge each time.</td>
 </tr>
 <tr>
 <td>Lightning Step</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Reaction, costing 1 Surge: move 10 feet without provoking opportunity attacks.</td>
+<td>Reaction, 1 Surge: when an attack misses you, move up to 15 feet without provoking opportunity attacks.</td>
+</tr>
+<tr>
+<td>Twitch Fiber</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>+3 to initiative. You can draw or stow two weapons at once.</td>
 </tr>
 <tr>
 <td>Reflex Core</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Your speed increases by 10 feet. You cannot be surprised.</td>
+<td>Your speed increases by 10 feet. You cannot be surprised. Opportunity attacks against you have disadvantage.</td>
 </tr>
 <tr>
 <td>Reaction Surge</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Once per long rest, take an extra reaction on your turn. Costs 2 Surge.</td>
+<td>Once per short rest, 2 Surge: take one extra action on your turn. It can be one weapon attack, Dash, Disengage, Hide, or Use an Object.</td>
+</tr>
+<tr>
+<td>Blur Step</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>+1 AC while you are not wearing heavy armor. Reaction, 1 Surge: add +3 to your AC against one attack that would hit you.</td>
 </tr>
 </tbody>
 </table>
@@ -167,37 +230,55 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>Night Lens</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>You have darkvision out to 30 feet.</td>
+<td>You have darkvision out to 60 feet.</td>
 </tr>
 <tr>
 <td>Target Lock</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>+1 to ranged attacks against a creature you can see clearly.</td>
+<td>Your ranged attacks ignore half cover.</td>
+</tr>
+<tr>
+<td>Glare Filter</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>You cannot be blinded by light or flash effects. Advantage on saving throws against being blinded by anything else.</td>
 </tr>
 <tr>
 <td>Thermal Eye</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>For 1 minute, costing 1 Surge, you can see the heat of creatures within 30 feet, even through smoke or darkness.</td>
+<td>1 Surge: for 10 minutes you see the heat of creatures within 60 feet through smoke, darkness, and thin walls.</td>
 </tr>
 <tr>
 <td>Zoom Glass</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Advantage on Perception checks to spot something at range.</td>
+<td>Advantage on Perception checks to spot things at range. Attacking at long range does not give you disadvantage.</td>
+</tr>
+<tr>
+<td>Threat Reader</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Bonus action: learn the AC of a creature you can see and one damage type it resists or is weak to. Uses equal to your proficiency bonus per long rest.</td>
 </tr>
 <tr>
 <td>Overlay</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Once per short rest, learn the current health and augment types of a creature you can see.</td>
+<td>Once per short rest, mark a creature you can see for 1 minute. You learn its current hit points and augments, and your attacks against it score a critical hit on a 19 or 20.</td>
 </tr>
 <tr>
 <td>Kill Frame</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Once per long rest, when a ranged attack of yours misses, reroll it.</td>
+<td>Your ranged weapon attacks score a critical hit on a 19 or 20. Once per short rest, reroll a ranged attack that missed.</td>
+</tr>
+<tr>
+<td>Ghost Sight</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>You see invisible creatures, holograms, and optical camouflage for what they are within 30 feet.</td>
 </tr>
 </tbody>
 </table>
@@ -222,31 +303,49 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>Bleed Seal</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>As an action, stop your own bleeding.</td>
+<td>Bonus action: stop your own bleeding. You have advantage on death saving throws.</td>
+</tr>
+<tr>
+<td>Insulated Skin</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>You ignore extreme heat and cold. Reduce fire and cold damage you take by 2.</td>
 </tr>
 <tr>
 <td>Ablative Weave</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Reaction, once per short rest: reduce the damage of one attack by 1d6.</td>
+<td>Reaction, twice per short rest: reduce the damage of one attack against you by 1d10.</td>
 </tr>
 <tr>
 <td>Poison Filter</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Advantage on saving throws against poison.</td>
+<td>You are immune to the poisoned condition and have resistance to poison damage.</td>
+</tr>
+<tr>
+<td>Shock Lining</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Once per turn, a creature that hits you with a melee attack takes 1d6 lightning damage.</td>
 </tr>
 <tr>
 <td>Mesh Skin</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>+2 AC while you are not wearing armor. (Does not stack with the Sealant Layer; use the higher bonus.)</td>
+<td>+2 AC while you are not wearing heavy armor. This replaces the Sealant Layer bonus; it does not add to it.</td>
 </tr>
 <tr>
 <td>Flash Sheath</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Once per long rest, become resistant to one damage type for 1 minute.</td>
+<td>After a long rest, choose one damage type: you have resistance to it. Once per long rest, change the type as a bonus action.</td>
+</tr>
+<tr>
+<td>Regrowth Mesh</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>At the start of each of your turns, regain 2 hit points if you are below half your hit points and above 0.</td>
 </tr>
 </tbody>
 </table>
@@ -265,7 +364,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>Bone Lattice</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>Your carrying capacity doubles. +1 to Strength checks to lift or push.</td>
+<td>Your carrying capacity doubles. Advantage on Strength checks to lift, push, or break things.</td>
 </tr>
 <tr>
 <td>Tool Hand</td>
@@ -274,28 +373,46 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>An extra arm. You can hold a second object or use a tool in your free hand as part of another action.</td>
 </tr>
 <tr>
+<td>Knuckle Plate</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>Your unarmed strikes deal 1d6 + Strength bludgeoning damage and can break glass, locks, and thin walls.</td>
+</tr>
+<tr>
 <td>Hydraulic Grip</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Advantage on grapple and shove checks.</td>
+<td>Advantage on grapple and shove checks. A creature you grapple takes 1d4 bludgeoning damage at the start of each of your turns.</td>
 </tr>
 <tr>
 <td>Load Bearer</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Your Load limit increases by 1.</td>
+<td>Your Load limit increases by 4. This node still costs its own 2 Load, so you come out 2 ahead.</td>
+</tr>
+<tr>
+<td>Piston Arm</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>+2 damage with melee weapon attacks and unarmed strikes.</td>
 </tr>
 <tr>
 <td>Ram Frame</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Once per turn, shove a creature as a bonus action.</td>
+<td>Shove as a bonus action. If you move 10 feet in a straight line and hit with a melee attack, it deals +1d8 damage and the target makes a Strength save or falls prone.</td>
 </tr>
 <tr>
 <td>Reinforced Spine</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Resistance to falling damage. You cannot be knocked prone by a single attack.</td>
+<td>Your hit point maximum increases by 2 per character level. You have resistance to falling damage.</td>
+</tr>
+<tr>
+<td>Siege Frame</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Your Strength score increases by 2, to a maximum of 22. You count as one size larger for carrying, grappling, and shoving.</td>
 </tr>
 </tbody>
 </table>
@@ -314,7 +431,7 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>Port Jack</td>
 <td>I</td>
 <td>1 / 300 cr</td>
-<td>You can jack into a deck. Required for Netrunners.</td>
+<td>You can jack into a deck and link to linked weapons. Required for Netrunners.</td>
 </tr>
 <tr>
 <td>Voice Filter</td>
@@ -323,28 +440,46 @@ footer{margin-top:48px;border-top:1px solid var(--line);padding-top:12px;font-si
 <td>+2 to Deception checks made through a device. You can change your voice.</td>
 </tr>
 <tr>
+<td>Memory Tap</td>
+<td>I</td>
+<td>1 / 300 cr</td>
+<td>You recall anything you saw or heard in the last cycle exactly. Advantage on Intelligence checks to recall information.</td>
+</tr>
+<tr>
 <td>Buffer</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Your maximum Surge increases by 1.</td>
+<td>Your maximum Surge increases by 2.</td>
 </tr>
 <tr>
 <td>Rig Link</td>
 <td>II</td>
 <td>2 / 900 cr</td>
-<td>Intrusions you cast may be cast through a device within 120 feet, if you can see the device.</td>
+<td>Your Intrusions can be cast through any device you can see within 120 feet, as if you stood there.</td>
+</tr>
+<tr>
+<td>Co-Processor</td>
+<td>II</td>
+<td>2 / 900 cr</td>
+<td>Once per short rest, after you see the roll, add 1d6 to one of your ability checks or saving throws.</td>
 </tr>
 <tr>
 <td>Deep Net</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>You learn one additional Intrusion. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost.</td>
+<td>You learn two more Intrusions. If you are not a Netrunner, you gain Glitch Bolt at no Surge cost and 2 extra Surge.</td>
 </tr>
 <tr>
 <td>Neural Shield</td>
 <td>III</td>
 <td>3 / 2,500 cr</td>
-<td>Advantage on Intelligence and Wisdom saving throws against mental effects.</td>
+<td>Advantage on Intelligence, Wisdom, and Charisma saving throws. You cannot be charmed.</td>
+</tr>
+<tr>
+<td>Ghost Protocol</td>
+<td>III</td>
+<td>3 / 2,500 cr</td>
+<td>Once per long rest, 3 Surge: take control of one drone, turret, camera, or door within 60 feet for 1 minute. A creature operating it makes an Intelligence save to keep it.</td>
 </tr>
 </tbody>
 </table>
