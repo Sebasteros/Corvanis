@@ -96,6 +96,69 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
 .bk-table th{font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.14em;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
 .bk-table td{padding:8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
 .bk-table .n{text-align:right}
+.idc{max-width:620px;border-radius:16px;padding:20px 22px 14px;display:flex;flex-direction:column;gap:14px;color:#e8f6ee;border:1px solid color-mix(in srgb,var(--holo) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--holo) 22%,#07110d) 0%,#07110d 46%,color-mix(in srgb,var(--holo) 10%,#07110d) 100%);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.idc span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;color:#8fb3a1}
+.idc b{font-weight:600;font-size:15px;letter-spacing:.03em}
+.idc-top,.idc-foot{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.idc-brand{display:flex;align-items:center;gap:10px;color:var(--holo)}
+.idc-brand svg{width:38px;height:38px}
+.idc-brand b{display:block;font-family:var(--f-display);font-size:18px;letter-spacing:.2em;line-height:1}
+.idc-brand span{color:var(--holo);letter-spacing:.3em;margin-top:4px}
+.idc-code{text-align:right}
+.idc-code b{font-family:var(--f-mono);font-size:14px;letter-spacing:.08em}
+.idc-body{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+.idc .ap-portrait{width:120px;height:120px;margin:0;border-radius:8px;background:rgba(0,0,0,.25)}
+.idc h3{font-family:var(--f-display);font-weight:600;font-size:22px;letter-spacing:.06em;margin:2px 0 12px;color:#fff}
+.idc-cells{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.idc-cells .wide{grid-column:1/-1}
+.idc-stamp{font-family:var(--f-display);font-size:11px;letter-spacing:.16em;color:var(--s);border:1px solid var(--s);padding:4px 8px;border-radius:4px;white-space:nowrap}
+.idc-fine{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#8fb3a1;margin:0}
+.ap-portrait{width:96px;height:96px;border:1px solid var(--holo);display:grid;place-items:center;overflow:hidden;font-family:var(--f-display);font-size:34px;color:var(--holo);margin-bottom:10px}
+.ap-portrait img{width:100%;height:100%;object-fit:cover}
+.acct-split{display:grid;grid-template-columns:minmax(300px,460px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1100px){.acct-split{grid-template-columns:1fr}}
+.bk-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.bk-tabs button{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;border-radius:99px;padding:7px 12px}
+.bk-tabs button[aria-pressed="true"]{color:var(--bg);background:var(--holo);border-color:var(--holo)}
+.tagx{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;border:1px solid currentColor;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.tagx.joint{color:var(--cyan)}.tagx.dark{color:var(--mag)}.tagx.warn{color:var(--amber)}
+.holders{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 14px}
+.holder{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:4px 6px 4px 12px}
+.holder button{font-size:10px;padding:3px 8px;border-radius:99px}
+.boxed{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px}
+.boxed .row{border-top:0;justify-content:flex-start;padding:4px 0}
+.boxed select,.boxed input{width:auto;flex:1 1 200px;max-width:420px}
+.holders select{width:auto;max-width:260px}
+.pcard small.alert{color:var(--red);letter-spacing:.14em}
+.vcall{border:1px solid var(--red);border-radius:12px;padding:14px;margin-bottom:14px;background:rgba(255,59,59,.07)}
+.vcall h3{font-family:var(--f-display);font-weight:500;font-size:15px;letter-spacing:.14em;color:var(--red);margin:0 0 6px}
+.vcall p{margin:0 0 8px}
+.chat-item{display:flex;gap:6px;align-items:stretch;margin-bottom:8px}
+.chat-item .chat-row{flex:1;min-width:0;margin-bottom:0}
+.chat-item .chat-row span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-item>button:last-child{font-size:10px;padding:4px 8px;flex:0 0 auto}
+.ph-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.ph-tile{border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;display:block;width:100%}
+.ph-tile[aria-pressed="true"]{border-color:var(--holo);background:rgba(61,255,162,.10)}
+.ph-tile span{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.ph-tile b{display:block;font-family:var(--f-display);font-size:22px;color:var(--holo);margin-top:2px}
+.ph-notes{display:grid;grid-template-columns:minmax(200px,280px) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:900px){.ph-notes{grid-template-columns:1fr}}
+.ph-list{display:flex;flex-direction:column;gap:6px;max-height:62vh;overflow:auto}
+.ph-list button{display:block;width:100%;text-align:left;border-radius:10px;padding:9px 11px;letter-spacing:0;font-family:var(--f-body)}
+.ph-list button[aria-pressed="true"]{border-color:var(--holo);background:rgba(61,255,162,.10)}
+.ph-list b{display:block;font-weight:600;font-size:15px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ph-list span{display:block;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+.ph-read{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:rgba(0,0,0,.25);min-height:220px}
+.ph-read h3{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:.04em;color:#fff;margin:0 0 4px}
+.ph-read .pre{font-size:16px;line-height:1.6;max-width:70ch;margin-top:12px;overflow-wrap:anywhere}
+.ph-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.ph-card{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;align-items:center}
+.ph-card i{grid-row:span 2;width:44px;height:44px;border-radius:10px;border:1px solid var(--holo-dim);display:grid;place-items:center;font-style:normal;font-family:var(--f-display);font-size:18px;color:var(--holo)}
+.ph-card b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ph-card small{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.ph-card p{grid-column:1/-1;margin:6px 0 0;font-size:14px;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
+.jobc-crew{margin:8px 0 0;color:var(--cyan)}
 .pcard{display:flex;flex-direction:column;gap:2px;text-align:left;color:var(--text);background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-family:var(--f-body);font-size:16px;letter-spacing:0}
 .pcard:hover{border-color:var(--holo-dim);background:var(--glass);color:var(--text)}
 .pcard[aria-pressed="true"]{border-color:var(--holo);box-shadow:inset 3px 0 0 var(--holo)}
@@ -225,7 +288,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
               <button type="button" data-tab="bank" aria-selected="false">BANK</button>
               <button type="button" data-tab="augments" aria-selected="false">AUGMENTS</button>
               <button type="button" data-tab="vitalis" aria-selected="false">VITALIS</button>
-              <button type="button" data-tab="phone" aria-selected="false">PHONE VIEW</button>
+              <button type="button" data-tab="phone" aria-selected="false">PHONE</button>
               <button type="button" data-tab="messages" aria-selected="false">MESSAGES</button>
               <button type="button" data-tab="secrets" aria-selected="false">SECRETS</button>
             </div>
@@ -266,9 +329,9 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
     </section>
     <section data-sec="chats" hidden>
       <div class="top"><h2>PLAYER CHATS</h2></div>
-      <p class="mono">READ ONLY. CONVERSATIONS BETWEEN REGISTERED PLAYERS.</p>
+      <p class="mono">READ ONLY. CONVERSATIONS BETWEEN REGISTERED PLAYERS. REMOVE TAKES A CHAT OFF THIS CONSOLE ONLY: THE PLAYERS KEEP IT, AND IT COMES BACK HERE IF THEY WRITE AGAIN.</p>
       <div class="chatwrap">
-        <div class="card chat-list" id="chat-list"></div>
+        <div class="card chat-list"><div class="row" style="border-top:0;padding-top:0"><button class="quiet" type="button" id="chat-toggle"></button></div><div id="chat-list"></div></div>
         <div class="card" id="chat-thread"><p class="hint">Pick a conversation.</p></div>
       </div>
     </section>
@@ -277,7 +340,7 @@ h2{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.0
       <div class="card">
         <div id="jobs"></div>
         <div class="row" style="margin-top:12px"><button type="button" class="quiet" id="addjob">+ ADD JOB</button></div>
-        <p class="hint" style="margin-top:12px">Players see open jobs first, then taken, then closed. When a job is finished, set it to done here. Then open the crew member on the Players page and tick Shift Pass.</p>
+        <p class="hint" style="margin-top:12px">Players see open jobs first, then taken, then closed. When a job is finished, set it to done here. Then open the crew member on the Players page and tick Shift Pass. Players can tap TAKE THIS JOB on their terminal: each contract shows who took it.</p>
       </div>
       <div class="bar">
         <button type="button" id="save-jobs">SAVE JOB BOARD</button>
@@ -690,16 +753,20 @@ const ST = (() => {
 
   /* ---------- Vitalis Rescue member card ---------- */
   const PLANS = {
-    'Walk-in':     { c: '#8a97a3', resp: 'Standard queue', stab: '200 cr per treatment', inst: 'Not covered', price: '200 cr per treatment' },
-    'Grid Cover':  { c: '#6fe9ff', resp: 'In-scene · The Grid', stab: 'Covered · 1 per cycle', inst: 'Common', price: '50 cr per cycle' },
-    'Spire Cover': { c: '#c9d6ff', resp: 'Priority · The Spires', stab: 'Covered', inst: 'Mil-spec · 25% off', price: '200 cr per cycle' },
-    'Apex Cover':  { c: '#ffcf5a', resp: 'Full · Tether and Apex', stab: 'Covered + transport', inst: 'Prime + any repair', price: '800 cr per cycle' }
+    'Walk-in':     { c: '#8a97a3', fee: 0, resp: 'Standard queue', stab: '200 cr per treatment', inst: 'Not covered', price: '200 cr per treatment',
+      svc: ['No plan: you are treated after covered clients', 'Stabilization costs 200 cr each time', 'No transport', 'No augment repair'] },
+    'Grid Cover':  { c: '#6fe9ff', fee: 50, resp: 'In-scene · The Grid', stab: 'Covered · 1 per cycle', inst: 'Common', price: '50 cr per cycle',
+      svc: ['A team reaches you in SubZ and the Grid', '1 stabilization each cycle included', 'Common augment installs at a Vitalis clinic', 'Transport to a Grid clinic: 50 cr'] },
+    'Spire Cover': { c: '#c9d6ff', fee: 200, resp: 'Priority · The Spires', stab: 'Covered', inst: 'Mil-spec · 25% off', price: '200 cr per cycle',
+      svc: ['Priority response, up to the Spires', 'Stabilization included, no limit', 'Mil-spec augment installs, 25% off', 'Transport included'] },
+    'Apex Cover':  { c: '#ffcf5a', fee: 800, resp: 'Full · Tether and Apex', stab: 'Covered + transport', inst: 'Prime + any repair', price: '800 cr per cycle',
+      svc: ['Full response anywhere, Tether and Apex included', 'Stabilization and transport included', 'Prime installs and any augment repair', 'Private recovery suite'] }
   };
   function memberId(id) {
     let h = 7; for (const ch of String(id || 'x')) h = (h * 31 + ch.charCodeAt(0)) % 100000000;
     const s = String(h).padStart(8, '0'); return 'VR-' + s.slice(0, 4) + '-' + s.slice(4);
   }
-  function card(a, name, id) {
+  function card(a, name, id, cycle) {
     const plan = PLANS[a && a.cover] ? a.cover : 'Walk-in', p = PLANS[plan], none = plan === 'Walk-in';
     const cell = (k, v) => `<div><span>${k}</span><b>${esc(v)}</b></div>`;
     return `<div class="vc${none ? ' vc-none' : ''}" style="--vc:${p.c}">
@@ -709,7 +776,7 @@ const ST = (() => {
       </div>
       <div class="vc-mid">${cell('MEMBER', name || 'Unregistered')}${cell('MEMBER ID', memberId(id))}</div>
       <div class="vc-cells">${cell('RESPONSE', p.resp)}${cell('STABILIZATION', p.stab)}${cell('AUGMENT INSTALLS', p.inst)}</div>
-      <div class="vc-foot"><div class="vc-bars" aria-hidden="true"></div><span class="vc-stamp">${none ? 'NO PLAN ON FILE' : 'ACTIVE'}</span></div>
+      <div class="vc-foot"><div class="vc-bars" aria-hidden="true"></div><span class="vc-stamp">${none ? 'NO PLAN ON FILE' : (cycle && a.coverThrough != null && Number(a.coverThrough) < cycle) ? 'PAYMENT DUE' : 'ACTIVE'}</span></div>
       <p class="vc-fine">Present to responding medics. Every treatment is logged to your Registrar file.</p>
     </div>`;
   }
@@ -781,7 +848,7 @@ const ST = (() => {
 `;
   if (typeof document !== 'undefined') { const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s); }
 
-  return { svg, detail, card, plans, state, blocked, find, loadUsed, owned };
+  return { svg, detail, card, plans, PLANS, state, blocked, find, loadUsed, owned };
 })();
 </script>
 <script type="module">
@@ -836,19 +903,13 @@ const STATE_DEFAULTS = {
 const FIELDS = [
   { k: 'holder', label: 'Character name', t: 'text' },
   { k: 'tier', label: 'Tier', t: 'text' },
-  { k: 'residence', label: 'Residence', t: 'text' },
+  { k: 'residence', label: 'Residence (the player can edit this)', t: 'text' },
+  { k: 'occupation', label: 'Occupation (the player can edit this)', t: 'text' },
   { k: 'standing', label: 'Registrar standing', t: 'select', opts: ['Clean', 'Under Review', 'Flagged'] },
   { k: 'chrome', label: 'Chrome ID issued', t: 'check' },
-  { k: 'implants', label: 'Implants on record (comma separated)', t: 'text' },
-  { k: 'portrait', label: 'Portrait (a link, or db:… for an uploaded photo)', t: 'text' },
-  { k: 'wallet', label: 'Credits', t: 'num' },
-  { k: 'principal', label: 'Debt principal', t: 'num' },
-  { k: 'fees', label: 'Interest and fees', t: 'num' },
-  { k: 'rate', label: 'Interest % per cycle', t: 'num', step: '0.5' },
-  { k: 'minDue', label: 'Minimum due', t: 'num' },
-  { k: 'due', label: 'Next visit', t: 'text' },
   { k: 'grid', label: 'Shift Pass · The Grid', t: 'check' },
-  { k: 'log', label: 'Activity (one entry per line, newest first)', t: 'area' }
+  { k: 'implants', label: 'Implants on record, comma separated (the player can edit this)', t: 'text', wide: true },
+  { k: 'portrait', label: 'Portrait (a link, or db:… for an uploaded photo)', t: 'text', wide: true }
 ];
 function valueOf(a, f) {
   if (f.k === 'grid') return (a.passes || []).includes('grid');
@@ -867,7 +928,7 @@ function accountForm(a) {
     if (f.t === 'check') return `<label class="check"><input id="${id}" type="checkbox" ${v ? 'checked' : ''}> ${esc(f.label)}</label>`;
     if (f.t === 'select') return `<label>${esc(f.label)}<select id="${id}">${f.opts.map(o => `<option ${o === v ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
     if (f.t === 'area') return `<label style="grid-column:1/-1">${esc(f.label)}<textarea id="${id}">${esc(v)}</textarea></label>`;
-    return `<label>${esc(f.label)}<input id="${id}" type="${f.t === 'num' ? 'number' : 'text'}" ${f.step ? `step="${f.step}"` : ''} value="${esc(v)}"></label>`;
+    return `<label${f.wide ? ' style="grid-column:1/-1"' : ''}>${esc(f.label)}<input id="${id}" type="${f.t === 'num' ? 'number' : 'text'}" ${f.step ? `step="${f.step}"` : ''} value="${esc(v)}"></label>`;
   }).join('');
 }
 function readAccount() {
@@ -895,12 +956,25 @@ const say = (el, t) => { const n = typeof el === 'string' ? $(el) : el; if (n) n
 let HIDDEN = {};
 let CHATS = [], CHAT_SEL = null, chatMsgsOff = null;
 const tsText = t => (t && t.toMillis) ? new Date(t.toMillis()).toLocaleString() : '';
+let SHOW_REMOVED = false;
+const chatHiddenAt = id => (((secrets['_console'] || {}).hiddenChats) || {})[id] || 0;
+const chatRemoved = c => { const t = chatHiddenAt(c.id); return !!t && !((c.last && c.last.at) > t); };
 function paintChats() {
-  const list = CHATS.slice().sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
-  $('chat-list').innerHTML = list.map(c => {
+  const all = CHATS.slice().sort((a, b) => ((b.last && b.last.at) || 0) - ((a.last && a.last.at) || 0));
+  const gone = all.filter(chatRemoved), list = SHOW_REMOVED ? gone : all.filter(c => !chatRemoved(c));
+  if (SHOW_REMOVED && !gone.length) SHOW_REMOVED = false;
+  $('chat-toggle').textContent = SHOW_REMOVED ? '◂ BACK TO CHATS' : `REMOVED FROM THIS CONSOLE (${gone.length})`;
+  $('chat-toggle').hidden = !SHOW_REMOVED && !gone.length;
+  $('chat-list').innerHTML = (SHOW_REMOVED ? gone : list).map(c => {
     const [x, y] = c.members || [];
-    return `<button class="chat-row${c.id === CHAT_SEL ? ' on' : ''}" type="button" data-chat="${esc(c.id)}"><span>${esc(nameOf(x))} ↔ ${esc(nameOf(y))}</span><span class="mono">${esc(c.last ? c.last.text : '')}</span></button>`;
-  }).join('') || '<p class="hint">No player conversations yet.</p>';
+    return `<div class="chat-item"><button class="chat-row${c.id === CHAT_SEL ? ' on' : ''}" type="button" data-chat="${esc(c.id)}"><span>${esc(nameOf(x))} ↔ ${esc(nameOf(y))}</span><span class="mono">${esc(c.last ? c.last.text : '')}</span></button>${SHOW_REMOVED ? `<button class="quiet" type="button" data-chat-restore="${esc(c.id)}">RESTORE</button>` : `<button class="danger" type="button" data-chat-hide="${esc(c.id)}">REMOVE</button>`}</div>`;
+  }).join('') || `<p class="hint">${SHOW_REMOVED ? 'Nothing removed.' : 'No player conversations here.'}</p>`;
+}
+async function setChatHidden(id, on) {
+  try {
+    await setDoc(doc(db, 'secrets', '_console'), { hiddenChats: { [id]: on ? Date.now() : 0 } }, { merge: true });
+    if (on && CHAT_SEL === id) { CHAT_SEL = null; if (chatMsgsOff) chatMsgsOff(); $('chat-thread').innerHTML = '<p class="hint">Pick a conversation.</p>'; }
+  } catch (e) { $('chat-thread').innerHTML = `<p class="hint">${esc(explain(e))}</p>`; }
 }
 function openChat(id) {
   CHAT_SEL = id; paintChats();
@@ -909,12 +983,71 @@ function openChat(id) {
     $('chat-thread').innerHTML = snap.docs.map(d => { const m = d.data(); return `<div class="chat-m"><span class="mono">${esc(nameOf(m.from))} · ${esc(tsText(m.createdAt))}</span><p>${esc(m.text)}</p></div>`; }).join('') || '<p class="hint">No messages in this conversation.</p>';
   }, err => console.warn('Chat:', err.code));
 }
-$('chat-list').addEventListener('click', e => { const b = e.target.closest('[data-chat]'); if (b) openChat(b.dataset.chat); });
+$('chat-list').addEventListener('click', e => {
+  const h = e.target.closest('[data-chat-hide]'); if (h) return setChatHidden(h.dataset.chatHide, true);
+  const r = e.target.closest('[data-chat-restore]'); if (r) return setChatHidden(r.dataset.chatRestore, false);
+  const b = e.target.closest('[data-chat]'); if (b) openChat(b.dataset.chat);
+});
+$('chat-toggle').onclick = () => { SHOW_REMOVED = !SHOW_REMOVED; paintChats(); };
 onSnapshot(collection(db, 'chats'), snap => {
   CHATS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   paintChats();
 }, err => console.warn('Chats:', err.code));
-let accounts = {}, players = {}, secrets = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
+let accounts = {}, players = {}, secrets = {}, banks = {}, sel = null, tab = 'account', msgs = [], msgOff = null, STATE = {};
+let bankSel = null, phoneSec = 'notes', phoneNote = null, dirty = false, flash = null, formBase = {};
+const changedOnly = cur => Object.fromEntries(Object.entries(cur).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(formBase[k])));
+const banksCol = collection(db, 'banks');
+const cycleNow = () => Math.max(1, Math.round(Number($('cycle').value) || 1));
+const owedOf = b => (Number(b.principal) || 0) + (Number(b.fees) || 0);
+const banksOf = id => Object.entries(banks).filter(([, b]) => (b.holders || []).includes(id)).map(([bid, b]) => ({ id: bid, ...b }))
+  .sort((x, y) => Number(!!x.hidden) - Number(!!y.hidden) || (x.createdAt || 0) - (y.createdAt || 0));
+const bankNumber = b => b.number || bankNo(b.id);
+const holderNames = b => (b.holders || []).map(nameOf).join(', ') || 'No holder';
+function newBankNumber() {
+  for (;;) {
+    const n = Array.from(crypto.getRandomValues(new Uint32Array(3)), v => String(v % 10000).padStart(4, '0')).join(' ');
+    if (!Object.values(banks).some(b => b.number === n)) return n;
+  }
+}
+const jobKey = j => j.id || 'j-' + String(j.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40);
+/* keep a "Saved" line on screen when the tab redraws right after a save */
+function keep(id, text) { flash = { id, text, at: Date.now() }; say(id, text); }
+/* player photos kept in the database (portraits/{id}) */
+const FACES = new Map();
+function faceSrc(id, portrait) {
+  if (!portrait) return '';
+  if (!portrait.startsWith('db:')) return portrait;
+  const key = id + '|' + portrait;
+  if (FACES.has(key)) return FACES.get(key) || '';
+  FACES.set(key, '');
+  getDoc(doc(db, 'portraits', id)).then(d => { if (d.exists() && d.data().data) { FACES.set(key, d.data().data); if (tab === 'account' && sel === id && !dirty) renderTab(); } }).catch(() => {});
+  return '';
+}
+function tagCard(a, id) {
+  const passes = a.passes || [], name = a.holder || id, standing = a.standing || 'Clean';
+  const sc = standing === 'Flagged' ? 'var(--red)' : standing === 'Under Review' ? 'var(--amber)' : 'var(--holo)';
+  const cell = (k, v, wide) => `<div${wide ? ' class="wide"' : ''}><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
+  const src = faceSrc(id, a.portrait || '');
+  return `<div class="idc">
+    <div class="idc-top">
+      <div class="idc-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 36 11v18L20 38 4 29V11z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M13 14h14M13 20h14M13 26h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><div><b>REGISTRAR</b><span>VANTARA CIVIC ID</span></div></div>
+      <div class="idc-code"><span>NEURAL-TAG</span><b>${esc(id.toUpperCase().slice(0, 16))}</b></div>
+    </div>
+    <div class="idc-body">
+      <div><div class="ap-portrait">${src ? `<img src="${esc(src)}" alt="">` : esc(name.slice(0, 1).toUpperCase())}</div></div>
+      <div>
+        <span>HOLDER</span><h3>${esc(name)}</h3>
+        <div class="idc-cells">
+          ${cell('TIER', a.tier || 'Sublevel Zero')}${cell('RESIDENCE', a.residence || 'Unregistered')}
+          ${cell('OCCUPATION', a.occupation || 'None on file')}${cell('WORK PERMIT', passes.includes('grid') ? 'Grid · shift pass' : 'None on file')}
+          ${cell('CHROME ID', a.chrome ? 'Issued' : 'Not issued')}${cell('STANDING', standing)}
+          ${cell('IMPLANTS ON RECORD', (a.implants || []).join(', ') || 'None on record', true)}
+        </div>
+      </div>
+    </div>
+    <div class="idc-foot"><div class="vc-bars" aria-hidden="true"></div><span class="idc-stamp" style="--s:${sc}">STANDING · ${esc(standing.toUpperCase())}</span></div>
+  </div>`;
+}
 const isOnline = id => !!players[id] && Date.now() - players[id].seen < ONLINE_MS;
 const nameOf = id => (accounts[id] && accounts[id].holder) || id;
 
@@ -923,11 +1056,12 @@ function renderList() {
   $('plist').replaceChildren(...ids.map(id => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'pcard'; b.dataset.sel = id; b.setAttribute('aria-pressed', String(sel === id));
-    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small><small>${fmt(accounts[id].wallet)} CR · OWES ${fmt((Number(accounts[id].principal) || 0) + (Number(accounts[id].fees) || 0))}</small>`;
+    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small><small>${(mb => mb ? fmt(mb.wallet) + ' CR · OWES ' + fmt(owedOf(mb)) : 'NO BANK ACCOUNT')(banksOf(id)[0])}</small>${accounts[id].vitalisCall && accounts[id].vitalisCall.status === 'requested' ? '<small class="alert">▲ CALLING VITALIS</small>' : ''}`;
     return b;
   }));
   const on = ids.filter(isOnline).map(nameOf);
-  $('online').textContent = on.length ? 'ONLINE NOW (' + on.length + '): ' + on.join(', ') : 'Nobody is online right now.';
+  const calling = ids.filter(id => accounts[id].vitalisCall && accounts[id].vitalisCall.status === 'requested').map(nameOf);
+  $('online').textContent = (on.length ? 'ONLINE NOW (' + on.length + '): ' + on.join(', ') : 'Nobody is online right now.') + (calling.length ? '  ·  VITALIS CALL FROM: ' + calling.join(', ') : '');
   $('players-empty').hidden = ids.length > 0;
   if (sel && !accounts[sel]) sel = null;
   $('profile').hidden = !sel;
@@ -944,11 +1078,17 @@ function selectPlayer(id) {
 function renderTab() {
   document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
   const body = $('tab-body');
+  dirty = false;
   if (!sel) return;
   const a = accounts[sel] || {};
   if (tab === 'account') {
-    body.innerHTML = `<form id="acc-form" class="grid">${accountForm(a)}</form>
-      <div class="row" style="margin-top:12px"><button class="btn" type="submit" form="acc-form">SAVE PROFILE</button><button class="danger" type="button" data-del>DELETE ACCOUNT</button><span class="msg" id="acc-msg"></span></div>`;
+    body.innerHTML = `<div class="acct-split">
+      <div><p class="mono">THE NEURAL-TAG ON THE PLAYER'S TERMINAL</p>${tagCard(a, sel)}</div>
+      <div><p class="mono">REGISTRAR FILE · WHAT YOU SET</p><form id="acc-form" class="grid">${accountForm(a)}</form>
+        <div class="row" style="margin-top:12px"><button class="btn" type="submit" form="acc-form">SAVE NEURAL-TAG</button><button class="danger" type="button" data-del>DELETE PLAYER</button><span class="msg" id="acc-msg"></span></div>
+        <p class="hint">Credits, debt and payments are on the BANK tab.</p></div>
+    </div>`;
+    formBase = readAccount();
   } else if (tab === 'augments') {
     const pts = Number(a.augPoints) || 0, limit = Number(a.loadLimit) || 0, used = ST.loadUsed(a);
     const old = body.querySelector('.st-wrap'), sl = old ? old.scrollLeft : null;
@@ -972,43 +1112,100 @@ function renderTab() {
       ${ST.detail(a, stSel, { dm: true })}`;
     const nw = body.querySelector('.st-wrap'); if (nw) nw.scrollLeft = sl != null ? sl : (nw.scrollWidth - nw.clientWidth) / 2;
   } else if (tab === 'bank') {
-    const pays = Array.isArray(a.payments) ? a.payments : [], owed = (Number(a.principal) || 0) + (Number(a.fees) || 0), last = pays[0];
-    const ids = Object.keys(accounts).sort((x, y) => nameOf(x).localeCompare(nameOf(y)));
-    body.innerHTML = `
-      <p class="mono">BANK NO. ${bankNo(sel)} · LIVE FROM THE PLAYER'S ACCOUNT</p>
+    const mine = banksOf(sel);
+    if (!mine.some(b => b.id === bankSel)) bankSel = mine[0] ? mine[0].id : null;
+    const b = mine.find(x => x.id === bankSel);
+    const badges = x => `${(x.holders || []).length > 1 ? '<span class="tagx joint">JOINT</span>' : ''}${x.hidden ? '<span class="tagx dark">OFF THE BOOKS</span>' : ''}`;
+    const others = Object.keys(accounts).filter(id => !b || !(b.holders || []).includes(id)).sort((x, y) => nameOf(x).localeCompare(nameOf(y)));
+    const foreign = Object.entries(banks).filter(([, x]) => !(x.holders || []).includes(sel)).map(([id, x]) => ({ id, ...x }));
+    const all = Object.entries(banks).map(([id, x]) => ({ id, ...x })).sort((x, y) => bankNumber(x).localeCompare(bankNumber(y)));
+    let h = mine.length ? `<div class="bk-tabs">${mine.map(x => `<button type="button" class="quiet" data-bank="${esc(x.id)}" aria-pressed="${x.id === bankSel}">${esc((x.name || 'Account').toUpperCase())} · ${esc(bankNumber(x).slice(-4))}</button>`).join('')}</div>` : `<p class="hint">${esc(nameOf(sel))} holds no bank account. Issue one or link an existing one below.</p>`;
+    if (b) {
+      const pays = Array.isArray(b.payments) ? b.payments : [], last = pays[0];
+      h += `<p class="mono">ACCOUNT NO. ${esc(bankNumber(b))} ${badges(b)}</p>
       <div class="bk-tiles">
-        <div class="bk-tile"><span>CREDITS</span><b>${fmt(a.wallet)} cr</b></div>
-        <div class="bk-tile"><span>OWED NOW</span><b class="owe">${fmt(owed)} cr</b></div>
-        <div class="bk-tile"><span>PRINCIPAL / INTEREST AND FEES</span><b class="owe" style="font-size:16px">${fmt(a.principal)} / ${fmt(a.fees)}</b></div>
-        <div class="bk-tile"><span>PAID TO DATE</span><b>${fmt(paidTotal(a))} cr</b></div>
+        <div class="bk-tile"><span>CREDITS</span><b>${fmt(b.wallet)} cr</b></div>
+        <div class="bk-tile"><span>OWED NOW</span><b class="owe">${fmt(owedOf(b))} cr</b></div>
+        <div class="bk-tile"><span>PRINCIPAL / INTEREST AND FEES</span><b class="owe" style="font-size:16px">${fmt(b.principal)} / ${fmt(b.fees)}</b></div>
+        <div class="bk-tile"><span>PAID TO DATE</span><b>${fmt(paidTotal(b))} cr</b></div>
         <div class="bk-tile"><span>PAYMENTS MADE</span><b>${pays.length}</b></div>
         <div class="bk-tile"><span>LAST PAYMENT</span><b style="font-size:16px">${last ? fmt(last.amount) + ' cr · Cycle ' + pad(last.cycle || 0) : 'None yet'}</b></div>
       </div>
-      <p class="mono">PAYMENTS BY THIS PLAYER · NEWEST FIRST</p>
-      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>REF</th><th>CYCLE</th><th>DAY</th><th class="n">PAID</th><th class="n">TO FEES</th><th class="n">TO PRINCIPAL</th><th class="n">CREDITS AFTER</th><th class="n">OWED AFTER</th></tr></thead><tbody>
-        ${pays.map(t => `<tr><td>${esc(t.ref || '')}</td><td>${pad(t.cycle || 0)}</td><td>${esc(t.at ? bankDay(t.at) : '')}</td><td class="n">${fmt(t.amount)}</td><td class="n">${fmt(t.fees)}</td><td class="n">${fmt(t.principal)}</td><td class="n">${fmt(t.wallet)}</td><td class="n">${fmt(t.owed)}</td></tr>`).join('') || '<tr><td colspan="8">No payments yet.</td></tr>'}
+      <p class="mono">HOLDERS · EVERY HOLDER SEES AND USES THIS SAME ACCOUNT</p>
+      <div class="holders">${(b.holders || []).map(id => `<span class="holder">${esc(nameOf(id))}<button type="button" class="danger" data-unlink="${esc(id)}">UNLINK</button></span>`).join('') || '<span class="hint" style="margin:0">No holder.</span>'}
+        ${others.length ? `<select id="link-player" data-live aria-label="Player to link">${others.map(id => `<option value="${esc(id)}">${esc(nameOf(id))}</option>`).join('')}</select><button type="button" data-link>LINK THIS PLAYER</button>` : ''}</div>
+      <form id="bank-form" class="grid">
+        <label>Account name<input id="b-name" value="${esc(b.name || '')}" placeholder="Personal account"></label>
+        <label>Bank<input id="b-bank" value="${esc(b.bank || '')}" placeholder="Milia Trade Company"></label>
+        <label>Account number<input id="b-number" value="${esc(bankNumber(b))}"></label>
+        <label>Credits<input id="b-wallet" type="number" value="${Number(b.wallet) || 0}"></label>
+        <label>Debt principal<input id="b-principal" type="number" value="${Number(b.principal) || 0}"></label>
+        <label>Interest and fees<input id="b-fees" type="number" value="${Number(b.fees) || 0}"></label>
+        <label>Interest % per cycle<input id="b-rate" type="number" step="0.5" value="${b.rate ?? 2}"></label>
+        <label>Minimum due<input id="b-minDue" type="number" value="${Number(b.minDue) || 0}"></label>
+        <label>Next collection visit<input id="b-due" value="${esc(b.due || '')}" placeholder="Cycle 03"></label>
+        <label class="check" style="grid-column:1/-1"><input id="b-hidden" type="checkbox" ${b.hidden ? 'checked' : ''}> Off the books: a shady account no megacorp or Registrar file can see (players see it marked OFF-LEDGER)</label>
+        <label style="grid-column:1/-1">Activity (one entry per line, newest first). Holders read this on their terminal.<textarea id="b-log" rows="5">${esc((b.log || []).join('\n'))}</textarea></label>
+      </form>
+      <div class="row" style="margin-top:12px"><button class="btn" type="submit" form="bank-form">SAVE THIS ACCOUNT</button><button class="danger" type="button" data-bank-close="${esc(b.id)}">CLOSE THIS ACCOUNT</button><span class="msg" id="bank-msg"></span></div>
+      <p class="mono" style="margin-top:18px">LOAN PAYMENTS ON THIS ACCOUNT · NEWEST FIRST</p>
+      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>REF</th><th>PAID BY</th><th>CYCLE</th><th>DAY</th><th class="n">PAID</th><th class="n">TO FEES</th><th class="n">TO PRINCIPAL</th><th class="n">CREDITS AFTER</th><th class="n">OWED AFTER</th></tr></thead><tbody>
+        ${pays.map(t => `<tr><td>${esc(t.ref || '')}</td><td>${esc(t.byName || (t.by ? nameOf(t.by) : ''))}</td><td>${pad(t.cycle || 0)}</td><td>${esc(t.at ? bankDay(t.at) : '')}</td><td class="n">${fmt(t.amount)}</td><td class="n">${fmt(t.fees)}</td><td class="n">${fmt(t.principal)}</td><td class="n">${fmt(t.wallet)}</td><td class="n">${fmt(t.owed)}</td></tr>`).join('') || '<tr><td colspan="9">No payments yet.</td></tr>'}
+      </tbody></table></div>`;
+    }
+    h += `<div class="boxed"><p class="mono">ISSUE A NEW ACCOUNT TO ${esc(nameOf(sel).toUpperCase())}</p>
+        <div class="row"><input id="new-bank-name" data-live placeholder="Account name (optional)" aria-label="New account name">
+          <select id="new-bank-kind" data-live aria-label="Kind of account"><option value="std">Standard account</option><option value="dark">Off the books (shady)</option></select>
+          <button type="button" data-issue>ISSUE ACCOUNT</button></div>
+        ${foreign.length ? `<p class="mono" style="margin-top:12px">OR LINK ${esc(nameOf(sel).toUpperCase())} TO AN ACCOUNT THAT ALREADY EXISTS</p>
+        <div class="row"><select id="link-bank" data-live aria-label="Existing account">${foreign.map(x => `<option value="${esc(x.id)}">${esc(bankNumber(x))} · ${esc(x.name || 'Account')} · ${esc(holderNames(x))}</option>`).join('')}</select><button type="button" data-link-bank>LINK TO THAT ACCOUNT</button></div>` : ''}
+        <span class="msg" id="issue-msg"></span></div>
+      <p class="mono" style="margin-top:18px">EVERY BANK ACCOUNT</p>
+      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>NUMBER</th><th>NAME</th><th>HOLDERS</th><th class="n">CREDITS</th><th class="n">OWED</th><th class="n">PAID TO DATE</th><th></th></tr></thead><tbody>
+        ${all.map(x => `<tr><td>${esc(bankNumber(x))}</td><td>${esc(x.name || 'Account')}${badges(x)}</td><td>${esc(holderNames(x))}</td><td class="n">${fmt(x.wallet)}</td><td class="n">${fmt(owedOf(x))}</td><td class="n">${fmt(paidTotal(x))}</td><td>${(x.holders || []).length ? '' : `<button type="button" class="danger" data-bank-close="${esc(x.id)}">CLOSE</button>`}</td></tr>`).join('') || '<tr><td colspan="7">No bank accounts yet.</td></tr>'}
       </tbody></table></div>
-      <p class="mono" style="margin-top:18px">ALL ACCOUNTS</p>
-      <div class="bk-scroll"><table class="bk-table"><thead><tr><th>PLAYER</th><th class="n">CREDITS</th><th class="n">OWED</th><th class="n">PAID TO DATE</th><th class="n">PAYMENTS</th><th>LAST PAYMENT</th></tr></thead><tbody>
-        ${ids.map(id => { const x = accounts[id] || {}, ps = Array.isArray(x.payments) ? x.payments : []; return `<tr><td>${esc(nameOf(id))}</td><td class="n">${fmt(x.wallet)}</td><td class="n">${fmt((Number(x.principal) || 0) + (Number(x.fees) || 0))}</td><td class="n">${fmt(paidTotal(x))}</td><td class="n">${ps.length}</td><td>${ps[0] ? fmt(ps[0].amount) + ' cr · Cycle ' + pad(ps[0].cycle || 0) : '-'}</td></tr>`; }).join('')}
-      </tbody></table></div>
-      <p class="hint">Players pay from the BANK tab on their terminal. To change a balance yourself (pay for a job, add a fee), use the ACCOUNT tab. Reopen the ACCOUNT tab before editing so you start from the newest numbers.</p>`;
+      <p class="hint">To make two siblings share one account: open one sibling, pick LINK THIS PLAYER for the other, then open the other sibling and UNLINK or CLOSE the account they had on their own.</p>`;
+    body.innerHTML = h;
+    formBase = b ? readBank() : {};
   } else if (tab === 'vitalis') {
-    const plans = ['Walk-in', 'Grid Cover', 'Spire Cover', 'Apex Cover'], cur = plans.includes(a.cover) ? a.cover : 'Walk-in';
-    body.innerHTML = `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start;gap:18px">
-      <div><p class="mono">THE CARD ON THE PLAYER'S TERMINAL</p>${ST.card(a, a.holder || sel, sel)}</div>
+    const plans = Object.keys(ST.PLANS), cur = plans.includes(a.cover) ? a.cover : 'Walk-in', call = a.vitalisCall;
+    const open = Array.isArray(a.coverOpen) ? a.coverOpen : ['Walk-in', 'Grid Cover'];
+    const CALLS = { requested: 'WAITING FOR YOU', enroute: 'TEAM EN ROUTE', onscene: 'TEAM ON SCENE', declined: 'DECLINED' };
+    body.innerHTML = `${call && call.at ? `<div class="vcall"><h3>▲ ${esc(nameOf(sel).toUpperCase())} CALLED VITALIS · ${CALLS[call.status] || CALLS.requested}</h3>
+        <p>${esc(call.where || 'No details given.')}</p>
+        <p class="mono">PLAN AT THE TIME: ${esc((call.plan || 'Walk-in').toUpperCase())} · CYCLE ${pad(call.cycle || 0)} · ${esc(new Date(call.at).toLocaleString())}</p>
+        <label>What dispatch tells the player (optional)<input id="vcall-reply" value="${esc(call.reply || '')}" placeholder="Hold on. Two minutes out."></label>
+        <div class="row" style="border-top:0;justify-content:flex-start"><button type="button" data-vcall="enroute">TEAM EN ROUTE</button><button type="button" data-vcall="onscene">TEAM ON SCENE</button><button type="button" class="danger" data-vcall="declined">DECLINE</button><button type="button" class="quiet" data-vcall-clear>CLEAR THE CALL</button></div></div>` : ''}
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start;gap:18px">
+      <div><p class="mono">THE CARD ON THE PLAYER'S TERMINAL</p>${ST.card(a, a.holder || sel, sel, cycleNow())}</div>
       <div>
-        <p class="mono">PLAN · CLICK TO CHANGE, SAVES AT ONCE</p>
+        <p class="mono">CURRENT PLAN · CLICK TO CHANGE, SAVES AT ONCE</p>
         <div class="row" style="justify-content:flex-start;border-top:0;padding-top:0">${plans.map(p => `<button type="button" class="${p === cur ? '' : 'quiet'}" data-cover="${p}" aria-pressed="${p === cur}">${p.toUpperCase()}</button>`).join('')}</div>
+        <p class="mono" style="margin-top:14px">PLANS THIS PLAYER MAY BUY ON THEIR TERMINAL · SAVES AT ONCE</p>
+        <div class="row" style="justify-content:flex-start;border-top:0;padding-top:0">${plans.map(p => `<label class="check"><input type="checkbox" data-live data-open="${p}" ${open.includes(p) ? 'checked' : ''}> ${esc(p)} · ${ST.PLANS[p].fee ? fmt(ST.PLANS[p].fee) + ' cr' : 'free'}</label>`).join('')}</div>
+        <div class="row" style="justify-content:flex-start;border-top:0"><label style="flex-direction:row;align-items:center;gap:10px">PAID THROUGH CYCLE <input id="cover-through" type="number" min="0" step="1" value="${a.coverThrough ?? ''}" style="width:90px"></label><button type="button" data-cover-through>SAVE</button><span class="hint" style="margin:0">Empty means the plan never lapses. Now: cycle ${cycleNow()}.</span></div>
         <label style="margin-top:14px">Treatment record (one entry per line, newest first). The player sees it under their card.<textarea id="vit-log" rows="6" placeholder="Cycle 02 · Stabilized on Null Row · Dr. N. Rell">${esc((a.vitalisLog || []).join('\n'))}</textarea></label>
         <div class="row" style="margin-top:10px;border-top:0"><button type="button" data-vitlog>SAVE TREATMENT RECORD</button><span class="msg" id="vit-msg"></span></div>
       </div></div>`;
   } else if (tab === 'phone') {
-    body.innerHTML = `
-      <p class="mono">CONTACTS AND NOTES (WHAT THEIR PHONE SHOWS)</p>
-      ${(a.contacts || []).map(c => `<div class="row"><span>${esc(c.name)}${c.role ? ' · ' + esc(c.role) : ''}</span><span class="pre">${esc(c.note || '')}</span></div>`).join('') || '<p class="hint">No contacts yet.</p>'}
-      <p class="mono" style="margin-top:16px">NOTES</p>
-      ${(a.notes || []).map(n => `<div class="row"><span>${esc(n.title || 'Untitled')}</span><span class="pre">${esc(n.body || '')}</span></div>`).join('') || '<p class="hint">No notes yet.</p>'}`;
+    const contacts = a.contacts || [], notes = (a.notes || []).slice().sort((x, y) => (y.updated || 0) - (x.updated || 0));
+    const jobs = (STATE.jobs || []), mineJobs = (a.myJobs || []).map(k => jobs.find(j => jobKey(j) === k)).filter(Boolean);
+    const chats = CHATS.filter(c => (c.members || []).includes(sel));
+    if (!notes.some(n => n.id === phoneNote)) phoneNote = notes[0] ? notes[0].id : null;
+    const cur = notes.find(n => n.id === phoneNote);
+    const words = t => (String(t || '').trim().match(/\S+/g) || []).length;
+    const when = ms => ms ? new Date(ms).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+    const tile = (k, label, n) => `<button type="button" class="ph-tile quiet" data-phone="${k}" aria-pressed="${phoneSec === k}"><span>${label}</span><b>${n}</b></button>`;
+    let sec;
+    if (phoneSec === 'contacts') sec = contacts.length ? `<div class="ph-cards">${contacts.map(c => `<div class="ph-card"><i>${esc(String(c.name || '?').slice(0, 1).toUpperCase())}</i><b>${esc(c.name || '')}</b><small>${esc((c.role || 'NO ROLE GIVEN').toUpperCase())}${c.pid ? ' · PLAYER' : ''}</small>${c.note ? `<p>${esc(c.note)}</p>` : ''}</div>`).join('')}</div>` : '<p class="hint">No contacts saved.</p>';
+    else if (phoneSec === 'jobs') sec = mineJobs.length ? mineJobs.map(j => `<div class="row"><span>${esc(j.title)}</span><span class="mono" style="margin:0">${esc((j.status || 'open').toUpperCase())} · ${esc(j.pay || '')}</span></div>`).join('') : '<p class="hint">This player has not taken a job.</p>';
+    else if (phoneSec === 'chats') sec = chats.length ? chats.map(c => { const o = (c.members || []).find(x => x !== sel); return `<div class="row"><span>With ${esc(nameOf(o))}</span><span class="pre" style="max-width:60ch">${esc(c.last ? c.last.text : 'No messages')}</span></div>`; }).join('') + '<p class="hint">Read the full conversations on the CHATS page.</p>' : '<p class="hint">No conversations with other players.</p>';
+    else sec = notes.length ? `<div class="ph-notes">
+        <div class="ph-list">${notes.map(n => `<button type="button" class="quiet" data-phone-note="${esc(n.id)}" aria-pressed="${n.id === phoneNote}"><b>${esc(n.title || 'Untitled')}</b><span>${esc(when(n.updated))} · ${words(n.body)} words</span><span>${esc(String(n.body || '').replace(/\s+/g, ' ').slice(0, 80))}</span></button>`).join('')}</div>
+        <article class="ph-read">${cur ? `<h3>${esc(cur.title || 'Untitled')}</h3><p class="mono" style="margin:0">LAST EDITED ${esc(when(cur.updated).toUpperCase())} · ${words(cur.body)} WORDS</p><p class="pre">${esc(cur.body || '') || '<span class="hint">Empty note.</span>'}</p>` : ''}</article>
+      </div>` : '<p class="hint">No notes written.</p>';
+    body.innerHTML = `<p class="mono">WHAT IS ON ${esc(nameOf(sel).toUpperCase())}'S PHONE · READ ONLY · UPDATES LIVE</p>
+      <div class="ph-tiles">${tile('notes', 'NOTES', notes.length)}${tile('contacts', 'CONTACTS', contacts.length)}${tile('jobs', 'JOBS IN PROGRESS', mineJobs.length)}${tile('chats', 'PLAYER CHATS', chats.length)}</div>${sec}`;
   } else if (tab === 'messages') {
     body.innerHTML = `
       <form id="msg-form" class="grid" style="grid-template-columns:1fr">
@@ -1028,7 +1225,9 @@ function renderTab() {
       <div class="row" style="margin-top:12px"><button class="btn" type="submit">SAVE SECRETS</button><button class="danger" type="button" data-delsec>DELETE SECRETS</button><span class="msg" id="sec-msg"></span></div>
     </form>`;
   }
+  showFlash();
 }
+function showFlash() { if (flash && Date.now() - flash.at < 6000) say(flash.id, flash.text); }
 function renderMsgList() {
   const el = $('msg-list'); if (!el) return;
   el.innerHTML = msgs.map(m => `<div class="msgrow"><span class="mono">FROM · ${esc(m.from || 'Unknown sender')}${m.read ? '' : ' · NOT READ YET'}</span><span>${esc(m.text)}</span><button class="quiet" type="button" data-delmsg="${esc(m.id)}" style="align-self:flex-start">DELETE</button></div>`).join('') || '<p class="hint">No messages sent to this phone yet.</p>';
@@ -1067,28 +1266,127 @@ async function toggleAugment(id) {
 }
 async function saveLoadLimit() {
   if (!sel) return;
-  try { await setDoc(doc(db, 'accounts', sel), { loadLimit: Math.max(0, Math.round(Number($('load-limit').value) || 0)) }, { merge: true }); say('aug-msg', 'Load limit saved ' + stamp() + '.'); }
+  try { await setDoc(doc(db, 'accounts', sel), { loadLimit: Math.max(0, Math.round(Number($('load-limit').value) || 0)) }, { merge: true }); dirty = false; keep('aug-msg', 'Load limit saved ' + stamp() + '.'); }
   catch (e) { say('aug-msg', explain(e)); }
 }
 async function setCover(plan) {
   if (!sel) return;
-  try { await setDoc(doc(db, 'accounts', sel), { cover: plan }, { merge: true }); renderTab(); say('vit-msg', plan + ' saved ' + stamp() + '.'); }
+  try { await setDoc(doc(db, 'accounts', sel), { cover: plan, coverThrough: null }, { merge: true }); renderTab(); keep('vit-msg', plan + ' saved ' + stamp() + '.'); }
   catch (e) { say('vit-msg', explain(e)); }
 }
 async function saveVitLog() {
   if (!sel) return;
-  try { await setDoc(doc(db, 'accounts', sel), { vitalisLog: $('vit-log').value.split('\n').map(s => s.trim()).filter(Boolean) }, { merge: true }); say('vit-msg', 'Saved ' + stamp() + '. The player sees it now.'); }
+  try { await setDoc(doc(db, 'accounts', sel), { vitalisLog: $('vit-log').value.split('\n').map(s => s.trim()).filter(Boolean) }, { merge: true }); dirty = false; keep('vit-msg', 'Saved ' + stamp() + '. The player sees it now.'); }
+  catch (e) { say('vit-msg', explain(e)); }
+}
+/* ---------- bank accounts ---------- */
+function readBank() {
+  const v = id => $(id).value, n = id => Math.max(0, Math.round(Number(v(id)) || 0));
+  return { name: v('b-name').trim() || 'Personal account', bank: v('b-bank').trim() || 'Milia Trade Company', number: v('b-number').trim(),
+    wallet: n('b-wallet'), principal: n('b-principal'), fees: n('b-fees'), rate: Math.max(0, Number(v('b-rate')) || 0), minDue: n('b-minDue'), due: v('b-due').trim(),
+    hidden: $('b-hidden').checked, log: v('b-log').split('\n').map(x => x.trim()).filter(Boolean) };
+}
+async function saveBank() {
+  if (!bankSel || !banks[bankSel]) return;
+  const patch = changedOnly(readBank());
+  if (!Object.keys(patch).length) { dirty = false; return say('bank-msg', 'Nothing changed.'); }
+  if ('number' in patch) {
+    if (!patch.number) return say('bank-msg', 'The account needs a number.');
+    if (Object.entries(banks).some(([id, b]) => id !== bankSel && bankNumber({ id, ...b }) === patch.number)) return say('bank-msg', 'Another account already has that number.');
+  }
+  try {
+    await setDoc(doc(db, 'banks', bankSel), patch, { merge: true });
+    dirty = false; flash = { id: 'bank-msg', text: 'Saved ' + stamp() + '. Every holder sees it now.', at: Date.now() }; renderTab();
+  } catch (e) { say('bank-msg', explain(e)); }
+}
+async function setHolders(bankId, holders, msgId, text) {
+  try { await setDoc(doc(db, 'banks', bankId), { holders }, { merge: true }); dirty = false; keep(msgId, text + ' ' + stamp() + '.'); }
+  catch (e) { say(msgId, explain(e)); }
+}
+function linkPlayer() {
+  const pid = $('link-player') && $('link-player').value, b = banks[bankSel];
+  if (!pid || !b) return;
+  return setHolders(bankSel, [...new Set([...(b.holders || []), pid])], 'bank-msg', nameOf(pid) + ' linked');
+}
+function unlinkPlayer(pid) {
+  const b = banks[bankSel]; if (!b) return;
+  const left = (b.holders || []).filter(x => x !== pid);
+  if (!window.confirm(left.length ? `Unlink ${nameOf(pid)} from this account? ${left.map(nameOf).join(', ')} keep it.` : `Unlink ${nameOf(pid)}? Nobody will hold this account. It stays in the list at the bottom until you link someone or close it.`)) return;
+  return setHolders(bankSel, left, 'issue-msg', nameOf(pid) + ' unlinked');
+}
+function linkToBank() {
+  const id = $('link-bank') && $('link-bank').value, b = banks[id];
+  if (!b || !sel) return;
+  return setHolders(id, [...new Set([...(b.holders || []), sel])], 'bank-msg', nameOf(sel) + ' linked').then(() => { bankSel = id; renderTab(); });
+}
+async function issueBank() {
+  if (!sel) return;
+  const dark = $('new-bank-kind').value === 'dark', id = 'b' + Date.now().toString(36);
+  try {
+    await setDoc(doc(db, 'banks', id), { number: newBankNumber(), name: $('new-bank-name').value.trim() || (dark ? 'Private ledger' : 'Personal account'), bank: dark ? 'Unlisted ledger' : 'Milia Trade Company',
+      holders: [sel], hidden: dark, wallet: 0, principal: 0, fees: 0, rate: dark ? 0 : 2, minDue: 0, due: '', payments: [], log: [`Cycle ${pad(cycleNow())} · Account opened`], createdAt: Date.now() });
+    bankSel = id; dirty = false; flash = { id: 'bank-msg', text: 'Account issued ' + stamp() + '.', at: Date.now() }; renderTab();
+  } catch (e) { say('issue-msg', explain(e)); }
+}
+async function closeBank(id) {
+  const b = banks[id]; if (!b) return;
+  if (!window.confirm(`Close account ${bankNumber({ id, ...b })} for good? Its ${fmt(b.wallet)} cr, its debt and its history are removed${(b.holders || []).length ? ' for ' + holderNames(b) : ''}.`)) return;
+  try { await deleteDoc(doc(db, 'banks', id)); dirty = false; keep('issue-msg', 'Account closed ' + stamp() + '.'); }
+  catch (e) { say('issue-msg', explain(e)); }
+}
+/* every player gets one account the first time the console sees them; their old balance moves into it */
+let banksReady = false, accountsReady = false;
+const issuing = new Set();
+async function ensureBanks() {
+  if (!banksReady || !accountsReady || !auth.currentUser || !auth.currentUser.email) return;
+  for (const [id, a] of Object.entries(accounts)) {
+    if (a.banked || issuing.has(id)) continue;
+    issuing.add(id);
+    try {
+      if (!banksOf(id).length) await setDoc(doc(db, 'banks', 'main-' + id), { number: bankNo(id), name: 'Personal account', bank: 'Milia Trade Company', holders: [id], hidden: false,
+        wallet: Number(a.wallet) || 0, principal: Number(a.principal) || 0, fees: Number(a.fees) || 0, rate: a.rate ?? 2, minDue: Number(a.minDue) || 0, due: a.due || '',
+        log: Array.isArray(a.log) ? a.log : [], payments: Array.isArray(a.payments) ? a.payments : [], createdAt: Date.now() });
+      await setDoc(doc(db, 'accounts', id), { banked: true }, { merge: true });
+    } catch (e) { console.warn('Bank issue:', e.code || e.message); }
+    issuing.delete(id);
+  }
+}
+/* ---------- Vitalis: calls, plans the player may buy ---------- */
+async function setCall(status) {
+  const call = (accounts[sel] || {}).vitalisCall; if (!sel || !call) return;
+  const reply = $('vcall-reply') ? $('vcall-reply').value.trim().slice(0, 200) : (call.reply || '');
+  try { await setDoc(doc(db, 'accounts', sel), { vitalisCall: status ? { ...call, status, reply } : null }, { merge: true }); dirty = false; keep('vit-msg', (status ? 'Player told: ' + status : 'Call cleared') + ' ' + stamp() + '.'); }
+  catch (e) { say('vit-msg', explain(e)); }
+}
+async function setOpenPlans() {
+  if (!sel) return;
+  const list = [...document.querySelectorAll('[data-open]')].filter(c => c.checked).map(c => c.dataset.open);
+  try { await setDoc(doc(db, 'accounts', sel), { coverOpen: list }, { merge: true }); keep('vit-msg', 'Plans saved ' + stamp() + '.'); }
+  catch (e) { say('vit-msg', explain(e)); }
+}
+async function saveCoverThrough() {
+  if (!sel) return;
+  const raw = $('cover-through').value.trim();
+  try { await setDoc(doc(db, 'accounts', sel), { coverThrough: raw === '' ? null : Math.max(0, Math.round(Number(raw) || 0)) }, { merge: true }); dirty = false; keep('vit-msg', 'Saved ' + stamp() + '.'); }
   catch (e) { say('vit-msg', explain(e)); }
 }
 async function saveAccount() {
   if (!sel) return;
-  try { await setDoc(doc(db, 'accounts', sel), readAccount(), { merge: true }); say('acc-msg', 'Saved ' + stamp() + '. The player sees it now.'); }
+  const patch = changedOnly(readAccount());
+  if (!Object.keys(patch).length) { dirty = false; return say('acc-msg', 'Nothing changed.'); }
+  try { await setDoc(doc(db, 'accounts', sel), patch, { merge: true }); dirty = false; flash = { id: 'acc-msg', text: 'Saved ' + stamp() + '. The player sees it now.', at: Date.now() }; renderTab(); }
   catch (e) { say('acc-msg', explain(e)); }
 }
 async function deleteAccount() {
   if (!sel) return;
   if (!window.confirm(`Delete the account of ${nameOf(sel)}? Their balance, phone and messages are removed for good.`)) return;
-  try { await deleteDoc(doc(db, 'accounts', sel)); deleteDoc(doc(db, 'portraits', sel)).catch(() => {}); sel = null; renderList(); renderTab(); }
+  try {
+    for (const b of banksOf(sel)) {
+      if ((b.holders || []).length <= 1) await deleteDoc(doc(db, 'banks', b.id));
+      else await setDoc(doc(db, 'banks', b.id), { holders: b.holders.filter(x => x !== sel) }, { merge: true });
+    }
+    await deleteDoc(doc(db, 'accounts', sel)); deleteDoc(doc(db, 'portraits', sel)).catch(() => {}); sel = null; renderList(); renderTab();
+  }
   catch (e) { say('acc-msg', explain(e)); }
 }
 async function saveSecrets() {
@@ -1113,13 +1411,14 @@ const plain = v => {
 async function downloadBackup() {
   try {
     say('msg', 'Preparing backup…');
-    const out = { exported: new Date().toISOString(), state: null, accounts: {}, secrets: {} };
+    const out = { exported: new Date().toISOString(), state: null, accounts: {}, banks: {}, secrets: {} };
     const st = await getDoc(stateRef); out.state = st.exists() ? plain(st.data()) : null;
     const accs = await getDocs(accountsCol);
     for (const d of accs.docs) {
       const ms = await getDocs(collection(db, 'accounts', d.id, 'messages'));
       out.accounts[d.id] = { ...plain(d.data()), messages: ms.docs.map(m => ({ id: m.id, ...plain(m.data()) })) };
     }
+    (await getDocs(banksCol)).forEach(d => { out.banks[d.id] = plain(d.data()); });
     const sec = await getDocs(secretsCol);
     sec.forEach(d => { out.secrets[d.id] = plain(d.data()); });
     const stamp2 = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
@@ -1211,16 +1510,16 @@ $('glitch').onclick = async () => {
   catch (e) { say('world-msg', explain(e)); }
 };
 $('cycle-next').onclick = async () => {
-  if (!window.confirm('Start the next cycle? This adds one cycle of interest to every account.')) return;
+  if (!window.confirm('Start the next cycle? This adds one cycle of interest to every bank account that owes money.')) return;
   const next = Math.max(1, Math.round(Number($('cycle').value) || 1)) + 1;
-  const ids = Object.keys(accounts), batch = writeBatch(db);
+  const ids = Object.keys(banks), batch = writeBatch(db);
   for (const id of ids) {
-    const a = accounts[id], added = Math.round(((a.principal || 0) + (a.fees || 0)) * (a.rate || 0) / 100);
-    batch.set(doc(db, 'accounts', id), {
-      fees: (a.fees || 0) + added,
+    const a = banks[id], added = Math.round(owedOf(a) * (Number(a.rate) || 0) / 100);
+    batch.set(doc(db, 'banks', id), added ? {
+      fees: (Number(a.fees) || 0) + added,
       due: 'Cycle ' + pad(next + 1),
-      log: [`Cycle ${pad(next)} · Interest added: ${fmt(added)} cr`, ...(a.log || [])]
-    }, { merge: true });
+      log: [`Cycle ${pad(next)} · Interest added: ${fmt(added)} cr`, ...(a.log || [])].slice(0, 60)
+    } : { due: a.due || '' }, { merge: true });
   }
   try {
     if (ids.length) await batch.commit();
@@ -1232,22 +1531,30 @@ $('cycle-next').onclick = async () => {
 function jobRow(j = {}) {
   const d = document.createElement('div'); d.className = 'jobc'; d.dataset.st = ['taken', 'done'].includes(j.status) ? j.status : 'open';
   const opt = (list, cur) => list.map(([v, t]) => `<option value="${v}" ${v === cur ? 'selected' : ''}>${t}</option>`).join('');
-  d.innerHTML = `<div class="jobc-head"><span>CONTRACT</span><button type="button" class="danger" data-jrm>REMOVE</button></div>
+  const jid = j.id || (j.title ? jobKey(j) : 'j' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
+  d.innerHTML = `<div class="jobc-head"><span>CONTRACT</span><button type="button" class="danger" data-jrm>REMOVE</button></div><input type="hidden" data-k="id" value="${esc(jid)}">
     <label>Title<input data-k="title" value="${esc(j.title || '')}" placeholder="Courier run, Lift 7 to East Gate"></label>
     <div class="jobc-2"><label>Pay<input data-k="pay" value="${esc(j.pay || '')}" placeholder="150 cr"></label><label>Contact<input data-k="contact" value="${esc(j.contact || '')}" placeholder="Tavi · Nine Bowls"></label></div>
     <label>Note<textarea data-k="note" rows="2" placeholder="What the players read under the job">${esc(j.note || '')}</textarea></label>
     <div class="jobc-2"><label>Status<select data-k="status">${opt([['open', 'Open'], ['taken', 'Taken'], ['done', 'Done (closed)']], d.dataset.st)}</select></label>
-      <label>Risk<select data-k="risk">${opt([['', 'Not shown'], ['Low', 'Low'], ['Medium', 'Medium'], ['High', 'High']], j.risk || '')}</select></label></div>`;
+      <label>Risk<select data-k="risk">${opt([['', 'Not shown'], ['Low', 'Low'], ['Medium', 'Medium'], ['High', 'High']], j.risk || '')}</select></label></div>
+    <p class="mono jobc-crew" data-crew="${esc(jid)}"></p>`;
   d.querySelector('[data-k="status"]').onchange = e => { d.dataset.st = e.target.value; };
   d.querySelector('[data-jrm]').onclick = () => d.remove();
   return d;
 }
-function fillJobs(list) { $('jobs').replaceChildren(...list.map(jobRow)); }
+function fillJobs(list) { $('jobs').replaceChildren(...list.map(jobRow)); paintJobTakers(); }
+function paintJobTakers() {
+  document.querySelectorAll('[data-crew]').forEach(el => {
+    const who = Object.keys(accounts).filter(id => (accounts[id].myJobs || []).includes(el.dataset.crew)).map(nameOf);
+    el.textContent = who.length ? 'TAKEN BY: ' + who.join(', ').toUpperCase() : '';
+  });
+}
 function readJobs() {
   return [...$('jobs').children].map(r => Object.fromEntries([...r.querySelectorAll('[data-k]')].map(i => [i.dataset.k, i.value.trim()]))).filter(j => j.title);
 }
 async function saveJobs() {
-  try { await setDoc(stateRef, { jobs: readJobs() }, { merge: true }); say('jobs-msg', 'Saved ' + stamp() + '.'); }
+  try { const jobs = readJobs(); await setDoc(stateRef, { jobs }, { merge: true }); STATE.jobs = jobs; say('jobs-msg', 'Saved ' + stamp() + '.'); }
   catch (e) { say('jobs-msg', explain(e)); }
 }
 
@@ -1269,6 +1576,17 @@ document.querySelector('[data-sec="players"]').addEventListener('click', e => {
   if (e.target.closest('[data-pts-all]')) return givePointsAll();
   if (e.target.closest('[data-load-save]')) return saveLoadLimit();
   const cv = e.target.closest('[data-cover]'); if (cv) return setCover(cv.dataset.cover);
+  const bk = e.target.closest('[data-bank]'); if (bk) { bankSel = bk.dataset.bank; return renderTab(); }
+  if (e.target.closest('[data-link]')) return linkPlayer();
+  const ul = e.target.closest('[data-unlink]'); if (ul) return unlinkPlayer(ul.dataset.unlink);
+  if (e.target.closest('[data-link-bank]')) return linkToBank();
+  if (e.target.closest('[data-issue]')) return issueBank();
+  const bc = e.target.closest('[data-bank-close]'); if (bc) return closeBank(bc.dataset.bankClose);
+  const vcall = e.target.closest('[data-vcall]'); if (vcall) return setCall(vcall.dataset.vcall);
+  if (e.target.closest('[data-vcall-clear]')) return setCall(null);
+  if (e.target.closest('[data-cover-through]')) return saveCoverThrough();
+  const ph = e.target.closest('[data-phone]'); if (ph) { phoneSec = ph.dataset.phone; return renderTab(); }
+  const pn = e.target.closest('[data-phone-note]'); if (pn) { phoneNote = pn.dataset.phoneNote; return renderTab(); }
   if (e.target.closest('[data-vitlog]')) return saveVitLog();
   if (e.target.closest('[data-delsec]')) return deleteSecrets();
   const dm = e.target.closest('[data-delmsg]'); if (dm) return deleteDoc(doc(db, 'accounts', sel, 'messages', dm.dataset.delmsg));
@@ -1276,9 +1594,12 @@ document.querySelector('[data-sec="players"]').addEventListener('click', e => {
 $('tab-body').addEventListener('submit', e => {
   e.preventDefault();
   if (e.target.id === 'acc-form') return saveAccount();
+  if (e.target.id === 'bank-form') return saveBank();
   if (e.target.id === 'sec-form') return saveSecrets();
   if (e.target.id === 'msg-form') return sendMessage();
 });
+$('tab-body').addEventListener('input', e => { if (!e.target.closest('[data-live]')) dirty = true; });
+$('tab-body').addEventListener('change', e => { if (e.target.closest('[data-open]')) setOpenPlans(); });
 $('secret-list').addEventListener('click', e => {
   const d = e.target.closest('[data-delsec-id]'); if (d) return deleteSecrets(d.dataset.delsecId);
   const b = e.target.closest('[data-opensec]'); if (!b) return;
@@ -1302,10 +1623,20 @@ onSnapshot(accountsCol, snap => {
   accounts = {};
   snap.forEach(d => { accounts[d.id] = d.data(); });
   renderList();
-  const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
-  if (!typing && (tab === 'phone' || tab === 'secrets' || tab === 'augments' || tab === 'vitalis' || tab === 'bank')) renderTab();
+  const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !document.activeElement.closest('[data-live]');
+  if (!typing && !dirty && tab !== 'messages') renderTab();
+  paintJobTakers();
+  accountsReady = true; ensureBanks();
   renderSecrets();
 }, err => say('msg', explain(err)));
+onSnapshot(banksCol, snap => {
+  banks = {};
+  snap.forEach(d => { banks[d.id] = d.data(); });
+  renderList();
+  const typing = document.activeElement && $('tab-body').contains(document.activeElement) && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !document.activeElement.closest('[data-live]');
+  if (tab === 'bank' && !typing && !dirty) renderTab();
+  banksReady = true; ensureBanks();
+}, err => console.warn('Banks unavailable:', err.code));
 onSnapshot(playersCol, snap => {
   players = {};
   snap.forEach(d => { const v = d.data(); players[d.id] = { name: v.name || '', seen: v.lastSeen ? v.lastSeen.toMillis() : Date.now() }; });
@@ -1314,8 +1645,8 @@ onSnapshot(playersCol, snap => {
 onSnapshot(secretsCol, snap => {
   secrets = {};
   snap.forEach(d => { secrets[d.id] = d.data(); });
-  renderSecrets();
-  if (tab === 'secrets') renderTab();
+  renderSecrets(); paintChats();
+  if (tab === 'secrets' && !dirty) renderTab();
 }, err => console.warn('Secrets unavailable:', err.code));
 setInterval(renderList, 30000);
 
@@ -1324,6 +1655,7 @@ onAuthStateChanged(auth, async user => {
   $('login').hidden = !!user; $('panel').hidden = !user;
   if (!user) return say('msg', 'Sign in with your admin email and password.');
   say('msg', 'Signed in as ' + user.email + '.');
+  ensureBanks();
   try {
     const snap = await getDoc(stateRef);
     if (snap.exists()) loadState(snap.data());
