@@ -1064,7 +1064,7 @@ function renderList() {
   $('plist').replaceChildren(...ids.map(id => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'pcard'; b.dataset.sel = id; b.setAttribute('aria-pressed', String(sel === id));
-    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small><small>${(mb => mb ? fmt(mb.wallet) + ' CR · OWES ' + fmt(owedOf(mb)) : 'NO BANK ACCOUNT')(banksOf(id)[0])}</small>${accounts[id].vitalisCall && accounts[id].vitalisCall.status === 'requested' ? '<small class="alert">▲ CALLING VITALIS</small>' : ''}`;
+    b.innerHTML = `<span>${isOnline(id) ? '<span class="dot">● </span>' : ''}${esc(nameOf(id))}</span><small>${esc(id.toUpperCase())}${isOnline(id) ? ' · ONLINE' : ' · OFFLINE'}</small><small>${(mb => mb ? fmt(mb.wallet) + ' CR · OWES ' + fmt(owedOf(mb)) : 'NO BANK ACCOUNT')(banksOf(id)[0])}</small>${accounts[id].vitalisCall && accounts[id].vitalisCall.status === 'requested' ? '<small class="alert">▲ CALLING VITALIS</small>' : ''}${accounts[id].paradise && Number(accounts[id].paradise.marker) ? `<small class="alert">OWES PARADISE ${fmt(accounts[id].paradise.marker)}</small>` : ''}`;
     return b;
   }));
   const on = ids.filter(isOnline).map(nameOf);
@@ -1161,7 +1161,30 @@ function renderTab() {
         ${pays.map(t => `<tr><td>${esc(t.ref || '')}</td><td>${esc(t.byName || (t.by ? nameOf(t.by) : ''))}</td><td>${pad(t.cycle || 0)}</td><td>${esc(t.at ? bankDay(t.at) : '')}</td><td class="n">${fmt(t.amount)}</td><td class="n">${fmt(t.fees)}</td><td class="n">${fmt(t.principal)}</td><td class="n">${fmt(t.wallet)}</td><td class="n">${fmt(t.owed)}</td></tr>`).join('') || '<tr><td colspan="9">No payments yet.</td></tr>'}
       </tbody></table></div>`;
     }
-    h += `<div class="boxed"><p class="mono">ISSUE A NEW ACCOUNT TO ${esc(nameOf(sel).toUpperCase())}</p>
+    const pr = a.paradise || {}, hist = Array.isArray(pr.hist) ? pr.hist : [];
+    h += `<div class="boxed"><p class="mono">PARADISE · THE HIDDEN BLACKJACK ROOM ${pr.banned ? '<span class="tagx warn">BARRED</span>' : ''}${Number(pr.marker) ? '<span class="tagx dark">OWES THE HOUSE</span>' : ''}</p>
+        ${pr.found ? `<div class="bk-tiles">
+          <div class="bk-tile"><span>CHIPS IN HAND</span><b>${fmt(pr.chips)}</b></div>
+          <div class="bk-tile"><span>OWES THE HOUSE</span><b class="owe">${fmt(pr.marker)} cr</b></div>
+          <div class="bk-tile"><span>HANDS PLAYED</span><b>${fmt(pr.hands)}</b></div>
+          <div class="bk-tile"><span>WAGERED</span><b>${fmt(pr.wagered)}</b></div>
+          <div class="bk-tile"><span>${Number(pr.net) < 0 ? 'LOST AT THE TABLE' : 'WON AT THE TABLE'}</span><b class="${Number(pr.net) < 0 ? 'owe' : ''}">${fmt(Math.abs(Number(pr.net) || 0))}</b></div>
+        </div>${hist.length ? `<p class="hint" style="margin:0 0 10px">Last hands: ${hist.slice(0, 8).map(x => (x.net > 0 ? '+' : '') + fmt(x.net)).join(' · ')}</p>` : ''}` : `<p class="hint" style="margin:0 0 10px">${esc(nameOf(sel))} has not found the door yet. It is the faint "take me to paradise" at the bottom right of their terminal, and it flashes in the ticker now and then.</p>`}
+        <div class="row"><label style="flex-direction:row;align-items:center;gap:8px">MARKER LIMIT <input id="pz-limit" type="number" min="0" step="5" value="${pr.limit ?? 300}" style="width:100px;flex:0 0 auto"></label>
+          <label style="flex-direction:row;align-items:center;gap:8px">OWES THE HOUSE <input id="pz-marker" type="number" min="0" step="5" value="${Number(pr.marker) || 0}" style="width:100px;flex:0 0 auto"></label>
+          <label class="check"><input id="pz-ban" type="checkbox" ${pr.banned ? 'checked' : ''}> Barred at the door</label>
+          <button type="button" data-pz-save>SAVE</button></div>
+        <p class="mono" style="margin-top:12px">SEND A COLLECTION TEXT TO ${esc(nameOf(sel).toUpperCase())}'S PHONE</p>
+        <div class="row"><input id="pz-from" data-live value="Paradise" aria-label="Sender" style="flex:0 1 160px">
+          <select id="pz-text" data-live aria-label="Text to send">${[
+            `You owe the house ${fmt(pr.marker)} cr. Bring it to Paradise before the cycle turns.`,
+            `Second notice. ${fmt(pr.marker)} cr. Do not make us walk down to Null Row.`,
+            'Someone is standing outside your door. Open it or do not. The number stays the same.',
+            'We sold your marker. You owe Keyline now. They are less polite than we are.',
+            'Paid in full. Your credit is good with us again.'].map(t => `<option>${esc(t)}</option>`).join('')}</select>
+          <button type="button" data-pz-send>SEND TEXT</button></div>
+        <span class="msg" id="pz-msg"></span></div>
+      <div class="boxed"><p class="mono">ISSUE A NEW ACCOUNT TO ${esc(nameOf(sel).toUpperCase())}</p>
         <div class="row"><input id="new-bank-name" data-live placeholder="Account name (optional)" aria-label="New account name">
           <select id="new-bank-kind" data-live aria-label="Kind of account"><option value="std">Standard account</option><option value="dark">Off the books (shady)</option></select>
           <button type="button" data-issue>ISSUE ACCOUNT</button></div>
@@ -1358,6 +1381,18 @@ async function ensureBanks() {
     } catch (e) { explain(e); }
     issuing.delete(id);
   }
+}
+/* ---------- Paradise: the house marker and collection texts ---------- */
+async function savePz() {
+  if (!sel) return;
+  const n = id => Math.max(0, Math.round(Number($(id).value) || 0));
+  try { await setDoc(doc(db, 'accounts', sel), { paradise: { limit: n('pz-limit'), marker: n('pz-marker'), banned: $('pz-ban').checked } }, { merge: true }); dirty = false; flash = { id: 'pz-msg', text: 'Saved ' + stamp() + '.', at: Date.now() }; renderTab(); }
+  catch (e) { say('pz-msg', explain(e)); }
+}
+async function sendPzText() {
+  if (!sel) return;
+  try { await sendTo(sel, $('pz-from').value.trim() || 'Paradise', $('pz-text').value); keep('pz-msg', 'Text sent ' + stamp() + '.'); }
+  catch (e) { say('pz-msg', explain(e)); }
 }
 /* ---------- Vitalis: calls, plans the player may buy ---------- */
 async function setCall(status) {
@@ -1589,6 +1624,8 @@ document.querySelector('[data-sec="players"]').addEventListener('click', e => {
   const ul = e.target.closest('[data-unlink]'); if (ul) return unlinkPlayer(ul.dataset.unlink);
   if (e.target.closest('[data-link-bank]')) return linkToBank();
   if (e.target.closest('[data-issue]')) return issueBank();
+  if (e.target.closest('[data-pz-save]')) return savePz();
+  if (e.target.closest('[data-pz-send]')) return sendPzText();
   const bc = e.target.closest('[data-bank-close]'); if (bc) return closeBank(bc.dataset.bankClose);
   const vcall = e.target.closest('[data-vcall]'); if (vcall) return setCall(vcall.dataset.vcall);
   if (e.target.closest('[data-vcall-clear]')) return setCall(null);

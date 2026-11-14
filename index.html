@@ -352,7 +352,79 @@ body.dm .loc{cursor:grab}
 .dm-edit .r{display:flex;gap:8px;flex-wrap:wrap}
 .dm-hint{display:none}
 body.dm .dm-hint{display:block;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--amber);margin:8px 0 0}
-.ap-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:25;border:1px solid var(--amber);background:#1a1206;color:var(--amber);font-family:var(--f-mono);font-size:12px;padding:10px 14px;letter-spacing:.06em}
+/* ---------- Paradise: the room nobody lists ---------- */
+.pdoor{font:inherit;letter-spacing:inherit;color:var(--muted);background:none;border:0;padding:0;cursor:default;opacity:.22;text-transform:lowercase}
+.pdoor:hover,.pdoor:focus-visible{opacity:.9;color:var(--mag);cursor:pointer;text-shadow:0 0 8px var(--mag)}
+.pz{position:fixed;inset:0;z-index:45;overflow:auto;color:#f3ead8;font-family:var(--f-body);
+  background:radial-gradient(ellipse at 50% 0%,#2a0f24 0%,#120711 45%,#060307 100%)}
+.pz[hidden]{display:none}
+.pz-in{max-width:980px;margin:0 auto;padding:12px 12px 20px;display:grid;gap:10px;min-height:100%;align-content:start}
+.pz-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pz-sign{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.34em;color:#ff7ab8;text-shadow:0 0 6px #ff4d94,0 0 22px rgba(255,77,148,.7);margin-right:auto}
+.pz-bal{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#c9b79a;display:flex;gap:14px;flex-wrap:wrap}
+.pz-bal b{display:block;font-family:var(--f-display);font-size:18px;letter-spacing:.04em;color:#ffd67a;font-variant-numeric:tabular-nums}
+.pz-bal .owe b{color:#ff7a7a}
+.pz-b{font-family:var(--f-display);font-size:11px;letter-spacing:.14em;color:#f3ead8;background:rgba(255,255,255,.06);border:1px solid rgba(255,214,122,.45);border-radius:8px;padding:9px 12px;cursor:pointer}
+.pz-b:hover:not(:disabled){background:#ffd67a;color:#1b1206}
+.pz-b:disabled{opacity:.35;cursor:not-allowed}
+.pz-b.go{background:#ffd67a;color:#1b1206;border-color:#ffd67a;font-weight:700}
+.pz-b.go:hover:not(:disabled){background:#fff0c4}
+.pz-table{position:relative;border-radius:26px 26px 240px 240px / 26px 26px 150px 150px;padding:18px 14px 46px;
+  background:radial-gradient(ellipse at 50% 18%,#1f7a4d 0%,#12573a 48%,#0a3a27 100%);
+  border:12px solid #4a2a14;box-shadow:inset 0 0 0 2px #2b1608,inset 0 0 60px rgba(0,0,0,.55),0 0 0 2px #7a4a22,0 18px 40px rgba(0,0,0,.6);
+  display:grid;gap:6px;justify-items:center}
+.pz-arc{width:min(100%,640px);height:auto;display:block;margin-top:-4px}
+.pz-arc text{font-family:var(--f-display);letter-spacing:.2em;fill:rgba(255,236,170,.82)}
+.pz-arc .sm{letter-spacing:.14em;fill:rgba(255,255,255,.6)}
+.pz-rule{display:none}
+.pz-lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.62);margin:0}
+.pz-row{display:flex;align-items:center;justify-content:center;gap:12px;min-height:96px;flex-wrap:wrap}
+.pz-hand{display:flex;align-items:center;padding-left:26px}
+.pz-hand .cd{margin-left:-26px}
+.cd{position:relative;width:64px;height:90px;border-radius:7px;background:#fdfbf4;color:#16161a;box-shadow:0 2px 6px rgba(0,0,0,.55);flex:0 0 auto;font-family:Georgia,'Times New Roman',serif;font-weight:700}
+.cd.red{color:#c2182b}
+.cd i{position:absolute;left:6px;top:4px;font-style:normal;font-size:17px;line-height:1;text-align:center}
+.cd i small{display:block;font-size:14px}
+.cd b{position:absolute;inset:0;display:grid;place-items:center;font-size:30px;font-weight:400}
+.cd.back{background:repeating-linear-gradient(45deg,#7a1230 0 6px,#5a0c22 6px 12px);box-shadow:inset 0 0 0 4px #fdfbf4,0 2px 6px rgba(0,0,0,.55)}
+.cd.in{animation:pz-deal .32s ease-out both}
+@keyframes pz-deal{from{transform:translate(120px,-140px) rotate(18deg);opacity:0}to{transform:none;opacity:1}}
+.pz-tot{font-family:var(--f-display);font-size:13px;letter-spacing:.06em;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 10px;white-space:nowrap}
+.pz-msg{font-family:var(--f-display);font-size:15px;letter-spacing:.08em;color:#ffe9a8;text-align:center;min-height:22px;margin:2px 0;text-shadow:0 1px 0 #000}
+.pz-seats{display:flex;align-items:flex-end;justify-content:center;gap:10px;width:100%;flex-wrap:wrap}
+.pz-seat{display:grid;justify-items:center;gap:6px;padding:6px 8px;border-radius:14px}
+.pz-seat.on{background:rgba(255,236,170,.10);box-shadow:0 0 0 1px rgba(255,236,170,.5)}
+.pz-spot{position:relative;width:74px;height:74px;border-radius:50%;border:2px solid rgba(255,236,170,.7);background:rgba(0,0,0,.14);display:grid;place-items:center;color:rgba(255,236,170,.85);font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;text-align:center;line-height:1.25;cursor:pointer;padding:0}
+.pz-spot.side{width:60px;height:60px;border-style:dashed;font-size:8px}
+.pz-spot:disabled{cursor:default}
+.pz-spot .chip{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%)}
+.pz-res{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:#ffe9a8;min-height:13px;text-align:center}
+.pz-res.lose{color:#ff9a9a}
+.chip{--c:#b3202f;width:46px;height:46px;border-radius:50%;background:var(--c);border:4px dashed rgba(255,255,255,.85);box-shadow:inset 0 0 0 3px var(--c),inset 0 0 0 4px rgba(255,255,255,.5),0 2px 0 rgba(0,0,0,.55);display:grid;place-items:center;color:#fff;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:0;flex:0 0 auto}
+button.chip{cursor:pointer;padding:0}
+button.chip[aria-pressed="true"]{outline:2px solid #ffd67a;outline-offset:3px;transform:translateY(-4px)}
+button.chip:disabled{opacity:.3;cursor:not-allowed}
+.chip.c25{--c:#1f7a3a}.chip.c100{--c:#16161a}.chip.c500{--c:#5b2a86}.chip.cx{--c:#a8741a}
+.pz-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;background:rgba(0,0,0,.35);border:1px solid rgba(255,214,122,.25);border-radius:14px;padding:10px}
+.pz-ctl .pz-b{padding:13px 16px;font-size:13px;min-width:92px}
+.pz-note{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:#b9a787;text-align:center;margin:0}
+.pz-cash{position:fixed;inset:0;z-index:46;background:rgba(4,2,5,.82);display:grid;place-items:center;padding:14px;overflow:auto}
+.pz-box{width:min(440px,100%);background:#170b15;border:1px solid #ff7ab8;border-radius:16px;padding:16px;display:grid;gap:10px;box-shadow:0 0 30px rgba(255,77,148,.3)}
+.pz-box h3{font-family:var(--f-display);font-size:15px;letter-spacing:.2em;color:#ff7ab8;margin:0}
+.pz-box p{margin:0;font-size:14px;color:#d9cbb2}
+.pz-box .ln{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.12);padding-top:10px}
+.pz-box .ln span{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:#b9a787;flex:1 1 100%}
+.pz-box input,.pz-box select{font:16px var(--f-body);color:#f3ead8;background:#0b050a;border:1px solid rgba(255,214,122,.35);border-radius:8px;padding:9px 10px;min-width:0;flex:1 1 110px}
+@media (max-width:560px){
+  .cd{width:50px;height:72px}.cd b{font-size:24px}.cd i{font-size:14px}.cd i small{font-size:12px}
+  .pz-hand{padding-left:22px}.pz-hand .cd{margin-left:-22px}
+  .pz-row{min-height:78px}.pz-table{padding:12px 6px 38px;border-width:9px;border-radius:20px 20px 150px 150px / 20px 20px 90px 90px}
+  .pz-spot{width:64px;height:64px}.pz-spot.side{width:54px;height:54px}
+  .pz-arc .sm{display:none}.pz-rule{display:block !important;font-size:8.5px;letter-spacing:.1em;text-align:center}
+  .pz-sign{font-size:17px;letter-spacing:.26em}.pz-ctl .pz-b{min-width:0;flex:1 1 40%}
+}
+@media (prefers-reduced-motion:reduce){.cd.in{animation:none}}
+.ap-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;border:1px solid var(--amber);background:#1a1206;color:var(--amber);font-family:var(--f-mono);font-size:12px;padding:10px 14px;letter-spacing:.06em}
 @keyframes flick{0%,92%{opacity:1}93%{opacity:.25}94%{opacity:1}97%{opacity:.4}98%{opacity:1}}
 .ap-flicker{animation:flick 7s steps(1) infinite}
 @media (prefers-reduced-motion:reduce){.ap-flicker{animation:none}}
@@ -502,9 +574,11 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
 
   <footer class="foot">
     <span>YOUR CHROME IS YOUR IDENTITY. KEEP IT REGISTERED.</span>
+    <button type="button" class="pdoor" id="pdoor" hidden>take me to paradise</button>
   </footer>
 </div>
 
+<div class="pz" id="paradise" hidden></div>
 <div class="dm-menu" id="dm-menu" hidden></div>
 <form class="dm-edit" id="dm-edit" hidden></form>
 <div class="boot" id="boot" hidden><pre id="boot-text"></pre></div>
@@ -1307,7 +1381,7 @@ paint();
 const TICK = 'CITIZENS REGISTERED · VANTARA: 38,114,902';
 const tk = $('ticker'); tk.textContent = TICK;
 function glitch(){
-  tk.textContent = 'ON SHIFT: 41,209'; tk.classList.add('glitch');
+  tk.textContent = Math.random() < .3 ? 'TAKE ME TO PARADISE' : 'ON SHIFT: 41,209'; tk.classList.add('glitch');
   setTimeout(() => { tk.textContent = TICK; tk.classList.remove('glitch'); }, 900);
   setTimeout(glitch, 35000 + Math.random()*35000);
 }
@@ -1592,9 +1666,17 @@ async function hashPin(salt, pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + ':' + pin));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
+function pzSync() {
+  if (!PAR || !G || PZ.hidden) return;
+  const p = (ACC && ACC.paradise) || {};
+  const before = [PAR.limit, PAR.banned, PAR.marker].join();
+  PAR.limit = p.limit ?? PAR.limit; PAR.banned = !!p.banned;
+  if (['bet', 'done'].includes(G.phase) && !PZ_CASH && p.marker != null) PAR.marker = p.marker;
+  if (before !== [PAR.limit, PAR.banned, PAR.marker].join()) pzRender();
+}
 function watchAccount(id) {
   if (accountOff) accountOff();
-  accountOff = onSnapshot(doc(db, 'accounts', id), snap => { ACC = snap.exists() ? snap.data() : null; window.corvanisAccount(ACC, id); if (!noteEditing()) NOTES = (ACC && ACC.notes) || []; renderApp(); },
+  accountOff = onSnapshot(doc(db, 'accounts', id), snap => { ACC = snap.exists() ? snap.data() : null; window.corvanisAccount(ACC, id); if (!noteEditing()) NOTES = (ACC && ACC.notes) || []; renderApp(); pzSync(); },
     err => console.warn('Account unavailable:', err.code));
 }
 async function beat(id, name) {
@@ -1606,6 +1688,7 @@ function start(id, name) {
   if (started) return;
   started = true;
   ME_ID = id; ME_NAME = name; listenMessages(id); listenChats(id); listenPeers(); listenBanks(id);
+  document.getElementById('pdoor').hidden = false;
   watchAccount(id);
   beat(id, name);
   setInterval(() => beat(id, name), 60000);
@@ -2255,6 +2338,257 @@ function queueNoteSave() {
     const t = document.getElementById('nt-status'); if (t) t.textContent = 'Saved';
   }, 700);
 }
+/* ---------- Paradise: a blackjack table that is on no map. Chips and the house marker live in accounts/{id}.paradise ---------- */
+const PZ = document.getElementById('paradise');
+const PZ_MIN = 5, PZ_MAX = 500, PZ_SIDE_MAX = 100, PZ_CHIPS = [5, 25, 100, 500];
+let PAR = null, G = null, PZ_CASH = false, pzSeq = 0;
+const pzDefaults = () => ({ chips: 0, marker: 0, limit: 300, hands: 0, wagered: 0, net: 0, hist: [], texts: {} });
+const pzVal = c => c.r === 'A' ? 11 : 'TJQK'.includes(c.r) ? 10 : Number(c.r);
+const pzRed = c => c.s === '♥' || c.s === '♦';
+function pzTotal(cards) {
+  let t = 0, aces = 0;
+  for (const c of cards) { t += pzVal(c); if (c.r === 'A') aces++; }
+  while (t > 21 && aces) { t -= 10; aces--; }
+  return { t, soft: aces > 0 };
+}
+const pzBJ = cards => cards.length === 2 && pzTotal(cards).t === 21;
+function pzShoe() {
+  const d = [];
+  for (let n = 0; n < 6; n++) for (const s of '♠♥♦♣') for (const r of 'A23456789TJQK') d.push({ r, s });
+  for (let i = d.length - 1; i > 0; i--) { const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1); [d[i], d[j]] = [d[j], d[i]]; }
+  return d;
+}
+function pzDraw(down) { if (G.shoe.length < 60) G.shoe = pzShoe(); const c = G.shoe.pop(); return { ...c, id: ++pzSeq, down: !!down, fresh: true }; }
+const pzNew = () => ({ phase: 'bet', shoe: (G && G.shoe) || pzShoe(), dealer: [], hands: [], cur: 0, bets: { main: 0, pp: 0, t3: 0 }, chip: (G && G.chip) || 25, side: {}, msg: 'Place your bet.', ins: 0, staked: 0, back: 0, last: (G && G.last) || null });
+/* side bets */
+function pzPairs(a, b) {
+  if (a.r !== b.r) return null;
+  if (a.s === b.s) return ['PERFECT PAIR', 25];
+  return pzRed(a) === pzRed(b) ? ['COLORED PAIR', 12] : ['MIXED PAIR', 6];
+}
+function pzPoker(cs) {
+  const ord = 'A23456789TJQK', v = cs.map(c => ord.indexOf(c.r)).sort((x, y) => x - y);
+  const flush = cs.every(c => c.s === cs[0].s), trips = v[0] === v[2];
+  const straight = (v[0] + 1 === v[1] && v[1] + 1 === v[2]) || (v[0] === 0 && v[1] === 11 && v[2] === 12);
+  if (trips && flush) return ['SUITED TRIPS', 100];
+  if (straight && flush) return ['STRAIGHT FLUSH', 40];
+  if (trips) return ['THREE OF A KIND', 30];
+  if (straight) return ['STRAIGHT', 10];
+  if (flush) return ['FLUSH', 5];
+  return null;
+}
+function pzSave(extra) { if (extra) Object.assign(PAR, extra); return saveMine({ paradise: PAR }, true); }
+async function pzText(key, text) {
+  if (PAR.texts && PAR.texts[key]) return;
+  PAR.texts = { ...(PAR.texts || {}), [key]: Date.now() };
+  try { await addDoc(collection(db, 'accounts', ME_ID, 'messages'), { from: 'Paradise', text: text.slice(0, 300), read: false, createdAt: serverTimestamp() }); } catch (e) { /* the GM can still send it by hand */ }
+}
+function pzOpen() {
+  if (!ME_ID) return;
+  PAR = { ...pzDefaults(), ...((ACC && ACC.paradise) || {}) };
+  G = pzNew(); PZ_CASH = !PAR.chips && !PAR.banned;
+  PZ.hidden = false; document.body.style.overflow = 'hidden';
+  if (!PAR.found) pzSave({ found: Date.now() });
+  pzRender();
+}
+function pzClose() {
+  if (G && !['bet', 'done'].includes(G.phase)) { if (!window.confirm('Walk away in the middle of a hand? Your bet stays on the table.')) return; }
+  PZ.hidden = true; document.body.style.overflow = ''; G = null;
+}
+function pzCard(c) {
+  if (c.down) return `<span class="cd back${c.fresh ? ' in' : ''}" role="img" aria-label="Face-down card"></span>`;
+  const r = c.r === 'T' ? '10' : c.r;
+  return `<span class="cd${pzRed(c) ? ' red' : ''}${c.fresh ? ' in' : ''}" role="img" aria-label="${r} of ${{ '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' }[c.s]}"><i>${r}<small>${c.s}</small></i><b>${c.s}</b></span>`;
+}
+const pzChip = n => `<span class="chip ${n >= 500 ? 'c500' : n >= 100 ? 'c100' : n >= 25 ? 'c25' : ''}">${NUM(n)}</span>`;
+function pzRender() {
+  if (!G || PZ.hidden) return;
+  const g = G, betting = g.phase === 'bet', total = g.bets.main + g.bets.pp + g.bets.t3;
+  const top = `<div class="pz-top"><span class="pz-sign">PARADISE</span>
+    <div class="pz-bal"><span>CHIPS<b>${NUM(PAR.chips)}</b></span>${PAR.marker ? `<span class="owe">OWED TO THE HOUSE<b>${NUM(PAR.marker)}</b></span>` : ''}</div>
+    <button class="pz-b" type="button" data-pz="cashier"${['bet', 'done'].includes(g.phase) ? '' : ' disabled'}>CASHIER</button><button class="pz-b" type="button" data-pz="leave">LEAVE</button></div>`;
+  if (PAR.banned) { PZ.innerHTML = `<div class="pz-in">${top}<div class="pz-box" style="margin:40px auto"><h3>THE DOOR IS CLOSED</h3><p>The man at the door shakes his head. Not tonight. Maybe not ever.</p>${PAR.marker ? `<p>You still owe the house ${NUM(PAR.marker)} cr.</p>` : ''}</div></div>`; return; }
+  const dt = pzTotal(g.dealer.filter(c => !c.down));
+  const dealer = `<p class="pz-lbl">DEALER</p><div class="pz-row"><div class="pz-hand">${g.dealer.map(pzCard).join('')}</div>${g.dealer.length ? `<span class="pz-tot">${g.dealer.some(c => c.down) ? dt.t + ' +' : dt.t}</span>` : ''}</div>`;
+  const spot = (k, label, cls) => `<div class="pz-seat"><button type="button" class="pz-spot ${cls}" data-pz-bet="${k}"${betting ? '' : ' disabled'} aria-label="${label.replace('<br>', ' ')} bet: ${g.bets[k]} chips">${g.bets[k] ? pzChip(g.bets[k]) : label}</button><span class="pz-res${g.side[k] && !g.side[k].win ? ' lose' : ''}">${g.side[k] ? g.side[k].text : (cls ? label.replace('<br>', ' ') : '')}</span></div>`;
+  let seats;
+  if (!g.hands.length) seats = spot('pp', 'PERFECT<br>PAIRS', 'side') + spot('main', 'BET', '') + spot('t3', '21 + 3', 'side');
+  else seats = (g.side.pp ? spot('pp', 'PERFECT<br>PAIRS', 'side') : '') + g.hands.map((h, i) => { const t = pzTotal(h.cards);
+      return `<div class="pz-seat${g.phase === 'play' && i === g.cur ? ' on' : ''}"><div class="pz-hand">${h.cards.map(pzCard).join('')}</div>
+        <span class="pz-tot">${h.natural ? 'BLACKJACK' : t.t > 21 ? 'BUST · ' + t.t : (t.soft && t.t < 21 ? (t.t - 10) + ' / ' : '') + t.t}</span>
+        <span style="display:flex;gap:6px;align-items:center">${pzChip(h.bet)}<span class="pz-res${h.out && h.out.net < 0 ? ' lose' : ''}">${h.out ? h.out.text : (h.doubled ? 'DOUBLED' : '')}</span></span></div>`; }).join('')
+    + (g.side.t3 ? spot('t3', '21 + 3', 'side') : '');
+  const h = g.hands[g.cur], canAct = g.phase === 'play' && h;
+  let ctl;
+  if (betting) ctl = PZ_CHIPS.map(n => `<button type="button" class="chip ${n >= 500 ? 'c500' : n >= 100 ? 'c100' : n >= 25 ? 'c25' : ''}" data-pz-chip="${n}" aria-pressed="${g.chip === n}" aria-label="${n} chip"${PAR.chips - total < n ? ' disabled' : ''}>${n}</button>`).join('')
+      + `<button class="pz-b" type="button" data-pz="clear"${total ? '' : ' disabled'}>CLEAR</button>${g.last ? `<button class="pz-b" type="button" data-pz="rebet"${g.last.main + g.last.pp + g.last.t3 <= PAR.chips ? '' : ' disabled'}>SAME BET</button>` : ''}<button class="pz-b go" type="button" data-pz="deal"${g.bets.main >= PZ_MIN ? '' : ' disabled'}>DEAL</button>`;
+  else if (g.phase === 'insure') ctl = `<button class="pz-b go" type="button" data-pz="ins-yes"${PAR.chips >= Math.floor(g.bets.main / 2) ? '' : ' disabled'}>INSURANCE · ${NUM(Math.floor(g.bets.main / 2))}</button><button class="pz-b" type="button" data-pz="ins-no">NO INSURANCE</button>`;
+  else if (canAct) ctl = `<button class="pz-b go" type="button" data-pz="hit">HIT</button><button class="pz-b go" type="button" data-pz="stand">STAND</button>
+      <button class="pz-b" type="button" data-pz="double"${h.cards.length === 2 && PAR.chips >= h.bet ? '' : ' disabled'}>DOUBLE</button>
+      <button class="pz-b" type="button" data-pz="split"${g.hands.length === 1 && h.cards.length === 2 && pzVal(h.cards[0]) === pzVal(h.cards[1]) && PAR.chips >= h.bet ? '' : ' disabled'}>SPLIT</button>`;
+  else if (g.phase === 'done') ctl = `<button class="pz-b go" type="button" data-pz="again">NEXT HAND</button>`;
+  else ctl = '<p class="pz-note">The dealer plays.</p>';
+  const others = BANKS.length ? BANKS : [];
+  const room = Math.max(0, (Number(PAR.limit) || 0) - (Number(PAR.marker) || 0));
+  const cash = PZ_CASH ? `<div class="pz-cash"><div class="pz-box" role="dialog" aria-label="Cashier">
+      <h3>CASHIER</h3><p>Chips in hand: <b>${NUM(PAR.chips)}</b>${PAR.marker ? ` · You owe the house <b>${NUM(PAR.marker)}</b>` : ''}</p>
+      ${others.length ? `<form class="ln" data-pz-form="buy"><span>BUY CHIPS WITH CREDITS · 1 CR = 1 CHIP</span><select name="bank" aria-label="Account to pay from">${others.map(b => `<option value="${H(b.id)}">···· ${H(bankNumber(b).slice(-4))} · ${NUM(b.wallet)} cr${b.hidden ? ' · off-ledger' : ''}</option>`).join('')}</select><input name="amount" type="number" inputmode="numeric" min="5" step="5" placeholder="Amount" aria-label="Chips to buy" required><button class="pz-b go" type="submit">BUY</button></form>` : '<p class="ln">You have no bank account to buy chips with. The house can still extend you a marker.</p>'}
+      <form class="ln" data-pz-form="marker"><span>ASK THE HOUSE FOR A MARKER · CHIPS NOW, YOU PAY LATER${room ? ` · UP TO ${NUM(room)}` : ' · YOU ARE AT YOUR LIMIT'}</span><input name="amount" type="number" inputmode="numeric" min="5" step="5" max="${room}" placeholder="Amount" aria-label="Marker amount"${room ? ' required' : ' disabled'}><button class="pz-b" type="submit"${room ? '' : ' disabled'}>TAKE MARKER</button></form>
+      ${PAR.chips ? `<form class="ln" data-pz-form="out"><span>CASH OUT ALL ${NUM(PAR.chips)} CHIPS${PAR.marker ? ' · THE HOUSE TAKES ITS MARKER FIRST' : ''}</span>${others.length ? `<select name="bank" aria-label="Account to receive credits">${others.map(b => `<option value="${H(b.id)}">···· ${H(bankNumber(b).slice(-4))}${b.hidden ? ' · off-ledger' : ''}</option>`).join('')}</select>` : ''}<button class="pz-b go" type="submit"${others.length || PAR.marker ? '' : ' disabled'}>CASH OUT</button></form>` : ''}
+      <div class="ln"><button class="pz-b" type="button" data-pz="cash-close">BACK TO THE TABLE</button></div>
+      <p class="pz-note">Table limits: ${PZ_MIN} to ${PZ_MAX}. Side bets up to ${PZ_SIDE_MAX}. Nothing here is on your Registrar file.</p>
+    </div></div>` : '';
+  PZ.innerHTML = `<div class="pz-in">${top}
+    <div class="pz-table">
+      <svg class="pz-arc" viewBox="0 0 640 96" aria-hidden="true"><defs><path id="pz-a1" d="M40,22 Q320,96 600,22"/><path id="pz-a2" d="M90,14 Q320,70 550,14"/></defs>
+        <text font-size="17"><textPath href="#pz-a1" startOffset="50%" text-anchor="middle">BLACKJACK PAYS 3 TO 2</textPath></text>
+        <text class="sm" font-size="9.5"><textPath href="#pz-a2" startOffset="50%" text-anchor="middle">DEALER MUST STAND ON 17 AND DRAW TO 16 · INSURANCE PAYS 2 TO 1</textPath></text></svg>
+      <p class="pz-lbl pz-rule">DEALER STANDS ON 17 · INSURANCE PAYS 2 TO 1</p>
+      ${dealer}
+      <p class="pz-msg" aria-live="polite">${H(g.msg)}</p>
+      <div class="pz-seats">${seats}</div>
+      <p class="pz-lbl">${H(((ACC && ACC.holder) || ME_NAME).toUpperCase())}</p>
+    </div>
+    <div class="pz-ctl">${ctl}</div>
+    <p class="pz-note">${betting ? 'Pick a chip, then tap a circle on the felt. Perfect Pairs pays 6, 12 or 25 to 1. 21 + 3 pays 5 to 100 to 1.' : 'Six decks. Double on any two cards. Split once.'}</p>
+  </div>${cash}`;
+  for (const c of [...g.dealer, ...g.hands.flatMap(x => x.cards)]) c.fresh = false;
+}
+function pzBet(k) {
+  const g = G, total = g.bets.main + g.bets.pp + g.bets.t3, cap = k === 'main' ? PZ_MAX : PZ_SIDE_MAX;
+  if (g.bets[k] + g.chip > cap) { g.msg = `The limit on that circle is ${cap}.`; return pzRender(); }
+  if (total + g.chip > PAR.chips) { g.msg = 'Not enough chips. See the cashier.'; return pzRender(); }
+  g.bets[k] += g.chip; g.msg = 'Place your bet.'; pzRender();
+}
+function pzDeal() {
+  const g = G, total = g.bets.main + g.bets.pp + g.bets.t3;
+  if (g.bets.main < PZ_MIN || total > PAR.chips) return;
+  g.last = { ...g.bets }; g.staked = total; g.back = 0;
+  PAR.chips -= total; PAR.hands = (PAR.hands || 0) + 1; PAR.wagered = (PAR.wagered || 0) + total;
+  const p1 = pzDraw(), d1 = pzDraw(), p2 = pzDraw(), d2 = pzDraw(true);
+  g.dealer = [d1, d2]; g.hands = [{ cards: [p1, p2], bet: g.bets.main, natural: pzBJ([p1, p2]) }]; g.cur = 0; g.side = {};
+  if (g.bets.pp) { const r = pzPairs(p1, p2), win = r ? g.bets.pp * (r[1] + 1) : 0; g.side.pp = { win, text: r ? `${r[0]} +${NUM(g.bets.pp * r[1])}` : 'NO PAIR' }; g.back += win; }
+  if (g.bets.t3) { const r = pzPoker([p1, p2, d1]), win = r ? g.bets.t3 * (r[1] + 1) : 0; g.side.t3 = { win, text: r ? `${r[0]} +${NUM(g.bets.t3 * r[1])}` : 'NO HAND' }; g.back += win; }
+  PAR.chips += g.back;
+  pzSave();
+  if (d1.r === 'A') { g.phase = 'insure'; g.msg = 'Dealer shows an ace. Insurance?'; return pzRender(); }
+  pzPeek();
+}
+function pzPeek() {
+  const g = G, up = g.dealer[0];
+  if ((up.r === 'A' || pzVal(up) === 10) && pzBJ(g.dealer.map(c => ({ ...c, down: false })))) { g.dealer[1].down = false; g.dealer[1].fresh = true; return pzSettle(); }
+  if (g.hands[0].natural) return pzSettle();
+  g.phase = 'play'; g.msg = 'Your move.'; pzRender();
+}
+function pzInsure(yes) {
+  const g = G, cost = Math.floor(g.bets.main / 2);
+  if (yes && PAR.chips >= cost) { PAR.chips -= cost; g.ins = cost; g.staked += cost; PAR.wagered += cost; }
+  pzPeek();
+}
+function pzNext() {
+  const g = G;
+  while (g.cur < g.hands.length && g.hands[g.cur].done) g.cur++;
+  if (g.cur < g.hands.length) { g.msg = g.hands.length > 1 ? `Hand ${g.cur + 1}. Your move.` : 'Your move.'; return pzRender(); }
+  pzDealer();
+}
+function pzAct(a) {
+  const g = G, h = g.hands[g.cur]; if (g.phase !== 'play' || !h) return;
+  if (a === 'hit') { h.cards.push(pzDraw()); const t = pzTotal(h.cards).t; if (t >= 21) { h.done = true; return pzNext(); } return pzRender(); }
+  if (a === 'stand') { h.done = true; return pzNext(); }
+  if (a === 'double' && h.cards.length === 2 && PAR.chips >= h.bet) { PAR.chips -= h.bet; g.staked += h.bet; PAR.wagered += h.bet; h.bet *= 2; h.doubled = true; h.cards.push(pzDraw()); h.done = true; pzSave(); return pzNext(); }
+  if (a === 'split' && g.hands.length === 1 && h.cards.length === 2 && pzVal(h.cards[0]) === pzVal(h.cards[1]) && PAR.chips >= h.bet) {
+    PAR.chips -= h.bet; g.staked += h.bet; PAR.wagered += h.bet;
+    const aces = h.cards[0].r === 'A';
+    g.hands = [{ cards: [h.cards[0], pzDraw()], bet: h.bet, done: aces }, { cards: [h.cards[1], pzDraw()], bet: h.bet, done: aces }];
+    for (const x of g.hands) if (pzTotal(x.cards).t === 21) x.done = true;
+    g.cur = 0; pzSave(); return pzNext();
+  }
+}
+function pzDealer() {
+  const g = G; g.phase = 'dealer'; g.dealer[1].down = false; g.dealer[1].fresh = true; g.msg = 'Dealer turns the hole card.';
+  pzRender();
+  const live = g.hands.some(h => pzTotal(h.cards).t <= 21);
+  const step = () => {
+    if (!G || G !== g) return;
+    if (live && pzTotal(g.dealer).t < 17) { g.dealer.push(pzDraw()); g.msg = 'Dealer draws.'; pzRender(); return setTimeout(step, 650); }
+    pzSettle();
+  };
+  setTimeout(step, 650);
+}
+function pzSettle() {
+  const g = G;
+  if (g.dealer[1] && g.dealer[1].down) { g.dealer[1].down = false; g.dealer[1].fresh = true; }
+  const d = pzTotal(g.dealer).t, dBJ = pzBJ(g.dealer);
+  let back = 0;
+  if (g.ins) back += dBJ ? g.ins * 3 : 0;
+  for (const h of g.hands) {
+    const t = pzTotal(h.cards).t; let pay = 0, text;
+    if (t > 21) text = 'BUST';
+    else if (h.natural && !dBJ) { pay = h.bet + Math.floor(h.bet * 1.5); text = `BLACKJACK +${NUM(pay - h.bet)}`; }
+    else if (dBJ && !h.natural) text = 'DEALER BLACKJACK';
+    else if (d > 21 || t > d) { pay = h.bet * 2; text = `WIN +${NUM(h.bet)}`; }
+    else if (t === d) { pay = h.bet; text = 'PUSH'; }
+    else text = 'LOSE';
+    h.done = true; h.out = { text, net: pay - h.bet }; back += pay;
+  }
+  PAR.chips += back; g.back += back;
+  const net = g.back - g.staked;
+  PAR.net = (PAR.net || 0) + net;
+  PAR.hist = [{ at: Date.now(), cycle: CYCLE, staked: g.staked, net }, ...(PAR.hist || [])].slice(0, 20);
+  g.phase = 'done';
+  g.msg = (dBJ ? 'Dealer has blackjack. ' : d > 21 ? 'Dealer busts. ' : `Dealer has ${d}. `) + (net > 0 ? `You are up ${NUM(net)}.` : net < 0 ? `You lose ${NUM(-net)}.` : 'You break even.') + (g.ins ? (dBJ ? ' Insurance pays.' : ' Insurance lost.') : '');
+  pzSave();
+  if (!PAR.chips && PAR.marker) pzText('broke-' + PAR.marker + '-' + (PAR.markerAt || 0), `You walked away from the table with nothing, and you owe the house ${NUM(PAR.marker)} cr. Paradise always collects.${ACC && ACC.residence ? ' We know the way to ' + ACC.residence + '.' : ' We know where you sleep.'}`).then(() => pzSave());
+  pzRender();
+}
+async function pzCashier(kind, data) {
+  const n = Math.floor(Number(data.get('amount')) || 0), b = BANKS.find(x => x.id === data.get('bank')) || BANKS[0];
+  const stampLog = t => `Cycle ${String(CYCLE).padStart(2, '0')} · ${t} · ${(ACC && ACC.holder) || ME_NAME}`;
+  try {
+    if (kind === 'buy') {
+      if (!b || n < 5 || n % 5) return note('Chips come in fives.');
+      if (n > (Number(b.wallet) || 0)) return note('That account does not hold that much.');
+      await setDoc(doc(db, 'banks', b.id), { wallet: Number(b.wallet) - n, log: [stampLog(`Cash withdrawal: ${NUM(n)} cr`), ...(b.log || [])].slice(0, 60) }, { merge: true });
+      PAR.chips += n; await pzSave(); note(`${NUM(n)} chips.`);
+    } else if (kind === 'marker') {
+      const room = Math.max(0, (Number(PAR.limit) || 0) - (Number(PAR.marker) || 0));
+      if (n < 5 || n % 5 || n > room) return note(room ? `The house will go as far as ${NUM(room)}.` : 'The house says no.');
+      PAR.chips += n; PAR.marker = (Number(PAR.marker) || 0) + n; PAR.markerAt = Date.now();
+      await pzText('marker-' + PAR.markerAt, `Your marker with the house stands at ${NUM(PAR.marker)} cr. Play well. We are patient people, up to a point.`);
+      await pzSave(); note(`Marker signed. ${NUM(n)} chips.`);
+    } else if (kind === 'out') {
+      let chips = PAR.chips; if (!chips) return;
+      const repay = Math.min(chips, Number(PAR.marker) || 0); chips -= repay;
+      if (chips && !b) return note('You have no account to cash out to.');
+      if (chips) await setDoc(doc(db, 'banks', b.id), { wallet: (Number(b.wallet) || 0) + chips, cashBy: ME_ID, cashAt: Date.now(), log: [stampLog(`Cash deposit: ${NUM(chips)} cr`), ...(b.log || [])].slice(0, 60) }, { merge: true });
+      PAR.marker = (Number(PAR.marker) || 0) - repay; PAR.chips = 0;
+      await pzSave(); note(repay ? `The house took ${NUM(repay)} for your marker.${chips ? ' ' + NUM(chips) + ' cr paid out.' : ''}` : `${NUM(chips)} cr paid out.`);
+    }
+  } catch (err) {
+    note(err && err.code === 'permission-denied' ? 'The cashier window is shut. Tell your GM: the database rules need the Paradise update.' : 'The cashier could not do that: ' + (err.code || err.message));
+  }
+  pzRender();
+}
+document.getElementById('pdoor').addEventListener('click', pzOpen);
+PZ.addEventListener('click', e => {
+  if (!G) return;
+  const c = e.target.closest('[data-pz-chip]'); if (c) { G.chip = Number(c.dataset.pzChip); return pzRender(); }
+  const bt = e.target.closest('[data-pz-bet]'); if (bt && G.phase === 'bet') return pzBet(bt.dataset.pzBet);
+  const a = e.target.closest('[data-pz]'); if (!a || a.disabled) return;
+  const k = a.dataset.pz;
+  if (k === 'leave') return pzClose();
+  if (k === 'cashier') { PZ_CASH = true; return pzRender(); }
+  if (k === 'cash-close') { PZ_CASH = false; return pzRender(); }
+  if (k === 'clear') { G.bets = { main: 0, pp: 0, t3: 0 }; return pzRender(); }
+  if (k === 'rebet' && G.last) { G.bets = { ...G.last }; return pzRender(); }
+  if (k === 'deal') return pzDeal();
+  if (k === 'ins-yes') return pzInsure(true);
+  if (k === 'ins-no') return pzInsure(false);
+  if (k === 'again') { G = pzNew(); return pzRender(); }
+  if (['hit', 'stand', 'double', 'split'].includes(k)) return pzAct(k);
+});
+PZ.addEventListener('submit', e => { const f = e.target.closest('[data-pz-form]'); if (!f) return; e.preventDefault(); pzCashier(f.dataset.pzForm, new FormData(f)); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !PZ.hidden) { if (PZ_CASH) { PZ_CASH = false; pzRender(); } else pzClose(); } });
 document.getElementById('appbar').addEventListener('click', e => { const b = e.target.closest('[data-app]'); if (b) setApp(b.dataset.app); });
 const appView = document.getElementById('app-view');
 appView.addEventListener('click', e => {
