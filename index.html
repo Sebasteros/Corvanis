@@ -483,6 +483,17 @@ body.dm .bar,body.dm .appbar,body.dm .foot,body.dm #app-view,body.dm .boot,body.
 .chat-pick input{width:auto;align-self:center;margin:0 4px}
 .chat-pick .ap-msg{flex:1}
 .chat-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+/* DM live view (watch mode) */
+#watch-bar{position:fixed;left:0;right:0;bottom:0;z-index:80;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:8px 12px;background:#1a1206;border-top:1px solid var(--amber);color:var(--amber);font-family:var(--f-mono);font-size:11px;letter-spacing:.08em}
+#watch-bar b{color:#fff}
+#watch-bar .wb-on{color:var(--holo)}
+#watch-bar .wb-ro{margin-left:auto;opacity:.8}
+#watch-bar button{font:inherit;letter-spacing:inherit;color:var(--amber);background:none;border:1px solid var(--amber);border-radius:8px;padding:4px 8px;cursor:pointer}
+#watch-bar button[aria-pressed="true"]{background:var(--amber);color:#1a1206}
+body.watch{padding-bottom:72px}
+body.watch .join,body.watch #pdoor,body.watch .boot{display:none !important}
+body.watch-pz::after{content:"THE PLAYER IS IN PARADISE";position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);z-index:70;padding:14px 20px;border:1px solid var(--mag);background:rgba(10,2,6,.94);color:var(--mag);font-family:var(--f-mono);letter-spacing:.2em;font-size:13px;text-align:center}
+#watch-deny{position:fixed;inset:0;z-index:90;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;background:#020a07;color:var(--amber);font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;line-height:1.6}
 </style>
 </head>
 <body>
@@ -1598,7 +1609,7 @@ window.corvanisAccount = (a, uid) => {
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, getDocs, setDoc, addDoc, writeBatch, collection, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc as _setDoc, addDoc as _addDoc, writeBatch as _writeBatch, collection, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAMwEN6aNyuVmRBLEcnmwAlWmufDWj-H6Q",
@@ -1610,13 +1621,22 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app), auth = getAuth(app);
+/* ---------- DM live view: index.html?watch=<player id>. Needs the DM's sign-in. It is view only:
+   every write is swallowed here, so watching never changes a player's file and never shows up as a player. ---------- */
+const WATCH = new URLSearchParams(location.search).get('watch') || '';
+const BUILD = '2026-11-14c';
+let viewOnlyHit = false;
+const setDoc = (...a) => WATCH ? (viewOnlyHit = true, Promise.resolve()) : _setDoc(...a);
+const addDoc = (...a) => WATCH ? (viewOnlyHit = true, Promise.resolve()) : _addDoc(...a);
+const writeBatch = (...a) => WATCH ? { set() {}, update() {}, delete() {}, commit() { viewOnlyHit = true; return Promise.resolve(); } } : _writeBatch(...a);
 let first = true, lastGlitch = 0;
 onSnapshot(doc(db, 'state', 'main'), snap => {
   const d = snap.data(); if (!d) return;
   window.corvanisApply(d);
   WORLD = d; renderApp();
-  if (!first && d.glitchAt && d.glitchAt !== lastGlitch) window.corvanisGlitch();
-  lastGlitch = d.glitchAt || 0; first = false;
+  const g = d.glitchAt || 0, fireNow = !first && g && g !== lastGlitch && !WATCH;
+  lastGlitch = g; first = false;
+  if (fireNow) { window.corvanisGlitch(); glitchReceipt(g); }
 }, err => console.warn('Live state unavailable:', err.code));
 /* ---------- DM on the map: right-click (or press and hold) a location to hide it or set a city level.
    Only on ?dm=1 when the DM is signed in on this site. Players never see this. ---------- */
@@ -1813,6 +1833,75 @@ function start(id, name) {
   beat(id, name);
   setInterval(() => beat(id, name), 60000);
 }
+/* ---------- live status: what this terminal is showing right now, for the DM console.
+   Written to the presence file only when something changes. Other players never see it. ---------- */
+let liveSent = '', GLITCH_SEEN = { at: 0, app: '', vis: '' };
+function liveState() {
+  return { app: APP, view: typeof view === 'string' ? view : '', sel: typeof selected === 'string' ? selected : '', pz: !PZ.hidden, chat: CHAT_OPEN || '', node: ST_SEL || '',
+    vis: document.visibilityState, dev: innerWidth < 760 ? 'phone' : 'desktop', ver: BUILD, glitchSeen: GLITCH_SEEN.at, glitchApp: GLITCH_SEEN.app, glitchVis: GLITCH_SEEN.vis };
+}
+function report(force) {
+  if (!ME_ID || WATCH) return;
+  const live = liveState(), s = JSON.stringify(live);
+  if (!force && s === liveSent) return;
+  liveSent = s;
+  _setDoc(doc(db, 'players', ME_ID), { name: ME_NAME, lastSeen: serverTimestamp(), live }, { merge: true }).catch(err => console.warn('Live status:', err.code));
+}
+/* the big glitch really played on this device: tell the DM where the player was looking */
+function glitchReceipt(at) { GLITCH_SEEN = { at, app: PZ.hidden ? APP : 'paradise', vis: document.visibilityState }; report(true); }
+setInterval(report, 1500);
+document.addEventListener('visibilitychange', () => report());
+
+/* ---------- DM live view (watch mode) ---------- */
+let FOLLOW = true, WATCH_PRES = null, watchFirst = true, watchGlitch = 0;
+const tsMs = t => !t ? 0 : typeof t.toMillis === 'function' ? t.toMillis() : Number(t.ms) || 0;
+function watchBar() {
+  let b = document.getElementById('watch-bar');
+  if (!b) {
+    b = document.createElement('div'); b.id = 'watch-bar'; document.body.appendChild(b);
+    b.addEventListener('click', e => { if (e.target.closest('[data-follow]')) { FOLLOW = !FOLLOW; if (FOLLOW) follow(); watchBar(); } });
+  }
+  const p = WATCH_PRES, l = (p && p.live) || null, on = !!p && Date.now() - p.seen < 150000;
+  const where = !l ? 'NO LIVE DATA YET' : l.pz ? 'IN PARADISE' : String(l.app || '').toUpperCase() + (l.app === 'map' && l.view ? ' · ' + String(l.view).toUpperCase() : '');
+  b.innerHTML = `<b>LIVE VIEW · ${H(ME_NAME || WATCH)}</b><span class="${on ? 'wb-on' : ''}">${on ? 'ONLINE' : 'OFFLINE'}</span><span>${H(where)}</span>`
+    + (l ? `<span>${l.vis === 'visible' ? 'LOOKING AT IT' : 'TAB IN BACKGROUND'}</span>` : '')
+    + `<button type="button" data-follow aria-pressed="${FOLLOW}">${FOLLOW ? 'FOLLOWING THEIR SCREEN' : 'FREE LOOK'}</button><span class="wb-ro">VIEW ONLY</span>`;
+}
+/* move this copy to the screen the player is on */
+function follow() {
+  const l = WATCH_PRES && WATCH_PRES.live; if (!l) return;
+  document.body.classList.toggle('watch-pz', !!l.pz);
+  if (!FOLLOW) return;
+  if (l.app && l.app !== APP && document.querySelector(`.app-tab[data-app="${CSS.escape(l.app)}"]`)) setApp(l.app);
+  if (l.app === 'map') { if (l.view && l.view !== view) go(l.view); if (l.sel && l.sel !== selected) select(l.sel); }
+  if (l.app === 'messages') { if (l.chat && l.chat !== CHAT_OPEN) openChat(l.chat); else if (!l.chat && CHAT_OPEN) closeChat(); }
+  if (l.app === 'augments' && (l.node || null) !== (ST_SEL || null)) { ST_SEL = l.node || null; renderApp(true); }
+}
+function startWatch() {
+  document.body.classList.add('watch');
+  const deny = t => { let d = document.getElementById('watch-deny'); if (!d) { d = document.createElement('p'); d.id = 'watch-deny'; document.body.appendChild(d); } d.textContent = t; };
+  onAuthStateChanged(auth, async u => {
+    if (started) return;
+    if (!u || !u.email) return deny('LIVE VIEW IS FOR THE DM. SIGN IN ON THE DM CONSOLE FIRST, THEN OPEN THIS AGAIN.');
+    try {
+      const snap = await getDoc(doc(db, 'accounts', WATCH));
+      if (!snap.exists()) return deny('NO PLAYER WITH THAT NAME.');
+      const d = document.getElementById('watch-deny'); if (d) d.remove();
+      started = true; ME_ID = WATCH; ME_NAME = snap.data().holder || WATCH;
+      listenMessages(WATCH); listenChats(WATCH); listenPeers(); listenBanks(WATCH); watchAccount(WATCH);
+      onSnapshot(doc(db, 'players', WATCH), s => {
+        const v = s.data() || {};
+        WATCH_PRES = { seen: tsMs(v.lastSeen), live: v.live || null };
+        const g = (v.live && v.live.glitchSeen) || 0;
+        /* replay the big glitch at the moment the player's own device reports it played */
+        if (!watchFirst && g && g !== watchGlitch) window.corvanisGlitch();
+        watchGlitch = g; watchFirst = false;
+        follow(); watchBar();
+      }, err => deny('COULD NOT READ THE LIVE STATUS: ' + (err.code || err.message)));
+      watchBar(); setInterval(watchBar, 15000);
+    } catch (err) { deny('COULD NOT OPEN THE LIVE VIEW: ' + (err.code || err.message)); }
+  });
+}
 joinName.value = (() => { try { return localStorage.getItem('corvanis-name') || ''; } catch (e) { return ''; } })();
 joinForm.onsubmit = async e => {
   e.preventDefault();
@@ -1837,7 +1926,7 @@ joinForm.onsubmit = async e => {
     start(id, holder);
   } catch (err) { showJoin(true, 'Could not connect: ' + (err.code || err.message)); }
 };
-if (!DM) showJoin(true);
+if (WATCH) startWatch(); else if (!DM) showJoin(true);
 
 /* ---------- terminal apps: Neural-Tag, Wallet, Messages, Jobs, Contacts, News ---------- */
 let ME_ID = null, ME_NAME = '', ACC = null, MSGS = [], WORLD = {}, APP = 'map', msgOff = null;
@@ -1909,6 +1998,7 @@ function updateBadge() {
   b.textContent = n; b.hidden = !n;
 }
 function note(t) {
+  if (WATCH && viewOnlyHit) { t = 'VIEW ONLY. NOTHING WAS CHANGED.'; viewOnlyHit = false; }
   let n = document.getElementById('ap-toast');
   if (!n) { n = document.createElement('div'); n.id = 'ap-toast'; n.className = 'ap-toast'; document.body.appendChild(n); }
   n.textContent = t; n.hidden = false;
